@@ -25,13 +25,13 @@ export const AppbarHeader = styled(Typography)(({ theme }) => ({
   display: 'flex',
 }));
 
-export const AppbarMenuIcon = styled(IconButton)(({ theme }) => ({
+export const AppbarMenuIcon = styled(IconButton)(() => ({
   position: 'absolute',
   top: 3,
   left: 10,
 }));
 
-export const AppbarSearchIcon = styled(IconButton)(({ theme }) => ({
+export const AppbarSearchIcon = styled(IconButton)(() => ({
   position: 'absolute',
   top: 3,
   right: 10,

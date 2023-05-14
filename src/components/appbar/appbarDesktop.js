@@ -1,17 +1,9 @@
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  ActionItemsContainerDesktop,
-  ActionItemsContainerMobile,
-  AppbarContainer,
-  AppbarHeader,
-  AppbarLogo,
-  MyList,
-} from '../../styles/appbar';
-import Actions from './actions';
+import { AppbarContainer, AppbarHeader, AppbarLogo, MyList } from '../../styles/appbar';
 import { useUIContext } from '../../context/ui';
 
-export default function AppbarDesktop({ matches }) {
+export default function AppbarDesktop() {
   const { setShowSearchBox } = useUIContext();
 
   return (

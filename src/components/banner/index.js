@@ -1,18 +1,7 @@
-import { useMediaQuery, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import {
-  BannerContainer,
-  BannerContent,
-  BannerContentContainer,
-  BannerDescription,
-  BannerImage,
-  BannerTitle,
-} from '../../styles/banner';
+import { Typography } from '@mui/material';
+import { BannerContainer, BannerContent, BannerContentContainer, BannerImage } from '../../styles/banner';
 
 export default function Banner() {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down('md'));
-
   return (
     <BannerContainer>
       <BannerImage src="/assets/images/covers/delivery_cover.jpg">

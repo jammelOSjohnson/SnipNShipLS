@@ -6,7 +6,7 @@ import Appbar from '../../components/appbar';
 import Footer from '../../components/footer';
 
 // ----------------------------------------------------------------------
-const StyledBody = styled(Box)(({ theme }) => ({
+const StyledBody = styled(Box)(() => ({
   width: '100%',
   padding: 0,
   margin: 0,

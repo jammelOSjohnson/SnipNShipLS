@@ -15,7 +15,7 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const BannerImage = styled(Box)(({ src, theme }) => ({
+export const BannerImage = styled(Box)(({ src }) => ({
   backgroundImage: `url(${src})`,
   backgroundRepeat: 'no-repeat',
   backgroundColor: 'black',
