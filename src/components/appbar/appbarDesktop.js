@@ -2,6 +2,7 @@ import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { AppbarContainer, AppbarHeader, AppbarLogo, MyList } from '../../styles/appbar';
 import { useUIContext } from '../../context/ui';
+import { Colors } from '../../theme/palette';
 
 export default function AppbarDesktop() {
   const { setShowSearchBox } = useUIContext();
@@ -21,7 +22,7 @@ export default function AppbarDesktop() {
         <ListItemText primary="SignUp" />
         <ListItemButton>
           <ListItemIcon>
-            <SearchIcon onClick={() => setShowSearchBox(true)} />
+            <SearchIcon sx={{ color: `${Colors.white}` }} onClick={() => setShowSearchBox(true)} />
           </ListItemIcon>
         </ListItemButton>
       </MyList>

@@ -7,10 +7,11 @@ import '@fontsource/montez';
 // container
 export const AppbarContainer = styled(Box)(() => ({
   display: 'flex',
-  margin: 4,
+  margin: '0px 0px 0px 4px',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: '2px 8px',
+  padding: '0px 0px 8px 8px',
+  backgroundColor: `${Colors.white}`,
 }));
 
 // Header
@@ -55,6 +56,10 @@ export const MyList = styled(List)(({ type }) => ({
   flexGrow: 1,
   justifyContent: 'center',
   alignItems: 'center',
+  backgroundColor: Colors.primary,
+  paddingLeft: '5%',
+  borderRadius: '95px 0 0 95px',
+  color: Colors.white,
 }));
 
 export const ActionItemsContainerMobile = styled(Box)(() => ({

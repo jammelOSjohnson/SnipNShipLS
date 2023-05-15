@@ -17,7 +17,7 @@ export default function AppDrawer() {
           <CloseIcon
             sx={{
               fontSize: '2.5em',
-              color: lighten(0.09, Colors.secondary),
+              color: Colors.white,
             }}
           />
         </DrawerCloseButton>

@@ -8,24 +8,36 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '100%',
   padding: '0px 0px',
-  background: Colors.light_gray,
+  background: Colors.white,
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
     alignItems: 'center',
   },
 }));
 
-export const BannerImage = styled(Box)(({ src }) => ({
-  backgroundImage: `url(${src})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundColor: 'black',
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-  height: '100%',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+// export const BannerImage = styled(Box)(({ src }) => ({
+//   backgroundImage: `url(${src})`,
+//   backgroundRepeat: 'no-repeat',
+//   backgroundColor: 'black',
+//   backgroundPosition: 'center',
+//   backgroundSize: 'cover',
+//   height: '100%',
+//   width: '100%',
+//   display: 'flex',
+//   justifyContent: 'center',
+//   alignItems: 'center',
+// }));
+
+export const BannerImage = styled('img')(({ src, theme }) => ({
+  src: `url(${src})`,
+  width: '500px',
+  [theme.breakpoints.down('md')]: {
+    width: '350px',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '320px',
+    height: '300px',
+  },
 }));
 
 export const BannerContentContainer = styled(Box)(({ theme }) => ({
@@ -45,9 +57,17 @@ export const BannerContentContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
+// export const BannerContent = styled(Box)(() => ({
+//   background: 'white',
+//   opacity: '0.8',
+// }));
+
 export const BannerContent = styled(Box)(() => ({
-  background: 'white',
-  opacity: '0.8',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  maxWidth: 600,
+  padding: '30px',
 }));
 
 export const BannerTitle = styled(Typography)(({ theme }) => ({
