@@ -22,8 +22,9 @@ export default function Footer() {
           <Grid item md={6} lg={4}>
             <FooterTitle variant="body1">About us</FooterTitle>
             <Typography variant="caption2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua.
+              Welcome to Snip & Ship, your reliable partner for hassle-free package delivery. With fast, secure, and
+              reliable services, we simplify shipping. Experience convenience at your fingertips with easy scheduling,
+              tracking, and management.
             </Typography>
             <Box
               sx={{
