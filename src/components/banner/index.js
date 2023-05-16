@@ -6,6 +6,7 @@ import {
   BannerContent,
   BannerContentContainer,
   BannerImage,
+  BannerButton,
 } from '../../styles/banner';
 
 export default function Banner() {
@@ -14,7 +15,7 @@ export default function Banner() {
       <BannerImage src="/assets/images/covers/deliverytruck.png" />
       {/* <BannerContentContainer> */}
       <BannerContent>
-        <Typography variant={'h2'} color={'primary'} pt={8}>
+        <Typography variant={'h2'} color={'primary'}>
           Delivering Convenience, One Package at a Time!
         </Typography>
 
@@ -24,6 +25,7 @@ export default function Banner() {
           tracking, and management. Trust our dedicated team for efficient and transparent deliveries. Start shipping
           today and enjoy peace of mind as we handle your packages with precision and care.
         </BannerDescription>
+        <BannerButton>START TODAY!</BannerButton>
       </BannerContent>
       {/* </BannerContentContainer> */}
       {/* </BannerImage> */}

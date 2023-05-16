@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { Colors } from '../../theme/palette';
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
@@ -36,7 +36,7 @@ export const BannerImage = styled('img')(({ src, theme }) => ({
   },
   [theme.breakpoints.down('sm')]: {
     width: '320px',
-    height: '300px',
+    height: '260px',
   },
 }));
 
@@ -62,20 +62,25 @@ export const BannerContentContainer = styled(Box)(({ theme }) => ({
 //   opacity: '0.8',
 // }));
 
-export const BannerContent = styled(Box)(() => ({
+export const BannerContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   maxWidth: 600,
   padding: '30px',
+  [theme.breakpoints.down('sm')]: {
+    padding: '5px 30px 30px 30px',
+  },
 }));
 
 export const BannerTitle = styled(Typography)(({ theme }) => ({
   lineHeight: 1.5,
   fontSize: '72px',
   marginBottom: '20px',
+  paddingTop: 8,
   [theme.breakpoints.down('sm')]: {
-    fontSize: '42px',
+    fontSize: '32px',
+    paddingTop: 0,
   },
 }));
 
@@ -87,5 +92,13 @@ export const BannerDescription = styled(Typography)(({ theme }) => ({
     lineHeight: 1.15,
     letterSpacing: 1.15,
     marginBottom: '1.5em',
+    display: 'none',
   },
+}));
+
+export const BannerButton = styled(Button)(() => ({
+  backgroundColor: Colors.primary,
+  color: Colors.white,
+  height: '70px',
+  borderRadius: '50px',
 }));
