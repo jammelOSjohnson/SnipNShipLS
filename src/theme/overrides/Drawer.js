@@ -9,7 +9,7 @@ export default function Drawer() {
         paper: {
           width: 250,
           background: Colors.primary,
-          color: Colors.secondary,
+          color: Colors.white,
           borderRadius: '0px 100px 0px 0px',
           borderRight: `10px solid ${Colors.secondary}`,
         },
