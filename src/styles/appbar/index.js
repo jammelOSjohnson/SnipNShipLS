@@ -1,10 +1,18 @@
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { List, Typography, IconButton } from '@mui/material';
+import { Link } from 'react-scroll';
+import { NavLink } from 'react-router-dom';
 import { Colors } from '../../theme/palette';
 import '@fontsource/montez';
 
 // container
+// export const AppbarExContainer = styled(Box)(() => ({
+//   position: 'sticky',
+//   width: '100%',
+//   top: 10,
+// }));
+
 export const AppbarContainer = styled(Box)(() => ({
   display: 'flex',
   margin: '0px 0px 0px 4px',
@@ -83,4 +91,17 @@ export const DrawerCloseButton = styled(IconButton)(() => ({
   top: 10,
   left: '250px',
   zIndex: 1999,
+}));
+
+export const LinkStyled = styled(Link)(() => ({
+  flex: '1 1 auto',
+  '&:hover': {
+    cursor: 'pointer',
+  },
+}));
+
+export const NavLinkStyled = styled(NavLink)(() => ({
+  flex: '1 1 auto',
+  textDecoration: 'none',
+  color: Colors.white,
 }));
