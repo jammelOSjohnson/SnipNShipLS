@@ -6,11 +6,12 @@ import AnonymousLayout from './layouts/anonymous';
 //
 // import BlogPage from './pages/BlogPage';
 // import UserPage from './pages/UserPage';
-// import LoginPage from './pages/LoginPage';
-// import Page404 from './pages/Page404';
+import LoginPage from './pages/LoginPage';
+import Page404 from './pages/Page404';
 // import ProductsPage from './pages/ProductsPage';
 // import DashboardAppPage from './pages/DashboardAppPage';
 import HomePage from './pages/HomePage';
+import SignupPage from './pages/SignupPage';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +23,17 @@ export default function Router() {
       children: [
         { element: <Navigate to="/Home" />, index: true },
         { path: 'Home', element: <HomePage /> },
+        { path: '404', element: <Page404 /> },
+        { path: '*', element: <Navigate to="/404" /> },
       ],
+    },
+    {
+      path: 'login',
+      element: <LoginPage />,
+    },
+    {
+      path: 'signup',
+      element: <SignupPage />,
     },
     // {
     //   path: '/dashboard',
@@ -34,10 +45,6 @@ export default function Router() {
     //     { path: 'products', element: <ProductsPage /> },
     //     { path: 'blog', element: <BlogPage /> },
     //   ],
-    // },
-    // {
-    //   path: 'login',
-    //   element: <LoginPage />,
     // },
     // {
     //   element: <SimpleLayout />,
