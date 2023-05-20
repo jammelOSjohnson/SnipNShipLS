@@ -14,7 +14,7 @@ import { Colors } from '../../theme/palette';
 export default function ContactUs() {
   return (
     <>
-      <ContactFormContainer>
+      <ContactFormContainer id="contactus">
         <Grid container>
           <Grid item xs={12} textAlign="center" style={{ marginBottom: '5%', textDecoration: 'underline' }}>
             <Typography variant="h2">Contact us!</Typography>
