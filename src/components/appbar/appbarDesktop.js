@@ -11,7 +11,7 @@ export default function AppbarDesktop() {
 
   useEffect(() => {
     const wOutsticky = document.getElementById('w-out');
-    console.log(wOutsticky);
+    // console.log(wOutsticky);
     window.addEventListener('scroll', () => {
       if (window.scrollY > 20) {
         wOutsticky.classList.add('sticky');
@@ -31,17 +31,17 @@ export default function AppbarDesktop() {
         >
           <ListItemText primary="HOME" />
         </NavLinkStyled>
-        <LinkStyled to="services" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
+        <LinkStyled to="services" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
           <ListItemText primary="SERVICES" />
         </LinkStyled>
-        <LinkStyled to="rates" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
+        <LinkStyled to="contactus" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
+          <ListItemText primary="CONTACT US" />
+        </LinkStyled>
+        <LinkStyled to="rates" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
           <ListItemText primary="RATES" />
         </LinkStyled>
-        <LinkStyled to="about" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
+        <LinkStyled to="about" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
           <ListItemText primary="ABOUT" />
-        </LinkStyled>
-        <LinkStyled to="contactus" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
-          <ListItemText primary="CONTACT US" />
         </LinkStyled>
         <NavLinkStyled
           to="/Login"
