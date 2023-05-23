@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { Colors } from '../../theme/palette';
 
 export const ContactFormButton = styled(Button)(({ theme }) => ({
@@ -14,6 +14,10 @@ export const ContactFormButton = styled(Button)(({ theme }) => ({
 
 export const ContactFormContainer = styled(Box)(() => ({
   padding: '5% 0px 0% 0px',
+}));
+
+export const ContactFromContainerTitleGrid = styled(Grid)(() => ({
+  color: Colors.primary,
 }));
 
 export const ContactInnerFormContainer = styled(Grid)(({ theme }) => ({

@@ -8,6 +8,7 @@ import {
   ContactFormContainer,
   ContactFormSection,
   ContactInnerFormContainer,
+  ContactFromContainerTitleGrid,
 } from '../../styles/contactus';
 import { Colors } from '../../theme/palette';
 
@@ -16,9 +17,14 @@ export default function ContactUs() {
     <>
       <ContactFormContainer id="contactus">
         <Grid container>
-          <Grid item xs={12} textAlign="center" style={{ marginBottom: '5%', textDecoration: 'underline' }}>
+          <ContactFromContainerTitleGrid
+            item
+            xs={12}
+            textAlign="center"
+            style={{ marginBottom: '5%', textDecoration: 'underline' }}
+          >
             <Typography variant="h2">Contact us!</Typography>
-          </Grid>
+          </ContactFromContainerTitleGrid>
         </Grid>
         <ContactInnerFormContainer container>
           <Grid item xs={12} md={6}>
