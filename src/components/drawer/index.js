@@ -1,7 +1,7 @@
 import { Divider, Drawer, List, ListItemButton, ListItemText } from '@mui/material';
 import { styled } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
-import { lighten } from 'polished';
+// import { lighten } from 'polished';
 import { useUIContext } from '../../context/ui';
 import { DrawerCloseButton } from '../../styles/appbar';
 import { Colors } from '../../theme/palette';
@@ -25,27 +25,30 @@ export default function AppDrawer() {
       <Drawer open={drawerOpen}>
         <List>
           <ListItemButton>
-            <ListItemText>Home</ListItemText>
+            <ListItemText>HOME</ListItemText>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
-            <ListItemText>Rates</ListItemText>
+            <ListItemText>SERVICES</ListItemText>
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemText>RATES</ListItemText>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
-            <ListItemText>About</ListItemText>
+            <ListItemText>ABOUT</ListItemText>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
-            <ListItemText>Contact Us</ListItemText>
+            <ListItemText>CONTACT US</ListItemText>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
-            <ListItemText>Login</ListItemText>
+            <ListItemText>LOGIN</ListItemText>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
-            <ListItemText>SignUp</ListItemText>
+            <ListItemText>SIGNUP</ListItemText>
           </ListItemButton>
           <MiddleDivider />
         </List>
