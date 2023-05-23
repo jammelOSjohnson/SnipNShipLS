@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import Banner from '../components/banner';
 import ContactUs from '../components/contactus';
 import Services from '../components/services';
+import Rates from '../components/rates';
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <Banner />
       <Services />
       <ContactUs />
+      <Rates />
     </>
   );
 }
