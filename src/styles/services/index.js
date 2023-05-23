@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, Card, CardMedia, Grid } from '@mui/material';
+import { Box, Card, CardMedia, Grid, Typography } from '@mui/material';
 import { Colors } from '../../theme/palette';
 
 export const ServicesContainer = styled(Box)(({ theme }) => ({
@@ -19,6 +19,12 @@ export const ServiceCard = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     marginBottom: '5%',
   },
+}));
+
+export const ServiceCardTitle = styled(Typography)(() => ({
+  fontWeight: 'bold',
+  textAlign: 'center',
+  color: Colors.primary,
 }));
 
 export const ServiceCardMedia = styled(CardMedia)(() => ({

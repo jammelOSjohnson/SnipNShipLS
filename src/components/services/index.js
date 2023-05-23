@@ -2,7 +2,13 @@ import { CardContent, Grid, Typography } from '@mui/material';
 import Rocket from '@mui/icons-material/RocketLaunch';
 import Flight from '@mui/icons-material/FlightTakeoff';
 import Door from '@mui/icons-material/DoorBack';
-import { CardsContainer, ServiceCard, ServiceCardMedia, ServicesContainer } from '../../styles/services';
+import {
+  CardsContainer,
+  ServiceCard,
+  ServiceCardMedia,
+  ServiceCardTitle,
+  ServicesContainer,
+} from '../../styles/services';
 import { Colors } from '../../theme/palette';
 
 export default function Services() {
@@ -30,7 +36,7 @@ export default function Services() {
                 />
               </ServiceCardMedia>
               <CardContent>
-                <Typography gutterBottom>Swift and Secure Delivery</Typography>
+                <ServiceCardTitle gutterBottom>Swift and Secure Delivery</ServiceCardTitle>
                 <Typography>
                   Rely on our swift and secure delivery service for shipping packages from the USA to Jamaica. We
                   prioritize timely transportation and ensure your items arrive safely at their destination, offering
@@ -49,7 +55,7 @@ export default function Services() {
                 />
               </ServiceCardMedia>
               <CardContent>
-                <Typography gutterBottom>Global Shipping Solutions</Typography>
+                <ServiceCardTitle gutterBottom>Global Shipping Solutions</ServiceCardTitle>
                 <Typography>
                   Explore our comprehensive global shipping solutions, specifically designed for packages from the USA
                   to Jamaica. With streamlined processes and trusted partners, we guarantee efficient customs clearance
@@ -68,7 +74,7 @@ export default function Services() {
                 />
               </ServiceCardMedia>
               <CardContent>
-                <Typography gutterBottom>Door-to-Door Delivery</Typography>
+                <ServiceCardTitle gutterBottom>Door-to-Door Delivery</ServiceCardTitle>
                 <Typography>
                   Experience the ease of our seamless door-to-door service, connecting the USA to Jamaica. From pickup
                   at your location to delivery at your recipient's doorstep, our dedicated team ensures a smooth and
