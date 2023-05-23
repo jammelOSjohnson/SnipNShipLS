@@ -10,7 +10,7 @@ export const ServicesContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const CardsContainer = styled(Grid)(({ theme }) => ({
+export const CardsContainer = styled(Grid)(() => ({
   alignItems: 'center',
   justifyContent: 'space-evenly',
 }));
@@ -21,7 +21,7 @@ export const ServiceCard = styled(Card)(({ theme }) => ({
   },
 }));
 
-export const ServiceCardMedia = styled(CardMedia)(({ theme }) => ({
+export const ServiceCardMedia = styled(CardMedia)(() => ({
   textAlign: 'center',
   color: Colors.primary,
   padding: '8px',
