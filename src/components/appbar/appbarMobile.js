@@ -1,10 +1,11 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { AppbarContainer, AppbarHeader, AppbarLogo, AppbarMenuIcon, AppbarSearchIcon } from '../../styles/appbar';
-import Actions from './actions';
+// import Actions from './actions';
 import { useUIContext } from '../../context/ui';
 
-export default function AppbarMobile({ matches }) {
+// { matches }
+export default function AppbarMobile() {
   const { setDrawerOpen, setShowSearchBox } = useUIContext();
 
   return (
@@ -19,7 +20,7 @@ export default function AppbarMobile({ matches }) {
       <AppbarSearchIcon onClick={() => setShowSearchBox(true)}>
         <SearchIcon />
       </AppbarSearchIcon>
-      <Actions matches={matches} />
+      {/* <Actions matches={matches} /> */}
     </AppbarContainer>
   );
 }
