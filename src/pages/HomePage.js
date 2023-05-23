@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import Banner from '../components/banner';
 import ContactUs from '../components/contactus';
+import Services from '../components/services';
 
 export default function HomePage() {
   return (
@@ -9,6 +10,7 @@ export default function HomePage() {
         <title> Home | Snip & Ship </title>
       </Helmet>
       <Banner />
+      <Services />
       <ContactUs />
     </>
   );
