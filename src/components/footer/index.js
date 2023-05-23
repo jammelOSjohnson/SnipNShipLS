@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TikTokIcon from '../tiktokicon';
 import { Colors } from '../../theme/palette';
-import { FooterTitle } from '../../styles/footer';
+import { FooterContainer, FooterTitle } from '../../styles/footer';
 
 export default function Footer() {
   const navigate = useNavigate();
@@ -26,15 +26,12 @@ export default function Footer() {
 
   return (
     <>
-      <Box
+      <FooterContainer
         sx={{
-          background: Colors.primary,
-          color: Colors.white,
           p: { xs: 4, md: 10 },
-          pt: 12,
-          pb: 12,
           fontSize: { xs: '12px', md: '14px' },
         }}
+        id="about"
       >
         <Grid container spacing={2} justifyContent="center">
           <Grid item md={6} lg={4}>
@@ -124,7 +121,7 @@ export default function Footer() {
             <FooterTitle variant="body1">Information</FooterTitle>
           </Grid>
         </Grid>
-      </Box>
+      </FooterContainer>
     </>
   );
 }
