@@ -5,6 +5,7 @@ import { Colors } from '../../theme/palette';
 export const BannerContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
+  alignItems: 'center',
   width: '100%',
   height: '100%',
   padding: '0px 0px',
@@ -33,6 +34,7 @@ export const BannerImage = styled('img')(({ src, theme }) => ({
   width: '500px',
   [theme.breakpoints.down('md')]: {
     width: '350px',
+    height: '450px',
   },
   [theme.breakpoints.down('sm')]: {
     width: '320px',
@@ -70,6 +72,7 @@ export const BannerContent = styled(Box)(({ theme }) => ({
   padding: '30px',
   [theme.breakpoints.down('sm')]: {
     padding: '5px 30px 30px 30px',
+    textAlign: 'center',
   },
 }));
 
@@ -96,9 +99,12 @@ export const BannerDescription = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BannerButton = styled(Button)(() => ({
+export const BannerButton = styled(Button)(({ theme }) => ({
   backgroundColor: Colors.primary,
   color: Colors.white,
   height: '70px',
   borderRadius: '50px',
+  [theme.breakpoints.down('sm')]: {
+    marginTop: '3%',
+  },
 }));
