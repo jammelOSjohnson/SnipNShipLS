@@ -29,28 +29,31 @@ export default function AppbarDesktop() {
           to="/Home"
           className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
         >
-          <ListItemText primary="Home" />
+          <ListItemText primary="HOME" />
         </NavLinkStyled>
+        <LinkStyled to="services" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
+          <ListItemText primary="SERVICES" />
+        </LinkStyled>
         <LinkStyled to="rates" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
-          <ListItemText primary="Rates" />
+          <ListItemText primary="RATES" />
         </LinkStyled>
         <LinkStyled to="about" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
-          <ListItemText primary="About" />
+          <ListItemText primary="ABOUT" />
         </LinkStyled>
         <LinkStyled to="contactus" spy={isTrue} smooth={isTrue} offset={50} duration={500}>
-          <ListItemText primary="Contact Us" />
+          <ListItemText primary="CONTACT US" />
         </LinkStyled>
         <NavLinkStyled
           to="/Login"
           className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
         >
-          <ListItemText primary="Login" />
+          <ListItemText primary="LOGIN" />
         </NavLinkStyled>
         <NavLinkStyled
           to="/signup"
           className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
         >
-          <ListItemText primary="SignUp" />
+          <ListItemText primary="SIGNUP" />
         </NavLinkStyled>
         <ListItemButton>
           <ListItemIcon>
@@ -70,8 +73,11 @@ export default function AppbarDesktop() {
             .sticky {
               position: fixed;
               top: 0;
-              padding-top: 35px;
+              padding-top: 0;
+              padding-bottom: 0;
               width: 100%;
+              opacity: 0.9;
+              z-index: 8000;
             }
           `}
       </style>
