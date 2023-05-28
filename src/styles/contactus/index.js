@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import { Colors } from '../../theme/palette';
 
 export const ContactFormButton = styled(Button)(({ theme }) => ({
