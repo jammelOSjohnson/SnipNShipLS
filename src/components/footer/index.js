@@ -34,6 +34,7 @@ export default function Footer() {
         id="about"
       >
         <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={1} lg={2} />
           <Grid item md={6} lg={4}>
             <FooterTitle variant="body1">About us</FooterTitle>
             <Typography variant="caption2">
@@ -117,8 +118,15 @@ export default function Footer() {
               </ListItemButton>
             </List>
           </Grid>
-          <Grid item md={6} lg={4}>
-            <FooterTitle variant="body1">Information</FooterTitle>
+          <Grid item xs={1} lg={2} />
+          <Grid container>
+            <Grid item xs={1} md={2} />
+            <Grid item xs={10} md={8} textAlign="center">
+              <Typography lineHeight={2} variant="capton2">
+                Copyright ©2023, Snip & Ship Logistics Services. All Rights Reserved.
+              </Typography>
+            </Grid>
+            <Grid item xs={1} md={2} />
           </Grid>
         </Grid>
       </FooterContainer>
