@@ -2,14 +2,18 @@ import { Divider, Drawer, List, ListItemButton, ListItemText } from '@mui/materi
 import { styled } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 // import { lighten } from 'polished';
+import { NavLink } from 'react-router-dom';
+import { Link } from 'react-scroll';
 import { useUIContext } from '../../context/ui';
-import { DrawerCloseButton } from '../../styles/appbar';
+import { DrawerCloseButton, NavLinkStyled } from '../../styles/appbar';
 import { Colors } from '../../theme/palette';
 
 const MiddleDivider = styled((props) => <Divider variant="middle" {...props} />)``;
 
 export default function AppDrawer() {
   const { drawerOpen, setDrawerOpen } = useUIContext();
+  const isTrue = true;
+
   return (
     <>
       {drawerOpen && (
@@ -24,35 +28,84 @@ export default function AppDrawer() {
       )}
       <Drawer open={drawerOpen}>
         <List>
-          <ListItemButton>
+          <ListItemButton onClick={() => setDrawerOpen(false)}>
             <ListItemText>HOME</ListItemText>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
-            <ListItemText>SERVICES</ListItemText>
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemText>RATES</ListItemText>
+            <Link
+              to="services"
+              spy={isTrue}
+              smooth={isTrue}
+              offset={0}
+              duration={500}
+              onClick={() => setDrawerOpen(false)}
+            >
+              <ListItemText>SERVICES</ListItemText>
+            </Link>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
+            <Link
+              to="contactus"
+              spy={isTrue}
+              smooth={isTrue}
+              offset={0}
+              duration={500}
+              onClick={() => setDrawerOpen(false)}
+            >
+              <ListItemText>CONTACT US</ListItemText>
+            </Link>
+          </ListItemButton>
+          <MiddleDivider />
+          <ListItemButton>
+            <Link
+              to="rates"
+              spy={isTrue}
+              smooth={isTrue}
+              offset={0}
+              duration={500}
+              onClick={() => setDrawerOpen(false)}
+            >
+              <ListItemText>RATES</ListItemText>
+            </Link>
+          </ListItemButton>
+          <MiddleDivider />
+          {/* <ListItemButton>
             <ListItemText>ABOUT</ListItemText>
           </ListItemButton>
-          <MiddleDivider />
+          <MiddleDivider /> */}
           <ListItemButton>
-            <ListItemText>CONTACT US</ListItemText>
+            <NavLinkStyled
+              to="/Login"
+              className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+              onClick={() => setDrawerOpen(false)}
+            >
+              <ListItemText>LOGIN</ListItemText>
+            </NavLinkStyled>
           </ListItemButton>
           <MiddleDivider />
           <ListItemButton>
-            <ListItemText>LOGIN</ListItemText>
-          </ListItemButton>
-          <MiddleDivider />
-          <ListItemButton>
-            <ListItemText>SIGNUP</ListItemText>
+            <NavLinkStyled
+              to="/signup"
+              className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+              onClick={() => setDrawerOpen(false)}
+            >
+              <ListItemText>SIGNUP</ListItemText>
+            </NavLinkStyled>
           </ListItemButton>
           <MiddleDivider />
         </List>
       </Drawer>
+      <style>
+        {`
+            .active{
+              background:linear-gradient(to left, ${Colors.warning} 100%, ${Colors.warning} 100%) bottom;
+            background-repeat: no-repeat;
+            background-size:100% 2px;
+            }
+          `}
+      </style>
     </>
   );
 }
