@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import SearchIcon from '@mui/icons-material/Search';
+import TikTokIcon from '../tiktokicon';
 import { AppbarContainer, AppbarHeader, AppbarLogo, LinkStyled, MyList, NavLinkStyled } from '../../styles/appbar';
 import { useUIContext } from '../../context/ui';
 import { Colors } from '../../theme/palette';
@@ -8,6 +11,22 @@ import { Colors } from '../../theme/palette';
 export default function AppbarDesktop() {
   const { setShowSearchBox } = useUIContext();
   const isTrue = true;
+
+  const handleSocial = function handleSocial(social) {
+    switch (social) {
+      case 'facebook':
+        window.open('https://www.facebook.com/profile.php?id=100092457001052');
+        break;
+      case 'instagram':
+        window.open('https://instagram.com/snipnship?igshid=NTc4MTIwNjQ2YQ==');
+        break;
+      case 'tiktok':
+        window.open('https://www.tiktok.com/@snipnship3?_t=8cLbin6qTA6&_r=1');
+        break;
+      default:
+        break;
+    }
+  };
 
   useEffect(() => {
     const wOutsticky = document.getElementById('w-out');
@@ -40,9 +59,9 @@ export default function AppbarDesktop() {
         <LinkStyled to="rates" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
           <ListItemText primary="RATES" />
         </LinkStyled>
-        <LinkStyled to="about" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
+        {/* <LinkStyled to="about" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
           <ListItemText primary="ABOUT" />
-        </LinkStyled>
+        </LinkStyled> */}
         <NavLinkStyled
           to="/Login"
           className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
@@ -56,8 +75,23 @@ export default function AppbarDesktop() {
           <ListItemText primary="SIGNUP" />
         </NavLinkStyled>
         <ListItemButton>
-          <ListItemIcon>
+          {/* <ListItemIcon>
             <SearchIcon sx={{ color: `${Colors.white}` }} onClick={() => setShowSearchBox(true)} />
+          </ListItemIcon> */}
+          <ListItemIcon>
+            <FacebookIcon sx={{ mr: 1, color: Colors.white }} onClick={() => handleSocial('facebook')} />
+          </ListItemIcon>
+          <ListItemIcon>
+            <TikTokIcon
+              color={Colors.white}
+              width="1.5em"
+              height="1.5em"
+              style={{ marginRight: 1 }}
+              onClick={() => handleSocial('tiktok')}
+            />
+          </ListItemIcon>
+          <ListItemIcon onClick={() => handleSocial('instagram')}>
+            <InstagramIcon sx={{ mr: 1, color: Colors.white }} />
           </ListItemIcon>
         </ListItemButton>
       </MyList>
