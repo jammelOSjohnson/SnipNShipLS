@@ -78,6 +78,7 @@ export default function AppbarDesktop() {
               width: 100%;
               opacity: 0.9;
               z-index: 8000;
+              margin-left: 0;
             }
           `}
       </style>
