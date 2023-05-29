@@ -63,14 +63,14 @@ export default function LoginPage() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back
             </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
+            <img src="/assets/illustrations/deliveryman_login.jpg" alt="login" />
           </StyledSection>
         )}
 
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+              Sign in to Snip & Ship
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
