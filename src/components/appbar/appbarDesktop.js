@@ -114,6 +114,12 @@ export default function AppbarDesktop() {
               z-index: 8000;
               margin-left: 0;
             }
+
+            #w-out > ul > a:hover {
+              background:linear-gradient(to left, transparent 50%, ${Colors.warning} 50%) bottom;
+            background-repeat: no-repeat;
+            background-size:100% 2px;
+            }
           `}
       </style>
     </AppbarContainer>
