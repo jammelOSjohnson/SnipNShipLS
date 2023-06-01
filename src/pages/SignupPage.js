@@ -9,7 +9,7 @@ import useResponsive from '../hooks/useResponsive';
 import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
-import { LoginForm } from '../sections/auth/login';
+import { SignUpForm } from '../sections/auth/signup';
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +36,10 @@ const StyledContent = styled('div')(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
-  padding: theme.spacing(12, 0),
+  padding: theme.spacing(6, 0),
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(12, 0),
+  },
 }));
 
 // ----------------------------------------------------------------------
@@ -62,7 +65,7 @@ export default function SignupPage() {
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+              Welcome to Snip & Ship
             </Typography>
             <img src="/assets/illustrations/delivery_signup.jpg" alt="signup" />
           </StyledSection>
@@ -101,7 +104,7 @@ export default function SignupPage() {
               </Typography>
             </Divider>
 
-            <LoginForm />
+            <SignUpForm />
           </StyledContent>
         </Container>
       </StyledRoot>
