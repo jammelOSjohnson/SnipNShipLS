@@ -2,7 +2,7 @@ import { Divider, Drawer, List, ListItemButton, ListItemText } from '@mui/materi
 import { styled } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 // import { lighten } from 'polished';
-import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import { useUIContext } from '../../context/ui';
 import { DrawerCloseButton, NavLinkStyled } from '../../styles/appbar';
@@ -13,6 +13,7 @@ const MiddleDivider = styled((props) => <Divider variant="middle" {...props} />)
 export default function AppDrawer() {
   const { drawerOpen, setDrawerOpen } = useUIContext();
   const isTrue = true;
+  const navigate = useNavigate();
 
   return (
     <>
@@ -28,7 +29,12 @@ export default function AppDrawer() {
       )}
       <Drawer open={drawerOpen}>
         <List>
-          <ListItemButton onClick={() => setDrawerOpen(false)}>
+          <ListItemButton
+            onClick={() => {
+              setDrawerOpen(false);
+              navigate('/home');
+            }}
+          >
             <ListItemText>HOME</ListItemText>
           </ListItemButton>
           <MiddleDivider />
