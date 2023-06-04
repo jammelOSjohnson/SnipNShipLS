@@ -12,6 +12,7 @@ import Page404 from './pages/Page404';
 // import DashboardAppPage from './pages/DashboardAppPage';
 import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
+import TermsAndConditonsPage from './pages/TermsAndConditonsPage';
 
 // ----------------------------------------------------------------------
 
@@ -23,6 +24,10 @@ export default function Router() {
       children: [
         { element: <Navigate to="/Home" />, index: true },
         { path: 'Home', element: <HomePage /> },
+        {
+          path: 'terms',
+          element: <TermsAndConditonsPage />,
+        },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
       ],
