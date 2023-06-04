@@ -10,7 +10,7 @@ export const RatesContainer = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const RatesTab = styled(Box)(({ theme }) => ({
+export const RatesTab = styled(Box)(() => ({
   width: '100%',
   margin: '0 auto',
 }));
