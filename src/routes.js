@@ -13,6 +13,7 @@ import Page404 from './pages/Page404';
 import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
 import TermsAndConditonsPage from './pages/TermsAndConditonsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +28,10 @@ export default function Router() {
         {
           path: 'terms',
           element: <TermsAndConditonsPage />,
+        },
+        {
+          path: 'privacy',
+          element: <PrivacyPolicyPage />,
         },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
