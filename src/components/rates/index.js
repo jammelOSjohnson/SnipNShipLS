@@ -27,16 +27,16 @@ export default function Rates() {
   }
 
   const rows = [
-    createData('1 lb', '$560 JMD'),
-    createData('2 lb', '$560 JMD'),
-    createData('3 lb', '$1,000 JMD'),
-    createData('4 lb', '$1,250 JMD'),
-    createData('5 lb', '$1,550 JMD'),
-    createData('6 lb', '$1,850 JMD'),
-    createData('7 lb', '$2,150 JMD'),
-    createData('8 lb', '$2,450 JMD'),
-    createData('9 lb', '$2,750 JMD'),
-    createData('10 lb', '$3,050 JMD'),
+    createData('1 lb', '$650 JMD'),
+    createData('2 lb', '$1,000 JMD'),
+    createData('3 lb', '$1,500 JMD'),
+    createData('4 lb', '$1,900 JMD'),
+    createData('5 lb', '$2,300 JMD'),
+    createData('6 lb', '$2,700 JMD'),
+    createData('7 lb', '$3,000 JMD'),
+    createData('8 lb', '$3,300 JMD'),
+    createData('9 lb', '$3,500 JMD'),
+    createData('10 lb', '$4,000 JMD'),
   ];
 
   const rows2 = [
