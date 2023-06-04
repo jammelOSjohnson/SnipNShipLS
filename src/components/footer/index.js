@@ -62,28 +62,28 @@ export default function Footer() {
           <Grid item md={6} lg={2}>
             <FooterTitle variant="body1">Information</FooterTitle>
             <List>
-              <ListItemButton>
+              <ListItemButton onClick={() => navigate('/home')}>
                 <ListItemText>
                   <Typography lineHeight={2} variant="capton2">
                     About Us
                   </Typography>
                 </ListItemText>
               </ListItemButton>
-              <ListItemButton>
+              <ListItemButton onClick={() => navigate('/home')}>
                 <ListItemText>
                   <Typography lineHeight={2} variant="capton2">
                     Our Rates
                   </Typography>
                 </ListItemText>
               </ListItemButton>
-              <ListItemButton>
+              <ListItemButton onClick={() => navigate('/privacy')}>
                 <ListItemText>
                   <Typography lineHeight={2} variant="capton2">
                     Privacy &amp; Policy
                   </Typography>
                 </ListItemText>
               </ListItemButton>
-              <ListItemButton>
+              <ListItemButton onClick={() => navigate('/terms')}>
                 <ListItemText>
                   <Typography lineHeight={2} variant="capton2">
                     Terms &amp; Conditions
