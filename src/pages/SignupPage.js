@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Container, Typography, Divider, Stack, Button } from '@mui/material';
+import { Container, Typography, Divider, Stack, Button, Alert } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -13,6 +13,8 @@ import Iconify from '../components/iconify';
 import { SignUpForm } from '../sections/auth/signup';
 // context
 import { useGeneral } from '../context/general';
+// firebase
+import { auth } from '../firebase';
 
 // ----------------------------------------------------------------------
 
@@ -48,11 +50,13 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function SignupPage() {
+  const navigate = useNavigate();
+  const urlLocation = useLocation().pathname;
   const mdUp = useResponsive('up', 'md');
   const { value } = useGeneral();
-  const { signup, gLogin, fLogin, tLogin, fetchUserInfoForSignUp, fetchUserInfo } = value;
+  const { gLogin, fLogin, tLogin, fetchUserInfo } = value;
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingBtn, setLoading] = useState(false);
 
   const handleGoogleSubmit = async function handleGoogleSubmit(event) {
     event.preventDefault();
@@ -61,6 +65,7 @@ export default function SignupPage() {
     try {
       setError('');
       setLoading(true);
+      console.log('here');
       await gLogin(value).then(async (res1) => {
         if (res1 != null) {
           await fetchUserDetails(res1).then((res) => {
@@ -98,6 +103,45 @@ export default function SignupPage() {
     }
     return false;
   };
+
+  useEffect(() => {
+    auth.onAuthStateChanged(
+      (user) => {
+        let signonStatus = false;
+        if (user !== null) {
+          signonStatus = user.uid !== null && user.uid !== undefined;
+
+          const payload = {
+            ...value,
+            currentUser: user,
+            loading: false,
+            loggedIn: signonStatus,
+          };
+          if (value.clientInfo.email === '') {
+            fetchUserDetails(payload);
+          }
+        }
+
+        if (value.loggedIn && value.userRolef === 'Customer') {
+          // console.log("About to customer navigate to dashboard.");
+          navigate('/Dashboard');
+        }
+
+        if (urlLocation !== '/signup') {
+          if (value.loggedIn && value.userRolef === 'Staff') {
+            // console.log("About to navigate to staff dashboard.");
+            navigate('/AdminDashboard');
+          } else if (value.loggedIn && value.userRolef === 'Admin') {
+            // console.log("About to navigate to staff dashboard.");
+            navigate('/AdminDashboard');
+          }
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      [value.userRolef]
+    );
+  });
 
   return (
     <>
@@ -137,7 +181,7 @@ export default function SignupPage() {
             </Typography>
 
             <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={() => handleGoogleSubmit}>
+              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={(e) => handleGoogleSubmit(e)}>
                 <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
               </Button>
 
@@ -156,7 +200,12 @@ export default function SignupPage() {
               </Typography>
             </Divider>
 
-            <SignUpForm />
+            {error && (
+              <Alert variant="filled" severity="error">
+                {error}
+              </Alert>
+            )}
+            <SignUpForm value setError={setError} setLoading={setLoading} loadingBtn={loadingBtn} />
           </StyledContent>
         </Container>
       </StyledRoot>
