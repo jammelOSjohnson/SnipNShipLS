@@ -76,7 +76,8 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
           setError('Unable to signup at this time.');
         }
       });
-    } catch {
+    } catch (err) {
+      console.log(err);
       setError('Failed to sign up');
     }
     setLoading(false);

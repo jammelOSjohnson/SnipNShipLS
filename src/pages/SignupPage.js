@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Container, Typography, Divider, Stack, Button, Alert } from '@mui/material';
@@ -13,8 +13,6 @@ import Iconify from '../components/iconify';
 import { SignUpForm } from '../sections/auth/signup';
 // context
 import { useGeneral } from '../context/general';
-// firebase
-import { auth } from '../firebase';
 
 // ----------------------------------------------------------------------
 
@@ -50,14 +48,13 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function SignupPage() {
-  const navigate = useNavigate();
-  const urlLocation = useLocation().pathname;
   const mdUp = useResponsive('up', 'md');
   const { value } = useGeneral();
-  const { gLogin, fLogin, tLogin, fetchUserInfo } = value;
+  const { gLogin, signup, fLogin, tLogin, userRolef, fetchUserInfo } = value;
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loadingBtn, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleGoogleSubmit = async function handleGoogleSubmit(event) {
     event.preventDefault();
     // prevents default form refresh
@@ -105,43 +102,24 @@ export default function SignupPage() {
   };
 
   useEffect(() => {
-    auth.onAuthStateChanged(
-      (user) => {
-        let signonStatus = false;
-        if (user !== null) {
-          signonStatus = user.uid !== null && user.uid !== undefined;
+    console.log('role is', userRolef);
+    if (userRolef !== undefined && userRolef !== '') {
+      setLoading(false);
+      setSuccess('Registration Is Successful.');
+      setTimeout(() => {
+        setSuccess('');
 
-          const payload = {
-            ...value,
-            currentUser: user,
-            loading: false,
-            loggedIn: signonStatus,
-          };
-          if (value.clientInfo.email === '') {
-            fetchUserDetails(payload);
-          }
-        }
-
-        if (value.loggedIn && value.userRolef === 'Customer') {
-          // console.log("About to customer navigate to dashboard.");
-          navigate('/Dashboard');
-        }
-
-        if (urlLocation !== '/signup') {
-          if (value.loggedIn && value.userRolef === 'Staff') {
-            // console.log("About to navigate to staff dashboard.");
-            navigate('/AdminDashboard');
-          } else if (value.loggedIn && value.userRolef === 'Admin') {
-            // console.log("About to navigate to staff dashboard.");
-            navigate('/AdminDashboard');
-          }
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      },
-      [value.userRolef]
-    );
-  });
+        // if (1 === 2) {
+        //   // console.log("about to go to from address");
+        //   // console.log(history.location.state.from)
+        //   navigate(-1);
+        // } else {
+        console.log('about to go dashboard');
+        navigate('/dashboard/app');
+        // }
+      }, 1500);
+    }
+  }, [userRolef]);
 
   return (
     <>
@@ -161,7 +139,8 @@ export default function SignupPage() {
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Welcome to Snip & Ship
+              Welcome
+              {/* to Snip & Ship */}
             </Typography>
             <img src="/assets/illustrations/delivery_signup.jpg" alt="signup" />
           </StyledSection>
@@ -170,7 +149,8 @@ export default function SignupPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign Up to Snip & Ship
+              Sign Up
+              {/* to Snip & Ship */}
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
@@ -205,7 +185,12 @@ export default function SignupPage() {
                 {error}
               </Alert>
             )}
-            <SignUpForm value setError={setError} setLoading={setLoading} loadingBtn={loadingBtn} />
+            {success && (
+              <Alert variant="filled" severity="success">
+                {success}
+              </Alert>
+            )}
+            <SignUpForm value={value} setError={setError} setLoading={setLoading} loadingBtn={loadingBtn} />
           </StyledContent>
         </Container>
       </StyledRoot>
