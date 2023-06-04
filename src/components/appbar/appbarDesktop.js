@@ -2,14 +2,14 @@ import { useEffect } from 'react';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import TikTokIcon from '../tiktokicon';
 import { AppbarContainer, AppbarHeader, AppbarLogo, LinkStyled, MyList, NavLinkStyled } from '../../styles/appbar';
 import { useUIContext } from '../../context/ui';
 import { Colors } from '../../theme/palette';
 
 export default function AppbarDesktop() {
-  const { setShowSearchBox } = useUIContext();
+  // const { setShowSearchBox } = useUIContext();
   const isTrue = true;
 
   const handleSocial = function handleSocial(social) {
