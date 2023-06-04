@@ -1,15 +1,15 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
-// import DashboardLayout from './layouts/dashboard';
+import DashboardLayout from './layouts/dashboard';
 import AnonymousLayout from './layouts/anonymous';
 // import SimpleLayout from './layouts/simple';
 //
-// import BlogPage from './pages/BlogPage';
-// import UserPage from './pages/UserPage';
+import BlogPage from './pages/BlogPage';
+import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-// import ProductsPage from './pages/ProductsPage';
-// import DashboardAppPage from './pages/DashboardAppPage';
+import ProductsPage from './pages/ProductsPage';
+import DashboardAppPage from './pages/DashboardAppPage';
 import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
 import TermsAndConditonsPage from './pages/TermsAndConditonsPage';
@@ -45,17 +45,17 @@ export default function Router() {
       path: 'signup',
       element: <SignupPage />,
     },
-    // {
-    //   path: '/dashboard',
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { element: <Navigate to="/dashboard/app" />, index: true },
-    //     { path: 'app', element: <DashboardAppPage /> },
-    //     { path: 'user', element: <UserPage /> },
-    //     { path: 'products', element: <ProductsPage /> },
-    //     { path: 'blog', element: <BlogPage /> },
-    //   ],
-    // },
+    {
+      path: '/dashboard',
+      element: <DashboardLayout />,
+      children: [
+        { element: <Navigate to="/dashboard/app" /> },
+        { path: 'app', element: <DashboardAppPage /> },
+        { path: 'user', element: <UserPage /> },
+        { path: 'products', element: <ProductsPage /> },
+        { path: 'blog', element: <BlogPage /> },
+      ],
+    },
     // {
     //   element: <SimpleLayout />,
     //   children: [
