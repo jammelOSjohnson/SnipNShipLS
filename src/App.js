@@ -11,6 +11,7 @@ import AppDrawer from './components/drawer';
 import { UIProvider } from './context/ui';
 import GeneralProvider from './context/general';
 import SearchBox from './components/search';
+import Scroll from './components/scroll';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ export default function App() {
         <ThemeProvider>
           <GeneralProvider>
             <UIProvider>
+              <Scroll showBelow={250} />
               <ScrollToTop />
               <StyledChart />
               <AppDrawer />
