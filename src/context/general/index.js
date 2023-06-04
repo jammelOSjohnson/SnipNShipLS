@@ -33,6 +33,16 @@ function generalReducer(state, action) {
     //     ...state,
     //     loggedIn: action.payload.loggedIn
     //   };
+    case 'fetch_userinfo':
+      // console.log("dispatching fetch user info action");
+      // console.log(action);
+      return {
+        ...state,
+        clientInfo: action.payload.clientInfo,
+        loggedIn: action.payload.loggedIn,
+        userRolef: action.payload.userRolef,
+        currentUser: action.payload.currentUser,
+      };
     case 'auth_change':
       // console.log("Auth listener dispatch results.");
       // console.log(action.payload);
@@ -107,7 +117,7 @@ function GeneralProvider({ children }) {
   let rangeOfPackages;
 
   // sign up user
-  const signup = function signup(currentstate, payload) {
+  const signup = (currentstate, payload) => {
     // retuns a promise
     return CreateUserWithEmailAndPassword(auth, currentstate.email, currentstate.password)
       .then(async (result) => {
@@ -366,7 +376,7 @@ function GeneralProvider({ children }) {
       };
     }
     try {
-      await AddDoc(Collection(db, 'Roles'), userInRole);
+      await SetDoc(Doc(db, 'UsersInRoles', uid), userInRole);
       payload.userRolef = 'Customer';
     } catch {
       // console.log("What is in payload after creating role: ");
@@ -535,7 +545,7 @@ function GeneralProvider({ children }) {
           addressLine2: '',
           city: '',
           postalCode: '',
-          stateOrparish: '',
+          stateOrparish: currentState.parish,
           dateCreated: timeStamp.fromDate(new Date()),
         };
 
@@ -571,16 +581,18 @@ function GeneralProvider({ children }) {
             user2.dateCreated !== null && user2.dateCreated !== undefined ? user2.dateCreated : '';
         }
       }
-
-      let userRoleResf;
-      await userHasRole(uid, await payload).then((userRoleRes) => {
+      return await userHasRole(uid, await payload).then((userRoleRes) => {
         // console.log("Final user ref after fetch role is: ");
-        // console.log(userRoleRes);
-        userRoleResf = userRoleRes;
+        console.log(userRoleRes);
+        dispatch({
+          type: 'fetch_userinfo',
+          payload: userRoleRes,
+        });
+        return true;
       });
-      return;
     } catch (err) {
       console.log(err);
+      return false;
     }
   };
 
