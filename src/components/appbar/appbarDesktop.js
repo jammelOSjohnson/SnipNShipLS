@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -11,6 +12,7 @@ import { Colors } from '../../theme/palette';
 export default function AppbarDesktop() {
   // const { setShowSearchBox } = useUIContext();
   const isTrue = true;
+  const urlLocation = useLocation().pathname;
 
   const handleSocial = function handleSocial(social) {
     switch (social) {
@@ -43,58 +45,120 @@ export default function AppbarDesktop() {
         {/* My Bags */}
         <AppbarLogo src="/assets/images/Logos/ShipNShipLS.png" />
       </AppbarHeader>
-      <MyList type="row">
-        <NavLinkStyled
-          to="/Home"
-          className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-        >
-          <ListItemText primary="HOME" />
-        </NavLinkStyled>
-        <LinkStyled to="services" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
-          <ListItemText primary="SERVICES" />
-        </LinkStyled>
-        <LinkStyled to="contactus" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
-          <ListItemText primary="CONTACT US" />
-        </LinkStyled>
-        <LinkStyled to="rates" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
-          <ListItemText primary="RATES" />
-        </LinkStyled>
-        {/* <LinkStyled to="about" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
+      {urlLocation === '/refund' || urlLocation === '/privacy' || urlLocation === '/terms' ? (
+        <MyList type="row">
+          <NavLinkStyled
+            to="/Home"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="HOME" />
+          </NavLinkStyled>
+          <NavLinkStyled
+            to="/terms"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="TERMS & CONDITIONS" />
+          </NavLinkStyled>
+          <NavLinkStyled
+            to="/privacy"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="PRIVACY POLICY" />
+          </NavLinkStyled>
+          <NavLinkStyled
+            to="/refund"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="REFUND POLICY" />
+          </NavLinkStyled>
+          <NavLinkStyled
+            to="/Login"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="LOGIN" />
+          </NavLinkStyled>
+          <NavLinkStyled
+            to="/signup"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="SIGNUP" />
+          </NavLinkStyled>
+          <ListItemButton>
+            {/* <ListItemIcon>
+              <SearchIcon sx={{ color: `${Colors.white}` }} onClick={() => setShowSearchBox(true)} />
+            </ListItemIcon> */}
+            <ListItemIcon>
+              <FacebookIcon sx={{ mr: 1, color: Colors.white }} onClick={() => handleSocial('facebook')} />
+            </ListItemIcon>
+            <ListItemIcon>
+              <TikTokIcon
+                color={Colors.white}
+                width="1.5em"
+                height="1.5em"
+                style={{ marginRight: 1 }}
+                onClick={() => handleSocial('tiktok')}
+              />
+            </ListItemIcon>
+            <ListItemIcon onClick={() => handleSocial('instagram')}>
+              <InstagramIcon sx={{ mr: 1, color: Colors.white }} />
+            </ListItemIcon>
+          </ListItemButton>
+        </MyList>
+      ) : (
+        <MyList type="row">
+          <NavLinkStyled
+            to="/Home"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="HOME" />
+          </NavLinkStyled>
+          <LinkStyled to="services" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
+            <ListItemText primary="SERVICES" />
+          </LinkStyled>
+          <LinkStyled to="contactus" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
+            <ListItemText primary="CONTACT US" />
+          </LinkStyled>
+          <LinkStyled to="rates" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
+            <ListItemText primary="RATES" />
+          </LinkStyled>
+          {/* <LinkStyled to="about" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
           <ListItemText primary="ABOUT" />
         </LinkStyled> */}
-        <NavLinkStyled
-          to="/Login"
-          className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-        >
-          <ListItemText primary="LOGIN" />
-        </NavLinkStyled>
-        <NavLinkStyled
-          to="/signup"
-          className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-        >
-          <ListItemText primary="SIGNUP" />
-        </NavLinkStyled>
-        <ListItemButton>
-          {/* <ListItemIcon>
+          <NavLinkStyled
+            to="/Login"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="LOGIN" />
+          </NavLinkStyled>
+          <NavLinkStyled
+            to="/signup"
+            className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+          >
+            <ListItemText primary="SIGNUP" />
+          </NavLinkStyled>
+          <ListItemButton>
+            {/* <ListItemIcon>
             <SearchIcon sx={{ color: `${Colors.white}` }} onClick={() => setShowSearchBox(true)} />
           </ListItemIcon> */}
-          <ListItemIcon>
-            <FacebookIcon sx={{ mr: 1, color: Colors.white }} onClick={() => handleSocial('facebook')} />
-          </ListItemIcon>
-          <ListItemIcon>
-            <TikTokIcon
-              color={Colors.white}
-              width="1.5em"
-              height="1.5em"
-              style={{ marginRight: 1 }}
-              onClick={() => handleSocial('tiktok')}
-            />
-          </ListItemIcon>
-          <ListItemIcon onClick={() => handleSocial('instagram')}>
-            <InstagramIcon sx={{ mr: 1, color: Colors.white }} />
-          </ListItemIcon>
-        </ListItemButton>
-      </MyList>
+            <ListItemIcon>
+              <FacebookIcon sx={{ mr: 1, color: Colors.white }} onClick={() => handleSocial('facebook')} />
+            </ListItemIcon>
+            <ListItemIcon>
+              <TikTokIcon
+                color={Colors.white}
+                width="1.5em"
+                height="1.5em"
+                style={{ marginRight: 1 }}
+                onClick={() => handleSocial('tiktok')}
+              />
+            </ListItemIcon>
+            <ListItemIcon onClick={() => handleSocial('instagram')}>
+              <InstagramIcon sx={{ mr: 1, color: Colors.white }} />
+            </ListItemIcon>
+          </ListItemButton>
+        </MyList>
+      )}
+
       {/* <Actions matches={matches} /> */}
       <style>
         {`

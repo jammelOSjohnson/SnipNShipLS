@@ -2,7 +2,7 @@ import { Divider, Drawer, List, ListItemButton, ListItemText } from '@mui/materi
 import { styled } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 // import { lighten } from 'polished';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import { useUIContext } from '../../context/ui';
 import { DrawerCloseButton, NavLinkStyled } from '../../styles/appbar';
@@ -14,6 +14,7 @@ export default function AppDrawer() {
   const { drawerOpen, setDrawerOpen } = useUIContext();
   const isTrue = true;
   const navigate = useNavigate();
+  const urlLocation = useLocation().pathname;
 
   return (
     <>
@@ -28,80 +29,145 @@ export default function AppDrawer() {
         </DrawerCloseButton>
       )}
       <Drawer open={drawerOpen}>
-        <List>
-          <ListItemButton
-            onClick={() => {
-              setDrawerOpen(false);
-              navigate('/home');
-            }}
-          >
-            <ListItemText>HOME</ListItemText>
-          </ListItemButton>
-          <MiddleDivider />
-          <ListItemButton>
-            <Link
-              to="services"
-              spy={isTrue}
-              smooth={isTrue}
-              offset={0}
-              duration={500}
-              onClick={() => setDrawerOpen(false)}
+        {urlLocation === '/refund' || urlLocation === '/privacy' || urlLocation === '/terms' ? (
+          <List>
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate('/home');
+              }}
             >
-              <ListItemText>SERVICES</ListItemText>
-            </Link>
-          </ListItemButton>
-          <MiddleDivider />
-          <ListItemButton>
-            <Link
-              to="contactus"
-              spy={isTrue}
-              smooth={isTrue}
-              offset={0}
-              duration={500}
-              onClick={() => setDrawerOpen(false)}
+              <ListItemText>HOME</ListItemText>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate('/terms');
+              }}
             >
-              <ListItemText>CONTACT US</ListItemText>
-            </Link>
-          </ListItemButton>
-          <MiddleDivider />
-          <ListItemButton>
-            <Link
-              to="rates"
-              spy={isTrue}
-              smooth={isTrue}
-              offset={0}
-              duration={500}
-              onClick={() => setDrawerOpen(false)}
+              <ListItemText>TERMS & CONDITIONS</ListItemText>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate('/privacy');
+              }}
             >
-              <ListItemText>RATES</ListItemText>
-            </Link>
-          </ListItemButton>
-          <MiddleDivider />
-          {/* <ListItemButton>
+              <ListItemText>PRIVACY POLICY</ListItemText>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate('/refund');
+              }}
+            >
+              <ListItemText>REFUND POLICY</ListItemText>
+            </ListItemButton>
+            <MiddleDivider />
+            {/* <ListItemButton>
             <ListItemText>ABOUT</ListItemText>
           </ListItemButton>
           <MiddleDivider /> */}
-          <ListItemButton>
-            <NavLinkStyled
-              to="/Login"
-              className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-              onClick={() => setDrawerOpen(false)}
+            <ListItemButton>
+              <NavLinkStyled
+                to="/Login"
+                className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText>LOGIN</ListItemText>
+              </NavLinkStyled>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton>
+              <NavLinkStyled
+                to="/signup"
+                className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText>SIGNUP</ListItemText>
+              </NavLinkStyled>
+            </ListItemButton>
+            <MiddleDivider />
+          </List>
+        ) : (
+          <List>
+            <ListItemButton
+              onClick={() => {
+                setDrawerOpen(false);
+                navigate('/home');
+              }}
             >
-              <ListItemText>LOGIN</ListItemText>
-            </NavLinkStyled>
+              <ListItemText>HOME</ListItemText>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton>
+              <Link
+                to="services"
+                spy={isTrue}
+                smooth={isTrue}
+                offset={0}
+                duration={500}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText>SERVICES</ListItemText>
+              </Link>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton>
+              <Link
+                to="contactus"
+                spy={isTrue}
+                smooth={isTrue}
+                offset={0}
+                duration={500}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText>CONTACT US</ListItemText>
+              </Link>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton>
+              <Link
+                to="rates"
+                spy={isTrue}
+                smooth={isTrue}
+                offset={0}
+                duration={500}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText>RATES</ListItemText>
+              </Link>
+            </ListItemButton>
+            <MiddleDivider />
+            {/* <ListItemButton>
+            <ListItemText>ABOUT</ListItemText>
           </ListItemButton>
-          <MiddleDivider />
-          <ListItemButton>
-            <NavLinkStyled
-              to="/signup"
-              className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
-              onClick={() => setDrawerOpen(false)}
-            >
-              <ListItemText>SIGNUP</ListItemText>
-            </NavLinkStyled>
-          </ListItemButton>
-          <MiddleDivider />
-        </List>
+          <MiddleDivider /> */}
+            <ListItemButton>
+              <NavLinkStyled
+                to="/Login"
+                className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText>LOGIN</ListItemText>
+              </NavLinkStyled>
+            </ListItemButton>
+            <MiddleDivider />
+            <ListItemButton>
+              <NavLinkStyled
+                to="/signup"
+                className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}
+                onClick={() => setDrawerOpen(false)}
+              >
+                <ListItemText>SIGNUP</ListItemText>
+              </NavLinkStyled>
+            </ListItemButton>
+            <MiddleDivider />
+          </List>
+        )}
       </Drawer>
       <style>
         {`
