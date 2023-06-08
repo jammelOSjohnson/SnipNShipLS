@@ -111,8 +111,8 @@ export default function TermsAndConditonsPage() {
         </StyledGridItem>
         <StyledGridItem item xs={10} textAlign={'left'}>
           <Typography variant="body1">
-            <b>6.1.</b> These terms and conditions are governed by the laws of [Jurisdiction]. Any disputes arising from
-            the use of our website or services shall be subject to the exclusive jurisdiction of the courts in Jamaica.
+            <b>6.1.</b> These terms and conditions are governed by the laws of Jamaica. Any disputes arising from the
+            use of our website or services shall be subject to the exclusive jurisdiction of the courts in Jamaica.
           </Typography>
         </StyledGridItem>
       </Grid>

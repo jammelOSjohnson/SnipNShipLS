@@ -15,7 +15,7 @@ export default function PrivacyPolicyPage() {
         <StyledGridItem item xs={10} textAlign={'left'}>
           <Typography variant="body1">
             Last updated:&nbsp;
-            <b>6-5-2023</b>
+            <b>3-6-2023</b>
             <br />
             At Snip And Ship Logistics Services, we are committed to protecting your privacy and ensuring the security
             of your personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your
@@ -122,7 +122,7 @@ export default function PrivacyPolicyPage() {
         </StyledGridItem>
         <StyledGridItem item xs={10} textAlign={'left'}>
           <Typography variant="body1">
-            <b>6.1.</b> Our website and services are not intended for individuals under the age of 13. We do not
+            <b>6.1.</b> Our website and services are not intended for individuals under the age of 16. We do not
             knowingly collect personal information from children. If we become aware that we have inadvertently
             collected personal information from a child under the age of 13, we will take steps to delete it as soon as
             possible.
