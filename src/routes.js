@@ -14,6 +14,7 @@ import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
 import TermsAndConditonsPage from './pages/TermsAndConditonsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import RefundPolicyPage from './pages/RefundPolicyPage';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +33,10 @@ export default function Router() {
         {
           path: 'privacy',
           element: <PrivacyPolicyPage />,
+        },
+        {
+          path: 'refund',
+          element: <RefundPolicyPage />,
         },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
