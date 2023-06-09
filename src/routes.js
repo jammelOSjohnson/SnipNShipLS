@@ -43,11 +43,11 @@ export default function Router() {
       ],
     },
     {
-      path: 'login',
+      path: '/login',
       element: <LoginPage />,
     },
     {
-      path: 'signup',
+      path: '/signup',
       element: <SignupPage />,
     },
     {
