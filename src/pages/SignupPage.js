@@ -50,11 +50,12 @@ const StyledContent = styled('div')(({ theme }) => ({
 export default function SignupPage() {
   const mdUp = useResponsive('up', 'md');
   const { value } = useGeneral();
-  const { gLogin, signup, fLogin, tLogin, userRolef, fetchUserInfo } = value;
+  const { gLogin, userRolef, fetchUserInfo } = value;
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loadingBtn, setLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleGoogleSubmit = async function handleGoogleSubmit(event) {
     event.preventDefault();
     // prevents default form refresh
@@ -69,6 +70,7 @@ export default function SignupPage() {
             if (res) {
               // console.log("About to close signup modal.");
               setLoading(false);
+              setSuccess('Signed up Successfully.');
               // setLoggedIn(true);
               // console.log("About to navigate to dashboard.");
               // history.push("/Dashboard");
@@ -165,13 +167,13 @@ export default function SignupPage() {
                 <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
               </Button>
 
-              <Button fullWidth size="large" color="inherit" variant="outlined">
+              {/* <Button fullWidth size="large" color="inherit" variant="outlined">
                 <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
               </Button>
 
               <Button fullWidth size="large" color="inherit" variant="outlined">
                 <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
-              </Button>
+              </Button> */}
             </Stack>
 
             <Divider sx={{ my: 3 }}>
