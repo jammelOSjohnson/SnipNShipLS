@@ -83,6 +83,7 @@ function generalReducer(state, action) {
         ...state,
         loggedIn: action.payload.loggedIn,
         currentUser: action.payload.currentUser,
+        userRolef: '',
       };
     default:
       return state;
@@ -113,6 +114,7 @@ function GeneralProvider({ children }) {
     mailboxNum,
   };
 
+  const userRolef = '';
   const clientRole = '';
   let rangeOfPackages;
 
@@ -225,18 +227,18 @@ function GeneralProvider({ children }) {
         };
         return payloadf;
       })
-      .catch((error) => {
+      .catch(() => {
         // Handle Errors here.
-        const errorCode = error.code;
-        console.log(error.code);
-        const errorMessage = error.message;
-        console.log(error.message);
+        // const errorCode = error.code;
+        // console.log(error.code);
+        // const errorMessage = error.message;
+        // console.log(error.message);
         // The email of the user's account used.
-        const email = error.email;
-        console.log(error.email);
+        // const email = error.email;
+        // console.log(error.email);
         // The firebase.auth.AuthCredential type that was used.
-        const credential = error.credential;
-        console.log(error.credential);
+        // const credential = error.credential;
+        // console.log(error.credential);
         // ...
         return null;
       });
@@ -301,15 +303,20 @@ function GeneralProvider({ children }) {
   const logout = function logout(payload) {
     // retuns a promise
     payload.loggedIn = false;
-    // console.log(payload.FetchPackUnsubscribe);
-    // payload.FetchPackUnsubscribe();
-    SignOut(auth).then(() => {
-      payload.currentUser = null;
-      dispatch({
-        type: 'logout_user',
-        payload,
+    SignOut(auth)
+      .then(() => {
+        payload.currentUser = null;
+        console.log('dispatching logout');
+        dispatch({
+          type: 'logout_user',
+          payload,
+        });
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
       });
-    }); // return res;
+    // return res;
   };
 
   const resetPassword = function resetPassword(email) {
@@ -607,6 +614,7 @@ function GeneralProvider({ children }) {
     clientRole,
     mailboxNum,
     rangeOfPackages,
+    userRolef,
     fetchUserInfo,
     fetchUserInfoForSignUp,
     signup,
