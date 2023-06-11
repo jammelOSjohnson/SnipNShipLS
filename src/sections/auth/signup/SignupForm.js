@@ -26,6 +26,7 @@ const clientData = {
   contact: '',
   fullname: '',
   parish: 'Select A Parish',
+  terms: false,
 };
 
 export default function SignUpForm({ value, setError, setLoading, loadingBtn }) {
@@ -35,7 +36,11 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
-    setClient({ ...client, [event.target.name]: event.target.value });
+    if (event.target.name === 'terms') {
+      setClient({ ...client, [event.target.name]: event.target.checked });
+    } else {
+      setClient({ ...client, [event.target.name]: event.target.value });
+    }
   };
 
   const handleSubmit = async function handleSubmit(event) {
@@ -62,6 +67,9 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
     }
     if (client.password !== client.passwordconf) {
       return setError('Passwords do not match');
+    }
+    if (!client.terms) {
+      return setError('Please check the box to agree to our terms and conditions.');
     }
     try {
       setError('');
@@ -188,15 +196,8 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
           required
         />
       </Stack>
-
-      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" label="Remember me" />
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack> */}
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" label="Remember me" required />
+        <Checkbox name="terms" label="Remember me" value={clientData.terms} onChange={handleChange} required />
         <Link href="/terms" target="_blank" variant="subtitle2" underline="hover">
           You agree to our Tems & Conditions?
         </Link>
