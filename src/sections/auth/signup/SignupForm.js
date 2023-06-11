@@ -1,6 +1,18 @@
 import { useState } from 'react';
 // @mui
-import { Stack, IconButton, InputAdornment, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import {
+  Stack,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  Link,
+  Grid,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
@@ -110,30 +122,37 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
           required
         />
         <TextField name="fullname" value={client.fullname} label="Full Name" onChange={handleChange} required />
-        <TextField
-          name="contact"
-          value={client.contact}
-          type="number"
-          label="Contact Number"
-          onChange={handleChange}
-          required
-        />
-        <FormControl fullWidth>
-          <InputLabel id="Parish">Parish</InputLabel>
-          <Select
-            id="demo-simple-select"
-            name="parish"
-            labelId="Parish"
-            label="Parish"
-            value={client.parish}
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value={'Select A Parish'}>Select A Parish</MenuItem>
-            <MenuItem value={'Kingston'}>Kingston</MenuItem>
-            <MenuItem value={'St. Catherine'}>St. Catherine (Spanish Town)</MenuItem>
-          </Select>
-        </FormControl>
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            <TextField
+              name="contact"
+              value={client.contact}
+              type="number"
+              label="Contact Number"
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth>
+              <InputLabel id="Parish">Parish</InputLabel>
+              <Select
+                id="demo-simple-select"
+                name="parish"
+                labelId="Parish"
+                label="Parish"
+                value={client.parish}
+                onChange={handleChange}
+                required
+              >
+                <MenuItem value={'Select A Parish'}>Select A Parish</MenuItem>
+                <MenuItem value={'Kingston'}>Kingston</MenuItem>
+                <MenuItem value={'St. Catherine'}>St. Catherine (Spanish Town)</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+
         <TextField
           name="password"
           label="Password"
@@ -176,7 +195,12 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
           Forgot password?
         </Link>
       </Stack> */}
-      <br />
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        <Checkbox name="remember" label="Remember me" required />
+        <Link href="/terms" target="_blank" variant="subtitle2" underline="hover">
+          You agree to our Tems & Conditions?
+        </Link>
+      </Stack>
       <LoadingButton
         fullWidth
         size="large"

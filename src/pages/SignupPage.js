@@ -121,7 +121,7 @@ export default function SignupPage() {
         // }
       }, 1500);
     }
-  }, [userRolef]);
+  }, [userRolef, navigate]);
 
   return (
     <>
@@ -150,17 +150,19 @@ export default function SignupPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
-              Sign Up
-              {/* to Snip & Ship */}
-            </Typography>
+            <Stack direction="row" alignItems={'center'} spacing={2}>
+              <Typography variant="h4" gutterBottom>
+                Sign Up
+                {/* to Snip & Ship */}
+              </Typography>
 
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Already have an account? {''}
-              <Link to="/Login" variant="subtitle2">
-                Login
-              </Link>
-            </Typography>
+              <Typography variant="body2" sx={{ mb: 5 }}>
+                Already have an account? {''}
+                <Link to="/Login" variant="subtitle2">
+                  Login
+                </Link>
+              </Typography>
+            </Stack>
 
             <Stack direction="row" spacing={2}>
               <Button fullWidth size="large" color="inherit" variant="outlined" onClick={(e) => handleGoogleSubmit(e)}>
