@@ -1,26 +1,87 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Link, Stack, IconButton, InputAdornment, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
-
-export default function LoginForm() {
-  const navigate = useNavigate();
-
+const loginData = {
+  email: '',
+  password: '',
+};
+export default function LoginForm({ value, setError, setLoading, loadingBtn }) {
+  const { login, fetchUserInfo } = value;
+  const [client, setClient] = useState(loginData);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
+  const handleChange = (event) => {
+    setClient({ ...client, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async function handleSubmit(event) {
+    event.preventDefault();
+    // prevents default form refresh
+    // console.log("I am inside fuction");
+    try {
+      setError('');
+      setLoading(true);
+      if (client.email === '') {
+        setError('Please enter email.');
+      } else if (client.password === '') {
+        setError('Please enter password.');
+      } else {
+        await login(client.email, client.password, value).then(async (res1) => {
+          if (
+            res1 !== 'Username / Password Incorrect' &&
+            res1 !== 'Unable to login at this time' &&
+            res1.currentUser !== undefined
+          ) {
+            await fetchUserDetails(res1).then((res) => {
+              if (res) {
+                // setLoggedIn(true);
+                // console.log(userRolef);
+                // if(userRolef === "Customer"){
+                //     console.log("About to navigate to dashboard.");
+                //     history.push("/Dashboard");
+                // }else if(userRolef === "Staff"){
+                //     console.log("About to navigate to staff dashboard.");
+                //     history.push("/StaffDashboard");
+                // }
+              } else {
+                setLoading(false);
+                setError('Unable to login at this time');
+              }
+            });
+          } else {
+            setLoading(false);
+            setError(res1);
+          }
+        });
+      }
+    } catch {
+      setLoading(false);
+      setError('Failed to login');
+    }
+    setLoading(false);
+  };
+
+  const fetchUserDetails = async function fetchUserDetails(payload) {
+    // console.log("Is current user null");
+    // console.log(payload);
+    if (payload.currentUser !== null && payload.currentUser !== undefined) {
+      if (payload.currentUser.uid !== null && payload.currentUser.uid !== undefined) {
+        // console.log("Fetching user info");
+        return fetchUserInfo(payload.currentUser.uid, payload);
+      }
+    }
+    return false;
   };
 
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField name="email" type="email" label="Email address" onChange={handleChange} required />
 
         <TextField
           name="password"
@@ -35,17 +96,25 @@ export default function LoginForm() {
               </InputAdornment>
             ),
           }}
+          onChange={handleChange}
+          required
         />
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" label="Remember me" />
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
+      <LoadingButton
+        fullWidth
+        size="large"
+        type="submit"
+        variant="contained"
+        onClick={(e) => handleSubmit(e)}
+        disabled={loadingBtn}
+      >
         Login
       </LoadingButton>
     </>

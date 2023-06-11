@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Container, Typography, Divider, Stack, Button } from '@mui/material';
+import { Container, Typography, Divider, Stack, Button, Alert } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -118,7 +118,7 @@ export default function LoginPage() {
         // }
       }, 1500);
     }
-  }, [userRolef]);
+  }, [userRolef, navigate]);
 
   return (
     <>
@@ -176,8 +176,17 @@ export default function LoginPage() {
                 OR
               </Typography>
             </Divider>
-
-            <LoginForm />
+            {error && (
+              <Alert variant="filled" severity="error">
+                {error}
+              </Alert>
+            )}
+            {success && (
+              <Alert variant="filled" severity="success">
+                {success}
+              </Alert>
+            )}
+            <LoginForm value={value} setError={setError} setLoading={setLoading} loadingBtn={loadingBtn} />
           </StyledContent>
         </Container>
       </StyledRoot>
