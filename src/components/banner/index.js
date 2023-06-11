@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import {
   BannerDescription,
@@ -10,6 +11,7 @@ import {
 } from '../../styles/banner';
 
 export default function Banner() {
+  const navigate = useNavigate();
   return (
     <BannerContainer>
       <BannerImage src="/assets/images/covers/deliverytruck.png" />
@@ -25,7 +27,7 @@ export default function Banner() {
           tracking, and management. Trust our dedicated team for efficient and transparent deliveries. Start shipping
           today and enjoy peace of mind as we handle your packages with precision and care.
         </BannerDescription>
-        <BannerButton>START TODAY!</BannerButton>
+        <BannerButton onClick={() => navigate('/signup')}>START TODAY!</BannerButton>
       </BannerContent>
       {/* </BannerContentContainer> */}
       {/* </BannerImage> */}
