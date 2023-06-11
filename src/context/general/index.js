@@ -12,6 +12,7 @@ import {
   twitterAuthProvider,
   db,
   AddDoc,
+  UpdateDoc,
   Collection,
   Doc,
   GetDoc,
@@ -603,6 +604,121 @@ function GeneralProvider({ children }) {
     }
   };
 
+  // update user info
+  const updateUserInfo = async function updateUserInfo(uid, payloadf, currentState) {
+    // console.log("User id is: ");
+    // console.log(uid);
+    // console.log(payloadf);
+    // console.log(currentState);
+    // console.log("updating  user");
+    // console.log("mbox b4 update", payloadf.mailbox_Num);
+    let user = null;
+    // console.log(payloadf);
+    if (currentState !== null) {
+      user = {
+        contactNumber:
+          currentState.contact !== null && currentState.contact !== undefined
+            ? currentState.contact
+            : payloadf.userInfo.contactNumber,
+        email:
+          currentState.email !== null && currentState.email !== undefined
+            ? currentState.email
+            : payloadf.userInfo.email,
+        fullName:
+          currentState.fullname !== null && currentState.fullname !== undefined
+            ? currentState.fullname.toLowerCase()
+            : payloadf.userInfo.fullName,
+        verified: payloadf.userInfo.verified,
+        verifiedemailsent: payloadf.userInfo.verifiedemailsent,
+        addressLine1:
+          currentState.address_line_1 !== null && currentState.address_line_1 !== undefined
+            ? currentState.address_line_1
+            : payloadf.userInfo.addressLine1,
+        addressLine2:
+          currentState.address_line_2 !== null && currentState.address_line_2 !== undefined
+            ? currentState.address_line_2
+            : payloadf.userInfo.addressLine2,
+        city:
+          currentState.city !== null && currentState.city !== undefined ? currentState.city : payloadf.userInfo.city,
+        postalCode:
+          currentState.postal_code !== null && currentState.postal_code !== undefined
+            ? currentState.postal_code
+            : payloadf.userInfo.postalCode,
+        stateOrparish:
+          currentState.state_or_parish !== null && currentState.state_or_parish !== undefined
+            ? currentState.state_or_parish
+            : payloadf.userInfo.stateOrparish,
+        dateCreated:
+          currentState.dateCreated !== null && currentState.dateCreated !== undefined
+            ? currentState.dateCreated
+            : payloadf.userInfo.dateCreated,
+        rPoints:
+          payloadf.userInfo.rPoints !== null &&
+          payloadf.userInfo.rPoints !== undefined &&
+          payloadf.userInfo.rPoints !== ''
+            ? payloadf.userInfo.rPoints
+            : '0',
+        mailbox_Num: payloadf.mailbox_Num !== null && payloadf.mailbox_Num !== undefined ? payloadf.mailbox_Num : '',
+      };
+    } else {
+      // console.log("what is user info carrying in payloadf");
+      // console.log(payloadf);
+      user = {
+        contactNumber:
+          payloadf.userInfo.contactNumber != null && payloadf.userInfo.contactNumber !== undefined
+            ? payloadf.userInfo.contactNumber
+            : '',
+        email: payloadf.userInfo.email,
+        fullName: payloadf.userInfo.fullName.toLowerCase(),
+        verified: payloadf.userInfo.verified,
+        verifiedemailsent: payloadf.userInfo.verifiedemailsent,
+        addressLine1: payloadf.userInfo.addressLine1,
+        addressLine2: payloadf.userInfo.addressLine2,
+        city: payloadf.userInfo.city,
+        postalCode: payloadf.userInfo.postalCode,
+        stateOrparish: payloadf.userInfo.stateOrparish,
+        dateCreated: payloadf.userInfo.dateCreated,
+        rPoints:
+          payloadf.userInfo.rPoints !== null &&
+          payloadf.userInfo.rPoints !== undefined &&
+          payloadf.userInfo.rPoints !== ''
+            ? payloadf.userInfo.rPoints
+            : '0',
+        mailbox_Num: payloadf.mailbox_Num !== null && payloadf.mailbox_Num !== undefined ? payloadf.mailbox_Num : '',
+      };
+    } // console.log("User data is: ");
+    // console.log(user);
+    try {
+      const updateUserRef = Doc(db, 'Users', uid);
+      await UpdateDoc(updateUserRef, user);
+      payloadf.userInfo.contactNumber = user.contactNumber;
+      payloadf.userInfo.email = user.email;
+      payloadf.userInfo.fullName = user.fullName;
+      payloadf.userInfo.verified = user.verified;
+      payloadf.userInfo.verifiedemailsent = user.verifiedemailsent;
+      payloadf.loggedIn = true;
+      payloadf.userInfo.addressLine1 = user.addressLine1;
+      payloadf.userInfo.addressLine2 = user.addressLine2;
+      payloadf.userInfo.city = user.city;
+      payloadf.userInfo.postalCode = user.postalCode;
+      payloadf.userInfo.stateOrparish = user.stateOrparish;
+      payloadf.userInfo.dateCreated = user.dateCreated;
+      payloadf.userInfo.mailbox_Num =
+        user.mailbox_Num !== null && user.mailbox_Num !== undefined ? '' : user.mailbox_Num;
+      payloadf.userInfo.rPoints =
+        user.rPoints !== null && user.rPoints !== undefined && user.rPoints !== '' ? user.rPoints : '0';
+
+      dispatch({
+        type: 'fetch_userinfo',
+        payload: payloadf,
+      });
+      return true;
+    } catch {
+      // console.error("Error updating user info: ", error);
+      return false;
+    }
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -624,6 +740,7 @@ function GeneralProvider({ children }) {
     gLogin,
     fLogin,
     tLogin,
+    updateUserInfo,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;
