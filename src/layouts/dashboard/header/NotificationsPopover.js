@@ -31,8 +31,8 @@ import Scrollbar from '../../../components/scrollbar';
 const NOTIFICATIONS = [
   {
     id: faker.datatype.uuid(),
-    title: 'Your order is placed',
-    description: 'waiting for shipping',
+    title: 'Welcome to Snip & Ship',
+    description: 'Please confirm email in your inbox.',
     avatar: null,
     type: 'order_placed',
     createdAt: set(new Date(), { hours: 10, minutes: 30 }),
@@ -45,7 +45,7 @@ const NOTIFICATIONS = [
     avatar: '/assets/images/avatars/avatar_2.jpg',
     type: 'friend_interactive',
     createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
-    isUnRead: true,
+    isUnRead: false,
   },
   {
     id: faker.datatype.uuid(),
@@ -150,7 +150,7 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(0, 2).map((notification) => (
+            {notifications.slice(0, 1).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
             ))}
           </List>
@@ -163,9 +163,9 @@ export default function NotificationsPopover() {
               </ListSubheader>
             }
           >
-            {notifications.slice(2, 5).map((notification) => (
+            {/* {notifications.slice(2, 5).map((notification) => (
               <NotificationItem key={notification.id} notification={notification} />
-            ))}
+            ))} */}
           </List>
         </Scrollbar>
 
@@ -214,20 +214,20 @@ function NotificationItem({ notification }) {
       </ListItemAvatar>
       <ListItemText
         primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled',
-            }}
-          >
-            <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
-            {fToNow(notification.createdAt)}
-          </Typography>
-        }
+        // secondary={
+        //   <Typography
+        //     variant="caption"
+        //     sx={{
+        //       mt: 0.5,
+        //       display: 'flex',
+        //       alignItems: 'center',
+        //       color: 'text.disabled',
+        //     }}
+        //   >
+        //     <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
+        //     {fToNow(notification.createdAt)}
+        //   </Typography>
+        // }
       />
     </ListItemButton>
   );
