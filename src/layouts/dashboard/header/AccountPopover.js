@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
+
+// context
+import { useGeneral } from '../../../context/general';
 
 // ----------------------------------------------------------------------
 
@@ -16,16 +20,19 @@ const MENU_OPTIONS = [
     label: 'Profile',
     icon: 'eva:person-fill',
   },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
 ];
 
+// {
+//   label: 'Settings',
+//   icon: 'eva:settings-2-fill',
+// },
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const { value } = useGeneral();
+  const { logout, clientInfo } = value;
+  const navigate = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -33,6 +40,35 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    console.log('here2');
+    try {
+      logout(value);
+      setTimeout(() => {
+        console.log('navigating');
+        navigate('/login');
+      }, 1000);
+    } catch (err) {
+      console.log(err);
+      // do nothing
+      handleClose();
+    }
+  };
+
+  const handleNav = (event, navVal) => {
+    event.preventDefault();
+    console.log('here2');
+    try {
+      navigate(navVal);
+      handleClose();
+    } catch (err) {
+      console.log(err);
+      // do nothing
+      handleClose();
+    }
   };
 
   return (
@@ -78,26 +114,34 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {clientInfo.fullName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {clientInfo.email}
           </Typography>
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
+          {MENU_OPTIONS.map((option) =>
+            option.label === 'Home' ? (
+              <MenuItem key={option.label} onClick={(e) => handleNav(e, '/dashboard/app')}>
+                {option.label}
+              </MenuItem>
+            ) : option.label === 'Profile' ? (
+              <MenuItem key={option.label} onClick={(e) => handleNav(e, '/dashboard/profile')}>
+                {option.label}
+              </MenuItem>
+            ) : (
+              <></>
+            )
+          )}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={(e) => handleLogout(e)} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </Popover>
