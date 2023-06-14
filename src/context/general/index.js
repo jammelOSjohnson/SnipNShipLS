@@ -1,7 +1,6 @@
 import { useContext, createContext, useReducer } from 'react';
 import {
   auth,
-  socialAuth,
   googleAuthProvider,
   SignInWithPopup,
   SignInWithEmailAndPassword,

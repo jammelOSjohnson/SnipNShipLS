@@ -11,6 +11,7 @@ import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
 import { LoginForm } from '../sections/auth/login';
+import ForgotPassword from '../sections/auth/login/ForgotPassword';
 // context
 import { useGeneral } from '../context/general';
 
@@ -51,6 +52,8 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loadingBtn, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
   const navigate = useNavigate();
 
   const handleGoogleSubmit = async function handleGoogleSubmit(event) {
@@ -186,7 +189,21 @@ export default function LoginPage() {
                 {success}
               </Alert>
             )}
-            <LoginForm value={value} setError={setError} setLoading={setLoading} loadingBtn={loadingBtn} />
+            <LoginForm
+              value={value}
+              setError={setError}
+              setLoading={setLoading}
+              loadingBtn={loadingBtn}
+              handleOpen={handleOpen}
+            />
+            <ForgotPassword
+              value={value}
+              setError={setError}
+              setLoading={setLoading}
+              loadingBtn={loadingBtn}
+              open={open}
+              setOpen={setOpen}
+            />
           </StyledContent>
         </Container>
       </StyledRoot>

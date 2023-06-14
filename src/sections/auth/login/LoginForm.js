@@ -10,7 +10,7 @@ const loginData = {
   email: '',
   password: '',
 };
-export default function LoginForm({ value, setError, setLoading, loadingBtn }) {
+export default function LoginForm({ value, setError, setLoading, loadingBtn, handleOpen }) {
   const { login, fetchUserInfo } = value;
   const [client, setClient] = useState(loginData);
   const [showPassword, setShowPassword] = useState(false);
@@ -102,7 +102,7 @@ export default function LoginForm({ value, setError, setLoading, loadingBtn }) {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Link variant="subtitle2" underline="hover">
+        <Link variant="subtitle2" underline="hover" onClick={() => handleOpen()}>
           Forgot password?
         </Link>
       </Stack>

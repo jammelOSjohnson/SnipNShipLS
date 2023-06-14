@@ -1,13 +1,14 @@
 import { alpha } from '@mui/material/styles';
+import palette from '../palette';
 
 // ----------------------------------------------------------------------
 
-export default function Backdrop(theme) {
+export default function Backdrop() {
   return {
     MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: alpha(theme.palette.grey[800], 0.8),
+          backgroundColor: alpha(palette.grey[800], 0.8),
         },
         invisible: {
           background: 'transparent',
