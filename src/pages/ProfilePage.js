@@ -14,7 +14,7 @@ import { useGeneral } from '../context/general';
 // ----------------------------------------------------------------------
 
 export default function ProfilePage() {
-  const value = useGeneral();
+  const { value } = useGeneral();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loadingBtn, setLoading] = useState(false);

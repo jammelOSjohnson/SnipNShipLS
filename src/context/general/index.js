@@ -428,8 +428,6 @@ function GeneralProvider({ children }) {
             user.dateCreated !== null && user.dateCreated !== undefined ? user.dateCreated : '';
           payloadf.clientInfo.mailboxNum =
             user.mailboxNum !== null && user.mailboxNum !== undefined ? user.mailboxNum : '';
-          payloadf.clientInfo.rPoints =
-            Object.hasOwnProperty.call(user, 'rPoints') && user.rPoints !== '' ? user.rPoints : '0';
 
           return userHasRole(uid, payloadf).then((userRoleRes) => {
             // console.log("Final user ref is: ");
@@ -536,8 +534,6 @@ function GeneralProvider({ children }) {
             user.dateCreated !== null && user.dateCreated !== undefined ? user.dateCreated : '';
           payload.clientInfo.mailboxNum =
             user.mailboxNum !== null && user.mailboxNum !== undefined ? user.mailboxNum : '';
-          payload.clientInfo.rPoints =
-            Object.hasOwnProperty.call(user, 'rPoints') && user.rPoints !== '' ? user.rPoints : '0';
         }
       } else {
         // console.log("No such user!")
@@ -619,45 +615,38 @@ function GeneralProvider({ children }) {
         contactNumber:
           currentState.contact !== null && currentState.contact !== undefined
             ? currentState.contact
-            : payloadf.userInfo.contactNumber,
+            : payloadf.clientInfo.contactNumber,
         email:
           currentState.email !== null && currentState.email !== undefined
             ? currentState.email
-            : payloadf.userInfo.email,
+            : payloadf.clientInfo.email,
         fullName:
           currentState.fullname !== null && currentState.fullname !== undefined
             ? currentState.fullname.toLowerCase()
-            : payloadf.userInfo.fullName,
-        verified: payloadf.userInfo.verified,
-        verifiedemailsent: payloadf.userInfo.verifiedemailsent,
+            : payloadf.clientInfo.fullName,
+        verified: payloadf.clientInfo.verified,
+        verifiedemailsent: payloadf.clientInfo.verifiedemailsent,
         addressLine1:
-          currentState.address_line_1 !== null && currentState.address_line_1 !== undefined
-            ? currentState.address_line_1
-            : payloadf.userInfo.addressLine1,
+          currentState.addressLine1 !== null && currentState.addressLine1 !== undefined
+            ? currentState.addressLine1
+            : payloadf.clientInfo.addressLine1,
         addressLine2:
-          currentState.address_line_2 !== null && currentState.address_line_2 !== undefined
-            ? currentState.address_line_2
-            : payloadf.userInfo.addressLine2,
-        city:
-          currentState.city !== null && currentState.city !== undefined ? currentState.city : payloadf.userInfo.city,
+          currentState.addressLine2 !== null && currentState.addressLine2 !== undefined
+            ? currentState.addressLine2
+            : payloadf.clientInfo.addressLine2,
+        city: currentState.city !== null && payloadf.clientInfo.city !== undefined ? payloadf.clientInfo.city : '',
         postalCode:
-          currentState.postal_code !== null && currentState.postal_code !== undefined
-            ? currentState.postal_code
-            : payloadf.userInfo.postalCode,
+          currentState.postalCode !== null && currentState.postalCode !== undefined
+            ? currentState.postalCode
+            : payloadf.clientInfo.postalCode,
         stateOrparish:
-          currentState.state_or_parish !== null && currentState.state_or_parish !== undefined
-            ? currentState.state_or_parish
-            : payloadf.userInfo.stateOrparish,
+          currentState.parish !== null && currentState.parish !== undefined
+            ? currentState.parish
+            : payloadf.clientInfo.stateOrparish,
         dateCreated:
           currentState.dateCreated !== null && currentState.dateCreated !== undefined
             ? currentState.dateCreated
-            : payloadf.userInfo.dateCreated,
-        rPoints:
-          payloadf.userInfo.rPoints !== null &&
-          payloadf.userInfo.rPoints !== undefined &&
-          payloadf.userInfo.rPoints !== ''
-            ? payloadf.userInfo.rPoints
-            : '0',
+            : payloadf.clientInfo.dateCreated,
         mailbox_Num: payloadf.mailbox_Num !== null && payloadf.mailbox_Num !== undefined ? payloadf.mailbox_Num : '',
       };
     } else {
@@ -665,25 +654,19 @@ function GeneralProvider({ children }) {
       // console.log(payloadf);
       user = {
         contactNumber:
-          payloadf.userInfo.contactNumber != null && payloadf.userInfo.contactNumber !== undefined
-            ? payloadf.userInfo.contactNumber
+          payloadf.clientInfo.contactNumber != null && payloadf.clientInfo.contactNumber !== undefined
+            ? payloadf.clientInfo.contactNumber
             : '',
-        email: payloadf.userInfo.email,
-        fullName: payloadf.userInfo.fullName.toLowerCase(),
-        verified: payloadf.userInfo.verified,
-        verifiedemailsent: payloadf.userInfo.verifiedemailsent,
-        addressLine1: payloadf.userInfo.addressLine1,
-        addressLine2: payloadf.userInfo.addressLine2,
-        city: payloadf.userInfo.city,
-        postalCode: payloadf.userInfo.postalCode,
-        stateOrparish: payloadf.userInfo.stateOrparish,
-        dateCreated: payloadf.userInfo.dateCreated,
-        rPoints:
-          payloadf.userInfo.rPoints !== null &&
-          payloadf.userInfo.rPoints !== undefined &&
-          payloadf.userInfo.rPoints !== ''
-            ? payloadf.userInfo.rPoints
-            : '0',
+        email: payloadf.clientInfo.email,
+        fullName: payloadf.clientInfo.fullName.toLowerCase(),
+        verified: payloadf.clientInfo.verified,
+        verifiedemailsent: payloadf.clientInfo.verifiedemailsent,
+        addressLine1: payloadf.clientInfo.addressLine1,
+        addressLine2: payloadf.clientInfo.addressLine2,
+        city: payloadf.clientInfo.city,
+        postalCode: payloadf.clientInfo.postalCode,
+        stateOrparish: payloadf.clientInfo.stateOrparish,
+        dateCreated: payloadf.clientInfo.dateCreated,
         mailbox_Num: payloadf.mailbox_Num !== null && payloadf.mailbox_Num !== undefined ? payloadf.mailbox_Num : '',
       };
     } // console.log("User data is: ");
@@ -691,22 +674,20 @@ function GeneralProvider({ children }) {
     try {
       const updateUserRef = Doc(db, 'Users', uid);
       await UpdateDoc(updateUserRef, user);
-      payloadf.userInfo.contactNumber = user.contactNumber;
-      payloadf.userInfo.email = user.email;
-      payloadf.userInfo.fullName = user.fullName;
-      payloadf.userInfo.verified = user.verified;
-      payloadf.userInfo.verifiedemailsent = user.verifiedemailsent;
+      payloadf.clientInfo.contactNumber = user.contactNumber;
+      payloadf.clientInfo.email = user.email;
+      payloadf.clientInfo.fullName = user.fullName;
+      payloadf.clientInfo.verified = user.verified;
+      payloadf.clientInfo.verifiedemailsent = user.verifiedemailsent;
       payloadf.loggedIn = true;
-      payloadf.userInfo.addressLine1 = user.addressLine1;
-      payloadf.userInfo.addressLine2 = user.addressLine2;
-      payloadf.userInfo.city = user.city;
-      payloadf.userInfo.postalCode = user.postalCode;
-      payloadf.userInfo.stateOrparish = user.stateOrparish;
-      payloadf.userInfo.dateCreated = user.dateCreated;
-      payloadf.userInfo.mailbox_Num =
+      payloadf.clientInfo.addressLine1 = user.addressLine1;
+      payloadf.clientInfo.addressLine2 = user.addressLine2;
+      payloadf.clientInfo.city = user.city;
+      payloadf.clientInfo.postalCode = user.postalCode;
+      payloadf.clientInfo.stateOrparish = user.stateOrparish;
+      payloadf.clientInfo.dateCreated = user.dateCreated;
+      payloadf.clientInfo.mailbox_Num =
         user.mailbox_Num !== null && user.mailbox_Num !== undefined ? '' : user.mailbox_Num;
-      payloadf.userInfo.rPoints =
-        user.rPoints !== null && user.rPoints !== undefined && user.rPoints !== '' ? user.rPoints : '0';
 
       dispatch({
         type: 'fetch_userinfo',
