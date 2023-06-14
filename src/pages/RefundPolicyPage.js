@@ -56,8 +56,8 @@ export default function RefundPolicyPage() {
         </StyledGridItem>
         <StyledGridItem item xs={10} textAlign={'left'}>
           <Typography variant="body1">
-            <b>2.1.1.</b> Contact our customer service team within [number of days] of the service failure, package
-            damage, or loss.
+            <b>2.1.1.</b> Contact our customer service team within 5 days of the service failure, package damage, or
+            loss.
           </Typography>
         </StyledGridItem>
         <StyledGridItem item xs={10} textAlign={'left'}>
@@ -89,8 +89,8 @@ export default function RefundPolicyPage() {
         </StyledGridItem>
         <StyledGridItem item xs={10} textAlign={'left'}>
           <Typography variant="body1">
-            <b>3.2.</b> Depending on your payment provider or financial institution, it may take [number of days] for
-            the refund to be credited to your account.
+            <b>3.2.</b> Depending on your payment provider or financial institution, it may take 5 - 10 days for the
+            refund to be credited to your account.
           </Typography>
         </StyledGridItem>
         <StyledGridItem item xs={10} textAlign={'left'}>
