@@ -16,6 +16,7 @@ import TermsAndConditonsPage from './pages/TermsAndConditonsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import RefundPolicyPage from './pages/RefundPolicyPage';
 import ProfilePage from './pages/ProfilePage';
+import ViewPackagesPage from './pages/ViewPackagesPage';
 
 // ----------------------------------------------------------------------
 
@@ -59,6 +60,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'profile', element: <ProfilePage /> },
+        { path: 'packages', element: <ViewPackagesPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

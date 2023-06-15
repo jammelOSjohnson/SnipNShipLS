@@ -13,6 +13,11 @@ const navConfig = [
   },
   {
     title: 'view packages',
+    path: '/dashboard/packages',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'view users',
     path: '/dashboard/user',
     icon: icon('ic_user'),
   },

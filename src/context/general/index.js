@@ -11,6 +11,9 @@ import {
   twitterAuthProvider,
   db,
   AddDoc,
+  OnSnapshot,
+  Where,
+  Query,
   UpdateDoc,
   Collection,
   Doc,
@@ -85,6 +88,14 @@ function generalReducer(state, action) {
         currentUser: action.payload.currentUser,
         userRolef: '',
       };
+    case 'fetch_packages':
+      return {
+        ...state,
+        packages: action.payload.packages,
+        readyPack: action.payload.readyPack,
+        warehouse: action.payload.warehouse,
+        balance: action.payload.balance,
+      };
     default:
       return state;
   }
@@ -117,6 +128,9 @@ function GeneralProvider({ children }) {
   const userRolef = '';
   const clientRole = '';
   let rangeOfPackages;
+  const balance = 0;
+  const warehouse = 0;
+  const readyPack = undefined;
 
   // sign up user
   const signup = (currentstate, payload) => {
@@ -699,6 +713,88 @@ function GeneralProvider({ children }) {
     }
   };
 
+  // Count packages per for status
+  const checkPackages = function checkPackages(packages, status) {
+    let count = 0;
+
+    if (packages !== null && packages !== undefined) {
+      packages.forEach((pac) => {
+        // console.log(pac);
+        const res = pac;
+
+        if (res.ItemStatus === status) {
+          count += 1;
+        }
+      });
+    }
+
+    return count;
+  };
+
+  const checkBalance = function checkBalance(packages, status) {
+    let balace = 0.0;
+
+    if (packages !== null && packages !== undefined) {
+      packages.forEach((pac) => {
+        // console.log(pac);
+        const res = pac;
+
+        if (res.FinalCost !== null && res.FinalCost !== undefined) {
+          if (res.Status === status) {
+            const add = res.FinalCost !== null && res.FinalCost !== undefined ? parseFloat(res.FinalCost) : 0;
+            balace += add;
+          }
+        }
+      });
+    }
+
+    return balace;
+  };
+
+  // Fetch packages
+  const fetchPackages = async function fetchPackages(uid, payload) {
+    try {
+      // console.log('User id is: ');
+      // console.log(uid);
+      // console.log("Payload is: ");
+      // console.log(payload);
+      // console.log("getting ref for packages")
+      // console.log("querying packages");
+      const packArr = [];
+      const packagesRef = Collection(db, 'Packages');
+      // Create a query against the Collection.
+      const q = Query(packagesRef, Where('UID', '==', uid));
+
+      const fetchPackUnsubscribe = await OnSnapshot(q, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          // console.log(doc.id, ' => ', doc.data());
+          const res = doc.data();
+          packArr.push(res.PackageDetails);
+        });
+
+        payload.packages = packArr;
+        payload.readyPack = checkPackages(packArr, 'Ready For Pickup');
+        // console.log("Checked Transit");
+        payload.balance = checkBalance(packArr, 'Ready For Pickup');
+        // console.log("Checked Balance");
+        payload.warehouse = checkPackages(packArr, 'Arrived At Warehouse');
+        // console.log("Checked Points");
+      });
+
+      setTimeout(() => {
+        // console.log(fetchPackUnsubscribe);
+        payload.FetchPackUnsubscribe = fetchPackUnsubscribe;
+        dispatch({
+          type: 'fetch_packages',
+          payload,
+        });
+      }, 4000);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -711,6 +807,9 @@ function GeneralProvider({ children }) {
     mailboxNum,
     rangeOfPackages,
     userRolef,
+    balance,
+    readyPack,
+    warehouse,
     fetchUserInfo,
     fetchUserInfoForSignUp,
     signup,
@@ -721,6 +820,7 @@ function GeneralProvider({ children }) {
     fLogin,
     tLogin,
     updateUserInfo,
+    fetchPackages,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;
