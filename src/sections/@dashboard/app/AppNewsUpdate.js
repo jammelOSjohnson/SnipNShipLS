@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 // @mui
 import PropTypes from 'prop-types';
 import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader } from '@mui/material';
@@ -16,6 +17,7 @@ AppNewsUpdate.propTypes = {
 };
 
 export default function AppNewsUpdate({ title, subheader, list, ...other }) {
+  const navigate = useNavigate();
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
@@ -31,7 +33,12 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
       <Divider />
 
       <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
+        <Button
+          size="small"
+          color="inherit"
+          endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
+          onClick={() => navigate('/dashboard/packages')}
+        >
           View all
         </Button>
       </Box>
