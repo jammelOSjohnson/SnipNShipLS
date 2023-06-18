@@ -141,7 +141,7 @@ export default function ViewPackagesPage() {
       });
       setRows(tempRows);
     }
-  }, [packages]);
+  }, [packages, fetchPackages, currentUser, rows.length, value]);
 
   return (
     <>
