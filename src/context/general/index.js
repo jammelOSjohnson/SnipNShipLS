@@ -11,6 +11,7 @@ import {
   twitterAuthProvider,
   db,
   AddDoc,
+  GetDocs,
   OnSnapshot,
   Where,
   Query,
@@ -96,12 +97,20 @@ function generalReducer(state, action) {
         warehouse: action.payload.warehouse,
         balance: action.payload.balance,
       };
+    case 'fetch_address':
+      return {
+        ...state,
+        airFreightAdd: action.payload.airFreightAdd,
+        seaFreightAdd: action.payload.seaFreightAdd,
+        mailboxNum: action.payload.mailboxNum,
+      };
     default:
       return state;
   }
 }
 
 function GeneralProvider({ children }) {
+  // const [loop, setLoop] = useState('failed');
   let currentUser;
   const loading = true;
   const loggedIn = false;
@@ -140,7 +149,7 @@ function GeneralProvider({ children }) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         // var token = result.credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
+        const { user } = result;
         const payloadf = {
           ...payload,
           currentUser: user,
@@ -189,7 +198,7 @@ function GeneralProvider({ children }) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         // var token = result.credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
+        const { user } = result;
         const payloadf = { ...payload, currentUser: user, loading: false };
         return payloadf;
       })
@@ -228,7 +237,7 @@ function GeneralProvider({ children }) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         // var token = result.credential.accessToken;
         // The signed-in user info.
-        const user = result.user;
+        const { user } = result;
         const payloadf = {
           ...payload,
           currentUser: user,
@@ -242,6 +251,7 @@ function GeneralProvider({ children }) {
         return payloadf;
       })
       .catch(() => {
+        return null;
         // Handle Errors here.
         // const errorCode = error.code;
         // console.log(error.code);
@@ -254,7 +264,6 @@ function GeneralProvider({ children }) {
         // const credential = error.credential;
         // console.log(error.credential);
         // ...
-        return null;
       });
   };
 
@@ -269,7 +278,8 @@ function GeneralProvider({ children }) {
         const user = result.user;
         return { ...payload, currentUser: user, loading: false };
       })
-      .catch((error) => {
+      .catch(() => {
+        return null;
         // Handle Errors here.
         // var errorCode = error.code;
         // console.log(error.code);
@@ -282,7 +292,6 @@ function GeneralProvider({ children }) {
         // var credential = error.credential;
         // console.log(error.credential);
         // ...
-        return null;
       });
   };
 
@@ -297,7 +306,8 @@ function GeneralProvider({ children }) {
         const user = result.user;
         return { ...payload, currentUser: user, loading: false };
       })
-      .catch((error) => {
+      .catch(() => {
+        return null;
         // Handle Errors here.
         // var errorCode = error.code;
         // console.log(error.code);
@@ -310,7 +320,6 @@ function GeneralProvider({ children }) {
         // var credential = error.credential;
         // console.log(error.credential);
         // ...
-        return null;
       });
   };
 
@@ -320,7 +329,7 @@ function GeneralProvider({ children }) {
     SignOut(auth)
       .then(() => {
         payload.currentUser = null;
-        console.log('dispatching logout');
+        // console.log('dispatching logout');
         dispatch({
           type: 'logout_user',
           payload,
@@ -328,7 +337,7 @@ function GeneralProvider({ children }) {
       })
       .catch((error) => {
         // An error happened.
-        console.log(error);
+        // console.log(error);
       });
     // return res;
   };
@@ -339,13 +348,13 @@ function GeneralProvider({ children }) {
       .then((res) => {
         // Password reset email sent!
         // ..
-        console.log(res);
+        // console.log(res);
         return res;
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorMessage);
+        // console.log(errorMessage);
         // ..
       });
   };
@@ -454,7 +463,7 @@ function GeneralProvider({ children }) {
         }
 
         // enabled = null;
-        console.log('enabled is: ', null);
+        // console.log('enabled is: ', null);
         return false;
       }
 
@@ -569,13 +578,13 @@ function GeneralProvider({ children }) {
         // console.log(user2);
 
         const storeRes = await SetDoc(Doc(db, 'Users', uid), user2)
-          .then((doc) => {
-            // console.log("User info  successfully written!");
+          .then(() => {
             return true;
+            // console.log("User info  successfully written!");
           })
-          .catch((error) => {
-            // console.error("Error writing user info: ", error);
+          .catch(() => {
             return false;
+            // console.error("Error writing user info: ", error);
           });
 
         if (await storeRes) {
@@ -608,7 +617,7 @@ function GeneralProvider({ children }) {
         return true;
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return false;
     }
   };
@@ -620,7 +629,7 @@ function GeneralProvider({ children }) {
     // console.log(payloadf);
     // console.log(currentState);
     // console.log("updating  user");
-    // console.log("mbox b4 update", payloadf.mailbox_Num);
+    // console.log("mbox b4 update", payloadf.mailboxNum);
     let user = null;
     // console.log(payloadf);
     if (currentState !== null) {
@@ -660,7 +669,7 @@ function GeneralProvider({ children }) {
           currentState.dateCreated !== null && currentState.dateCreated !== undefined
             ? currentState.dateCreated
             : payloadf.clientInfo.dateCreated,
-        mailbox_Num: payloadf.mailbox_Num !== null && payloadf.mailbox_Num !== undefined ? payloadf.mailbox_Num : '',
+        mailboxNum: payloadf.mailboxNum !== null && payloadf.mailboxNum !== undefined ? payloadf.mailboxNum : '',
       };
     } else {
       // console.log("what is user info carrying in payloadf");
@@ -680,7 +689,7 @@ function GeneralProvider({ children }) {
         postalCode: payloadf.clientInfo.postalCode,
         stateOrparish: payloadf.clientInfo.stateOrparish,
         dateCreated: payloadf.clientInfo.dateCreated,
-        mailbox_Num: payloadf.mailbox_Num !== null && payloadf.mailbox_Num !== undefined ? payloadf.mailbox_Num : '',
+        mailboxNum: payloadf.mailboxNum !== null && payloadf.mailboxNum !== undefined ? payloadf.mailboxNum : '',
       };
     } // console.log("User data is: ");
     // console.log(user);
@@ -699,8 +708,7 @@ function GeneralProvider({ children }) {
       payloadf.clientInfo.postalCode = user.postalCode;
       payloadf.clientInfo.stateOrparish = user.stateOrparish;
       payloadf.clientInfo.dateCreated = user.dateCreated;
-      payloadf.clientInfo.mailbox_Num =
-        user.mailbox_Num !== null && user.mailbox_Num !== undefined ? '' : user.mailbox_Num;
+      payloadf.clientInfo.mailboxNum = user.mailboxNum !== null && user.mailboxNum !== undefined ? '' : user.mailboxNum;
 
       dispatch({
         type: 'fetch_userinfo',
@@ -795,6 +803,188 @@ function GeneralProvider({ children }) {
     }
   };
 
+  const fetchMailBoxNumberByUserId = async function fetchMailBoxNumberByUserId(uid, payload) {
+    const packArr = [];
+    const q = Query(Collection(db, 'MailBoxes'), Where('Uid', '==', uid));
+
+    const querySnapshot = await GetDocs(q);
+    querySnapshot.forEach((doc) => {
+      const res = doc.id;
+      packArr.push(res);
+    });
+
+    if (packArr !== []) {
+      if (packArr.length > 0) {
+        payload.mailboxNum = packArr[0];
+      } else {
+        payload.mailboxNum = 'None';
+      }
+    } else {
+      payload.mailboxNum = 'None';
+    }
+    return payload.mailboxNum;
+  };
+
+  const mailBoxExist = async function mailBoxExist(number) {
+    const docRef = Doc(db, 'MailBoxes', number);
+    const docSnap = await GetDoc(docRef);
+
+    if (docSnap.exists()) {
+      return true;
+    }
+    return false;
+  };
+
+  const storeMailBoxNumber = async function storeMailBoxNumber(number, uid) {
+    const mailboxDetails = {
+      Status: 'O',
+      Uid: uid,
+    };
+
+    const res = await mailBoxExist(number);
+
+    if (!res) {
+      try {
+        await SetDoc(Doc(db, 'MailBoxes', number), mailboxDetails);
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    return false;
+  };
+
+  const generate = function generate(uid) {
+    let number = 0;
+    // console.log("inside generate method")
+    try {
+      number = Math.floor(Math.random() * 90000) + 10000;
+      // console.log(number);
+      try {
+        const storedNumber = storeMailBoxNumber(number.toString(), uid);
+        // console.log("result from store method: " + res);
+        if (!storedNumber) {
+          return 'failed';
+        } // console.log("returning number")
+
+        return number.toString();
+      } catch (error) {
+        // console.log(error);
+        return 'failed';
+      }
+    } catch (err) {
+      // console.log("UNABLE TO GENERATE NUM", err)
+      return 'failed';
+    }
+  };
+
+  const fetchAddress = async function fetchAddress(uid, payload) {
+    await fetchMailBoxNumberByUserId(uid, payload).then(async (res1) => {
+      // console.log(res1);
+      if (res1 !== null && res1 !== undefined && res1 !== 'None') {
+        payload.mailboxNum = res1;
+        const shippingAddRef = Doc(db, 'ShippingAddress', 'DefaultAddress');
+        const shipAddSnap = await GetDoc(shippingAddRef);
+        if (shipAddSnap.exists()) {
+          const addresses = shipAddSnap.data();
+          // console.log(addresses);
+          if (addresses !== null) {
+            payload.airFreightAdd = addresses.AirFreight1;
+            payload.seaFreightAdd = addresses.AirFreight2;
+            dispatch({
+              type: 'fetch_address',
+              payload,
+            });
+          } else {
+            // console.log('No such address!');
+          }
+        } else {
+          // console.log('No such address!');
+        }
+      } else {
+        // console.log('creating new mailbox address');
+        let loop = 'run';
+        let genMBox = '';
+        do {
+          // console.log('inside generate loop');
+          // eslint-disable-next-line no-loop-func
+          try {
+            const genRes = generate(uid);
+            // console.log('check if mbox failed: ', genRes);
+            if (genRes !== 'failed' && loop !== 'stop') {
+              genMBox = genRes;
+              // console.log(genMBox);
+              loop = 'stop';
+            } else {
+              loop = 'run';
+            }
+          } catch (error) {
+            // console.log('unable to generate mailbox number at this time', error);
+          }
+        } while (loop === 'run');
+
+        // console.log('what is genmbox? ', genMBox);
+        if (genMBox !== '') {
+          // console.log('New user mailbox number is: ' + genMBox);
+          // console.log('fetching addresses');
+          payload.mailboxNum = genMBox;
+          const docRef = Doc(db, 'Users', uid);
+          const docSnap = await GetDoc(docRef);
+          if (docSnap.exists()) {
+            const user = docSnap.data();
+            // console.log(user);
+            if (user !== null) {
+              const user2 = {
+                addressLine1: user.addressLine1 !== null && user.addressLine1 !== undefined ? user.addressLine1 : '',
+                addressLine2: user.addressLine2 !== null && user.addressLine2 !== undefined ? user.addressLine2 : '',
+                city: user.city !== null && user.city !== undefined ? user.city : '',
+                contactNumber: user.contactNumber,
+                dateCreated: user.dateCreated,
+                email: user.email,
+                fullName: user.fullName,
+                postalCode: user.postalCode !== null && user.postalCode !== undefined ? user.postalCode : '',
+                stateOrparish:
+                  user.stateOrparish !== null && user.stateOrparish !== undefined ? user.stateOrparish : '',
+                verified: user.verified !== null && user.verified !== undefined ? user.verified : true,
+                verifiedemailsent:
+                  user.verifiedemailsent !== null && user.verifiedemailsent !== undefined
+                    ? user.verifiedemailsent
+                    : true,
+                mailboxNum: genMBox,
+              };
+              // console.log(user2);
+              // update user mailboxnum
+              const usersRef = Doc(db, 'Users', uid);
+              await UpdateDoc(usersRef, user2);
+              const shippingAddRef = Doc(db, 'ShippingAddress', 'DefaultAddress');
+              const shipAddSnap = await GetDoc(shippingAddRef);
+              if (shipAddSnap.exists()) {
+                // console.log("Document data:", shipAddSnap.data());
+                const addresses = shipAddSnap.data();
+                // console.log(addresses);
+                if (addresses !== null) {
+                  payload.airFreightAdd = addresses.AirFreight1;
+                  payload.seaFreightAdd = addresses.AirFreight2;
+                  dispatch({
+                    type: 'fetch_address',
+                    payload,
+                  });
+                }
+              } else {
+                // doc.data() will be undefined in this case
+                // console.log("No such document!");
+              }
+            }
+          }
+        } else {
+          // doc.data() will be undefined in this case
+          // console.log('No such document!');
+        }
+      }
+    });
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -821,6 +1011,7 @@ function GeneralProvider({ children }) {
     tLogin,
     updateUserInfo,
     fetchPackages,
+    fetchAddress,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;
