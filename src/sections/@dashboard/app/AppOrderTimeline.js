@@ -1,9 +1,10 @@
 // @mui
 import PropTypes from 'prop-types';
 import { Card, Typography, CardHeader, CardContent } from '@mui/material';
-import { Timeline, TimelineDot, TimelineItem, TimelineContent, TimelineSeparator, TimelineConnector } from '@mui/lab';
+import { TimelineDot, TimelineItem, TimelineContent, TimelineSeparator, TimelineConnector } from '@mui/lab';
 // utils
 import { fDateTime } from '../../../utils/formatTime';
+import ShippingAddress from '../../../components/shippingaddress';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ AppOrderTimeline.propTypes = {
   list: PropTypes.array.isRequired,
 };
 
-export default function AppOrderTimeline({ title, subheader, list, ...other }) {
+export default function AppOrderTimeline({ title, subheader, ...other }) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
@@ -25,11 +26,12 @@ export default function AppOrderTimeline({ title, subheader, list, ...other }) {
           },
         }}
       >
-        <Timeline>
+        {/* <Timeline>
           {list.map((item, index) => (
             <OrderItem key={item.id} item={item} isLast={index === list.length - 1} />
           ))}
-        </Timeline>
+        </Timeline> */}
+        <ShippingAddress />
       </CardContent>
     </Card>
   );
