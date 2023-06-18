@@ -130,7 +130,7 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
           required
         />
         <TextField name="fullname" value={client.fullname} label="Full Name" onChange={handleChange} required />
-        <Grid container>
+        <Grid container rowSpacing={3} sx={{ marginTop: '0px !important' }}>
           <Grid item xs={12} md={6}>
             <TextField
               name="contact"
@@ -139,6 +139,7 @@ export default function SignUpForm({ value, setError, setLoading, loadingBtn }) 
               label="Contact Number"
               onChange={handleChange}
               required
+              fullWidth
             />
           </Grid>
           <Grid item xs={12} md={6}>
