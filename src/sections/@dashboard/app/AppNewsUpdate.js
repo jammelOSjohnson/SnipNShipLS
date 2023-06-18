@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 // @mui
 import PropTypes from 'prop-types';
-import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader } from '@mui/material';
+import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader, CardContent } from '@mui/material';
 // utils
 import { fToNow } from '../../../utils/formatTime';
 // components
@@ -29,6 +29,14 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
           ))}
         </Stack>
       </Scrollbar>
+
+      {list.length === 0 ? (
+        <CardContent>
+          <Typography variant="p">Start shipping with us using your new US Shipping address.</Typography>
+        </CardContent>
+      ) : (
+        <></>
+      )}
 
       <Divider />
 
