@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 // import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { Grid, Container, Typography, Stack } from '@mui/material';
 // components
 // import Iconify from '../components/iconify';
 import DashboardTable from '../components/dashboardtable';
@@ -131,7 +131,14 @@ export default function DashboardAppPage() {
               chartColors={[...Array(6)].map(() => theme.palette.text.secondary)}
             />
           </Grid> */}
+          <Grid item xs={12} md={6} lg={8} />
 
+          <Grid item xs={12} md={6} lg={4}>
+            <Stack direction={'row'} justifyContent="flex-end" spacing={{ xs: 12, sm: 10 }}>
+              <Typography variant="h4">Balance:</Typography>
+              <Typography variant="h4">$ 0.00</Typography>
+            </Stack>
+          </Grid>
           <Grid item xs={12} md={6} lg={8}>
             <DashboardTable />
           </Grid>
