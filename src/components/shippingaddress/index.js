@@ -47,7 +47,8 @@ export default function ShippingAddress() {
       </>
     );
   }
-  if (clientInfo.parish === 'Kingston') {
+
+  if (clientInfo.stateOrparish === 'Kingston') {
     return (
       <>
         <Stack component="span" direction="column" spacing={2}>
@@ -82,7 +83,7 @@ export default function ShippingAddress() {
     );
   }
 
-  if (clientInfo.parish === 'St. Catherine') {
+  if (clientInfo.stateOrparish === 'St. Catherine') {
     return (
       <>
         <Stack component="span" direction="column" spacing={2}>
