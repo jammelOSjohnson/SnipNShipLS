@@ -16,6 +16,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import navadminConfig from './adminconfig';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { value } = useGeneral();
-  const { clientInfo, currentUser } = value;
+  const { clientInfo, currentUser, userRolef } = value;
   // testing
   // console.log(clientInfo);
   // console.log(currentUser);
@@ -86,7 +87,7 @@ export default function Nav({ openNav, onCloseNav }) {
         </Link>
       </Box>
 
-      <NavSection data={navConfig} />
+      {userRolef !== 'Admin' ? <NavSection data={navConfig} /> : <NavSection data={navadminConfig} />}
 
       <Box sx={{ flexGrow: 1 }} />
 

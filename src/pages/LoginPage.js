@@ -116,8 +116,12 @@ export default function LoginPage() {
         //   // console.log(history.location.state.from)
         //   navigate(-1);
         // } else {
-        console.log('about to go dashboard');
-        navigate('/dashboard/app');
+        console.log('about to go dashboard', userRolef);
+        if (userRolef === 'Admin') {
+          navigate('/admindashboard/app');
+        } else {
+          navigate('/dashboard/app');
+        }
         // }
       }, 1500);
     }

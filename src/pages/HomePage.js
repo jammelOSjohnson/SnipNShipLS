@@ -51,10 +51,10 @@ export default function HomePage() {
           navigate('/dashboard/app');
         } else if (value.loggedIn && value.userRolef === 'Staff') {
           // console.log("About to navigate to staff dashboard.");
-          navigate('/AdminDashboard');
+          navigate('/admindashboard/app');
         } else if (value.loggedIn && value.userRolef === 'Admin') {
           // console.log("About to navigate to staff dashboard.");
-          navigate('/AdminDashboard');
+          navigate('/admindashboard/app');
         }
       }
 

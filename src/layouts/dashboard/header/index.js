@@ -11,6 +11,7 @@ import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import NotificationsPopover from './NotificationsPopover';
+import { useGeneral } from '../../../context/general';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +44,8 @@ Header.propTypes = {
 };
 
 export default function Header({ onOpenNav }) {
+  const { value } = useGeneral();
+  const { userRolef } = value;
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -68,8 +71,9 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-          <LanguagePopover />
-          <NotificationsPopover />
+          {userRolef !== 'Admin' ? <LanguagePopover /> : <></>}
+          {userRolef !== 'Admin' ? <NotificationsPopover /> : <></>}
+
           <AccountPopover />
         </Stack>
       </StyledToolbar>
