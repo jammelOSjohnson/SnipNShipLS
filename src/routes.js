@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import DashboardAdminPage from './pages/DashboardAdminPage';
 import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
 import TermsAndConditonsPage from './pages/TermsAndConditonsPage';
@@ -17,6 +18,7 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import RefundPolicyPage from './pages/RefundPolicyPage';
 import ProfilePage from './pages/ProfilePage';
 import ViewPackagesPage from './pages/ViewPackagesPage';
+import AddPackage from './pages/AddPackage';
 
 // ----------------------------------------------------------------------
 
@@ -61,6 +63,19 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'profile', element: <ProfilePage /> },
         { path: 'packages', element: <ViewPackagesPage /> },
+        { path: 'products', element: <ProductsPage /> },
+        { path: 'blog', element: <BlogPage /> },
+      ],
+    },
+    {
+      path: '/admindashboard',
+      element: <DashboardLayout />,
+      children: [
+        { element: <Navigate to="/admindashboard/app" /> },
+        { path: 'app', element: <DashboardAdminPage /> },
+        { path: 'user', element: <UserPage /> },
+        { path: 'profile', element: <ProfilePage /> },
+        { path: 'addpackage', element: <AddPackage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

@@ -12,8 +12,8 @@ const navadminConfig = [
     icon: icon('ic_analytics'),
   },
   {
-    title: 'view packages',
-    path: '/dashboard/packages',
+    title: 'add package',
+    path: '/admindashboard/addpackage',
     icon: icon('ic_user'),
   },
   // {

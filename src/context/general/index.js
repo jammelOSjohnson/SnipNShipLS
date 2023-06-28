@@ -22,6 +22,7 @@ import {
   SetDoc,
   timeStamp,
 } from '../../firebase';
+import sendEmail, { sendEmailForm } from '../../email';
 
 export const GeneralContext = createContext();
 
@@ -104,6 +105,13 @@ function generalReducer(state, action) {
         seaFreightAdd: action.payload.seaFreightAdd,
         mailboxNum: action.payload.mailboxNum,
       };
+    case 'find_packages_by_daterange':
+      // console.log("dispatching single package by tracking number result");
+      // console.log(action);
+      return {
+        ...state,
+        rangeOfPackages: action.payload.rangeOfPackages,
+      };
     default:
       return state;
   }
@@ -111,6 +119,9 @@ function generalReducer(state, action) {
 
 function GeneralProvider({ children }) {
   // const [loop, setLoop] = useState('failed');
+  const emailServiceId = process.env.REACT_APP_emailServiceId;
+  const emailUserId = process.env.REACT_APP_emailUserId;
+  const emailNewPackageTemplate = process.env.REACT_APP_emailNewPackageTemplate;
   let currentUser;
   const loading = true;
   const loggedIn = false;
@@ -361,7 +372,7 @@ function GeneralProvider({ children }) {
 
   const userHasRole = async function userHasRole(uid, payload, newUserPosition) {
     let userRole = {};
-    // console.log("User id is: ");
+    // console.log('User id is: ');
     // console.log(uid);
     // console.log("fetching user role");
     const docRef = Doc(db, 'UsersInRoles', uid);
@@ -370,18 +381,18 @@ function GeneralProvider({ children }) {
     if (docSnap.exists()) {
       // console.log("Document data:", docSnap.data()); //console.log("user role exist");
       // console.log(doc.data());
-      // console.log("what is inside payload");
+      // console.log('what is inside payload');
       // console.log(payload);
       // Convert to City object
       userRole = docSnap.data();
-      // console.log("user in role res:");
+      // console.log('user in role res:');
       // console.log(userRole);
       if (userRole !== null) {
         const rolesRef = Doc(db, 'Roles', userRole.roleId);
         const rolesSnap = await GetDoc(rolesRef);
         if (rolesSnap.exists()) {
           const res = rolesSnap.data();
-          // console.log("Role Exists is?");
+          // console.log('Role Exists is?');
           // console.log(res);
           payload.userRolef = res.role;
         }
@@ -748,7 +759,7 @@ function GeneralProvider({ children }) {
         const res = pac;
 
         if (res.FinalCost !== null && res.FinalCost !== undefined) {
-          if (res.Status === status) {
+          if (res.status === status) {
             const add = res.FinalCost !== null && res.FinalCost !== undefined ? parseFloat(res.FinalCost) : 0;
             balace += add;
           }
@@ -985,6 +996,313 @@ function GeneralProvider({ children }) {
     });
   };
 
+  // FindPackages Within date range
+  const findPackagesByDateRange = async function findPackagesByDateRange(start, end, payloadf) {
+    // console.log(start);
+    // console.log(end);
+    const tstartstamp = timeStamp.fromDate(new Date(start));
+    const tendstamp = timeStamp.fromDate(new Date(end));
+
+    try {
+      const q = Query(
+        Collection(db, 'Packages'),
+        Where('PackageDetails.OrderDate', '>=', tstartstamp),
+        Where('PackageDetails.OrderDate', '<=', tendstamp)
+      );
+      OnSnapshot(q, (querySnapshot) => {
+        const fpackArr = [];
+        querySnapshot.forEach((doc) => {
+          // console.log("data found");
+          // console.log(doc.data());
+          const res = doc.data();
+
+          fpackArr.push({ ...res });
+          // console.log("Single package id is:" + doc.id);
+        });
+        // console.log("Array contents");
+        // console.log(fpackArr);
+
+        if (fpackArr !== []) {
+          if (fpackArr.length > 0) {
+            // console.log("Package with Tracking number exist.")
+            payloadf.rangeOfPackages = [];
+            payloadf.rangeOfPackages = fpackArr;
+            // console.log(fpackArr);
+            // console.log("dispatching data");
+            dispatch({
+              type: 'find_packages_by_daterange',
+              payload: payloadf,
+            });
+            return payloadf;
+          }
+          // console.log("Package with Tracking number does not exist.")
+          return false;
+        }
+        // console.log("Package with Tracking number does not exist.")
+        return false;
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fetchCustomerInfo = async function fetchCustomerInfo(uid, payload) {
+    // console.log("fetching user");
+
+    const docRef = Doc(db, 'Users', uid);
+    const docSnap = await GetDoc(docRef);
+
+    if (docSnap.exists()) {
+      const user = docSnap.data();
+
+      if (user !== null) {
+        payload.clientInfo.email = user.email;
+        payload.clientInfo.fullName = user.fullName;
+      }
+      return payload;
+    }
+    return payload;
+  };
+
+  const getUserByMailboxNumber = async function getUserByMailboxNumber(MailBoxNumber) {
+    // console.log("querying mailboxes");
+    const MailBoxesRef = Doc(db, 'MailBoxes', MailBoxNumber);
+    const docSnap = await GetDoc(MailBoxesRef);
+
+    if (docSnap.exists()) {
+      // console.log("Document data:", docSnap.data());
+      const Uid = docSnap.data();
+      return Uid.Uid;
+    }
+    // doc.data() will be undefined in this case
+    // console.log("No such MailBoxNumber!");
+    return 'failed';
+  };
+
+  const sendNewPackageEmail = async function sendNewPackageEmail(formVals) {
+    // console.log("Wtf is in formVals");
+    // console.log(formVals);
+    const RequestParams = {
+      user_name: formVals.user_name,
+      user_email: formVals.user_email,
+      message: `Your package with tracking number 
+        ${formVals.trackingNum} from ${formVals.merchant} 
+        was updated to the status: ${formVals.status}.`,
+    }; // var data2 = {event: 'staff add package',
+    //                       value:{"What is in this package b4 email sent for user: " : "What is in this package b4 email sent for user", RequestParams: RequestParams}
+    // };
+    // var entry2 = log.entry(METADATA, data2);
+    // log.write(entry2);
+    // console.log("What is in this package b4 emails sent");
+    // console.log(RequestParams);
+
+    const fianlRes = await sendEmail(emailServiceId, emailNewPackageTemplate, RequestParams, emailUserId)
+      .then((res) => {
+        if (res) {
+          return true;
+        }
+        return false;
+      })
+      .catch((err) => {
+        // console.log("Send email error");
+        // console.log(err);
+        return false;
+      });
+    return fianlRes;
+  };
+
+  const editPackageStaff = async function editPackageStaff(packageZip, packageTnum, payloadf, packIndex) {
+    console.log('package zip is:');
+    console.log(packageZip);
+    console.log('package tracking num is');
+    console.log(packageTnum);
+    const tstamp = timeStamp.fromDate(new Date(packageZip.order_date));
+    const packageDetails = {
+      PackageDetails: {
+        Cost: packageZip.cost,
+        Courier: packageZip.courier,
+        ItemName: packageZip.item_name,
+        ItemStatus: packageZip.status,
+        MBoxNumber: packageZip.mailbox_number,
+        MerchantName: packageZip.merchant,
+        OrderDate: tstamp,
+        Total: packageZip.fcost,
+        TrackingNumber: packageZip.tracking_number,
+        Weight: packageZip.weight,
+      },
+      UID: '',
+      clientName: packageZip.fullName,
+    };
+    const payload = {
+      clientInfo: {
+        email: '',
+        fullName: '',
+      },
+    };
+    const RequestParams = {
+      user_email: '',
+      user_name: '',
+      merchant: packageZip.merchant !== null && packageZip.merchant !== undefined ? packageZip.merchant : '',
+      status: packageZip.status !== null && packageZip.status !== undefined ? packageZip.status : '',
+      trackingNum:
+        packageZip.tracking_number !== null && packageZip.tracking_number !== undefined
+          ? packageZip.tracking_number
+          : '',
+    };
+    const resUid = await getUserByMailboxNumber(packageZip.mailbox_number).then((res) => {
+      return res;
+    });
+
+    let currentPInfo;
+    const q = Query(Collection(db, 'Packages'), Where('PackageDetails.TrackingNumber', '==', packageTnum));
+
+    const querySnapshot = await GetDocs(q);
+    // console.log("Logging packages");
+    let result1;
+
+    querySnapshot.forEach((doc) => {
+      result1 = doc.id;
+      currentPInfo = doc.data();
+      console.log(`Single package id is: ${doc.id}`);
+    });
+
+    if (result1 === undefined) {
+      result1 = false;
+    }
+    console.log('User by mailbox returned');
+    console.log(resUid);
+
+    // console.log("package id is");
+    // console.log(checkIfPackageExists);
+
+    if (resUid === 'failed') {
+      return 'Mailbox or package doesnot exist';
+    }
+
+    if (resUid !== false && result1 !== false) {
+      packageDetails.UID = resUid;
+      // console.log("Abbout to update package");
+      // console.log(packageDetails);
+      // console.log(packageTnum);
+      const packagesNewRef = Doc(db, 'Packages', result1);
+      const storeRes = await UpdateDoc(packagesNewRef, packageDetails)
+        .then(async (doc) => {
+          // console.log("New Package Details  successfully written!");
+          // console.log(doc);
+          const finalResult = await fetchCustomerInfo(packageDetails.UID, payload)
+            .then(async (cusInfoResult) => {
+              // console.log(cusInfoResult);
+              if (
+                cusInfoResult !== null &&
+                cusInfoResult !== undefined &&
+                cusInfoResult.fullName !== '' &&
+                cusInfoResult.email !== ''
+              ) {
+                RequestParams.user_email = cusInfoResult.clientInfo.email;
+                RequestParams.user_name = cusInfoResult.clientInfo.fullName; // console.log("Params going to sendNewPackageMethod");
+                console.log(RequestParams);
+                console.log(packageDetails.PackageDetails);
+                if (
+                  packageDetails.PackageDetails.ItemStatus === 'Ready For Pickup' ||
+                  packageDetails.PackageDetails.ItemStatus === 'Arrived At Warehouse'
+                ) {
+                  const emailRes = await sendNewPackageEmail(RequestParams)
+                    .then((emailSentRes) => {
+                      if (emailSentRes) {
+                        if (
+                          payloadf !== undefined &&
+                          payloadf !== null &&
+                          packIndex !== undefined &&
+                          packIndex !== null
+                        ) {
+                          // console.log(payloadf);
+                          // console.log(payloadf.rangeOfPackages);
+                          // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
+                          payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
+                          // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
+
+                          dispatch({
+                            type: 'find_packages_by_daterange',
+                            payload: payloadf,
+                          });
+                        }
+                        return true;
+                      }
+
+                      if (
+                        payloadf !== undefined &&
+                        payloadf !== null &&
+                        packIndex !== undefined &&
+                        packIndex !== null
+                      ) {
+                        // console.log(payloadf);
+                        // console.log(payloadf.rangeOfPackages);
+                        // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
+                        payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
+                        // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
+
+                        dispatch({
+                          type: 'find_packages_by_daterange',
+                          payload: payloadf,
+                        });
+                      }
+                      // console.log("Unable to send add package email at this time.")
+                      return true;
+                    })
+                    .catch((err) => {
+                      // console.log("Unable to send add package email at this time.")
+                      console.log(err);
+                      if (
+                        payloadf !== undefined &&
+                        payloadf !== null &&
+                        packIndex !== undefined &&
+                        packIndex !== null
+                      ) {
+                        payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
+                        dispatch({
+                          type: 'find_packages_by_daterange',
+                          payload: payloadf,
+                        });
+                        console.log(payloadf.rangeOfPackages[packIndex]);
+                      }
+                      return true;
+                    });
+                  return emailRes;
+                }
+
+                if (payloadf !== undefined && payloadf !== null && packIndex !== undefined && packIndex !== null) {
+                  // console.log(payloadf);
+                  // console.log(payloadf.rangeOfPackages);
+                  // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
+                  payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
+                  // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
+
+                  dispatch({
+                    type: 'find_packages_by_daterange',
+                    payload: payloadf,
+                  });
+                }
+
+                return true;
+              }
+              return true;
+            })
+            .catch((err) => {
+              // console.log("error fetching user info to send email")
+              console.log(err);
+              return false;
+            });
+          return finalResult;
+        })
+        .catch((error) => {
+          console.error('Error writing New Package Details: ', error);
+          return false;
+        });
+      return storeRes;
+    }
+    return false;
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -1012,6 +1330,8 @@ function GeneralProvider({ children }) {
     updateUserInfo,
     fetchPackages,
     fetchAddress,
+    findPackagesByDateRange,
+    editPackageStaff,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;

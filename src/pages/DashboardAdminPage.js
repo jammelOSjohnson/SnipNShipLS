@@ -212,12 +212,12 @@ export default function DashboardAdminPage() {
                         value={startDate}
                         onChange={(e) => handleChange(e)}
                         type="datetime-local"
-                        defaultValue={Moment()
-                          .clone()
-                          .startOf('month')
-                          .subtract(3, 'months')
-                          .format('YYYY-MM-DD hh:mm')
-                          .toString()}
+                        // defaultValue={Moment()
+                        //   .clone()
+                        //   .startOf('month')
+                        //   .subtract(3, 'months')
+                        //   .format('YYYY-MM-DD hh:mm')
+                        //   .toString()}
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -232,7 +232,7 @@ export default function DashboardAdminPage() {
                         value={endDate}
                         onChange={(e) => handleChange(e)}
                         type="datetime-local"
-                        defaultValue={Moment().clone().endOf('month').format('YYYY-MM-DD hh:mm').toString()} // "2017-05-24T10:30"
+                        // defaultValue={Moment().clone().endOf('month').format('YYYY-MM-DD hh:mm').toString()} // "2017-05-24T10:30"
                         InputLabelProps={{
                           shrink: true,
                         }}
