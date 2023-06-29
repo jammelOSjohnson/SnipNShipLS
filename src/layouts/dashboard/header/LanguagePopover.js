@@ -6,10 +6,15 @@ import { Box, MenuItem, Stack, IconButton, Popover } from '@mui/material';
 // ----------------------------------------------------------------------
 
 const LANGS = [
+  // {
+  //   value: 'en',
+  //   label: 'English',
+  //   icon: '/assets/icons/ic_flag_en.svg',
+  // },
   {
     value: 'en',
     label: 'English',
-    icon: '/assets/icons/ic_flag_en.svg',
+    icon: '/assets/icons/ic_flag_en_ja.svg',
   },
   // {
   //   value: 'de',
