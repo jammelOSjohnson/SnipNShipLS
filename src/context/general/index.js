@@ -1303,6 +1303,137 @@ function GeneralProvider({ children }) {
     return false;
   };
 
+  // Add Package
+
+  const addPackageStaff = async function addPackageStaff(packageZip) {
+    const tstamp = timeStamp.fromDate(new Date(packageZip.order_date));
+    const packageDetails = {
+      PackageDetails: {
+        Cost: packageZip.cost,
+        Courier: packageZip.courier,
+        ItemName: packageZip.item_name,
+        ItemStatus: packageZip.status,
+        MBoxNumber: packageZip.mailbox_number,
+        MerchantName: packageZip.merchant,
+        OrderDate: tstamp,
+        Total: packageZip.fcost,
+        TrackingNumber: packageZip.tracking_number,
+        Weight: packageZip.weight,
+      },
+      UID: '',
+      clientName: '',
+    };
+    const payload = {
+      clientInfo: {
+        email: '',
+        fullName: '',
+      },
+    };
+    const RequestParams = {
+      user_email: '',
+      user_name: '',
+      merchant: packageZip.merchant !== null && packageZip.merchant !== undefined ? packageZip.merchant : '',
+      status: packageZip.status !== null && packageZip.status !== undefined ? packageZip.status : '',
+      trackingNum:
+        packageZip.tracking_number !== null && packageZip.tracking_number !== undefined
+          ? packageZip.tracking_number
+          : '',
+    };
+    const packArr = [];
+
+    const checkIfPackageExists = Query(
+      Collection(db, 'PackagesNew'),
+      Where('PackageInfo.TrackingNumber', '==', packageZip.tracking_number)
+    );
+    try {
+      const querySnapshot = await GetDocs(checkIfPackageExists);
+      querySnapshot.forEach((doc) => {
+        // console.log(doc.data());
+        const res = doc.data();
+        packArr.push(res.PackageInfo);
+      });
+
+      // console.log("Array contents");
+      // console.log(packArr);
+
+      if (packArr !== [] && packArr.length > 0) {
+        // console.log("Package with Tracking number exist.")
+        return `Tracking number exist. ${packageZip.tracking_number}`;
+      }
+      const res = await getUserByMailboxNumber(packageZip.mailbox_number).then(async (resUser) => {
+        // var data1 = {event: 'getUserByMailboxNumber staff add package',
+        //     value:{"User by mailbox returned for mailbox: " : packageZip.mailbox_number, result: res}
+        // };
+        // var entry1 = log.entry(METADATA, data1);
+        // log.write(entry1);
+        if (resUser === 'failed') {
+          return 'Mailbox doesnot exist';
+        }
+
+        if (resUser !== false) {
+          packageDetails.UID = resUser;
+          const getUserRef = Doc(db, 'Users', packageDetails.UID);
+          const docSnap = await GetDoc(getUserRef);
+
+          if (docSnap.exists()) {
+            const userpack = docSnap.data();
+            packageDetails.clientName = userpack.fullName;
+            try {
+              // console.log("New Package Details  successfully written!");
+              // Store Package details
+              await AddDoc(Collection(db, 'Packages'), packageDetails);
+              const finalResult = await fetchCustomerInfo(packageDetails.UID, payload)
+                .then(async (cusInfoResult) => {
+                  if (
+                    cusInfoResult !== null &&
+                    cusInfoResult !== undefined &&
+                    cusInfoResult.clientInfo.fullName !== '' &&
+                    cusInfoResult.clientInfo.email !== ''
+                  ) {
+                    RequestParams.user_email = cusInfoResult.clientInfo.email;
+                    RequestParams.user_name = cusInfoResult.clientInfo.fullName;
+                    // console.log("Params going to sendNewPackageMethod");
+                    // console.log(RequestParams);
+
+                    const emailRes = await sendNewPackageEmail(RequestParams)
+                      .then((emailSentRes) => {
+                        if (emailSentRes) {
+                          return true;
+                        }
+
+                        // console.log("Unable to send add package email at this time.")
+                        return true;
+                      })
+                      .catch((err) => {
+                        // console.log("Unable to send add package email at this time.")
+                        // console.log(err);
+                        return true;
+                      });
+                    return emailRes;
+                  }
+                  return true;
+                })
+                .catch((err) => {
+                  // console.log("error fetching user info to send email")
+                  // console.log(err);
+                  return false;
+                });
+              return finalResult;
+            } catch (err) {
+              // console.error("Error writing New Package Details: ", err);
+              return false;
+            }
+          }
+        }
+        console.log('made it to false return');
+        return false;
+      });
+      return res;
+    } catch {
+      return false;
+    }
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -1332,6 +1463,7 @@ function GeneralProvider({ children }) {
     fetchAddress,
     findPackagesByDateRange,
     editPackageStaff,
+    addPackageStaff,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;
