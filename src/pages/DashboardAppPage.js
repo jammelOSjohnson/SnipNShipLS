@@ -8,6 +8,7 @@ import { Grid, Container, Typography, Stack } from '@mui/material';
 import DashboardTable from '../components/dashboardtable';
 // sections
 import { AppOrderTimeline } from '../sections/@dashboard/app';
+import CheckParish from '../components/checkparish';
 
 // ----------------------------------------------------------------------
 
@@ -160,6 +161,8 @@ export default function DashboardAppPage() {
               }))}
             />
           </Grid>
+
+          <CheckParish />
 
           {/* <Grid item xs={12} md={6} lg={4}>
             <AppTrafficBySite
