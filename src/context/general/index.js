@@ -122,6 +122,7 @@ function GeneralProvider({ children }) {
   const emailServiceId = process.env.REACT_APP_emailServiceId;
   const emailUserId = process.env.REACT_APP_emailUserId;
   const emailNewPackageTemplate = process.env.REACT_APP_emailNewPackageTemplate;
+  const emailContactTemplate = process.env.REACT_APP_emailContactTemplate;
   let currentUser;
   const loading = true;
   const loggedIn = false;
@@ -1434,6 +1435,27 @@ function GeneralProvider({ children }) {
     }
   };
 
+  const sendUserContactEmail = async function sendUserContactEmail(formVals) {
+    // var RequestParams = {
+    //   user_name: userName !== null ? userName : "",
+    //   user_email: userEmail !== null? userEmail : "",
+    //   message: "Please verify email address by clicking the link below"
+    // }
+    const fianlRes = await sendEmailForm(emailServiceId, emailContactTemplate, formVals, emailUserId)
+      .then((res) => {
+        if (res) {
+          return true;
+        }
+        return false;
+      })
+      .catch((err) => {
+        // console.log("Send email error");
+        // console.log(err);
+        return false;
+      });
+    return fianlRes;
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -1464,6 +1486,7 @@ function GeneralProvider({ children }) {
     findPackagesByDateRange,
     editPackageStaff,
     addPackageStaff,
+    sendUserContactEmail,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;

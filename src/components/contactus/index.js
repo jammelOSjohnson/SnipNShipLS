@@ -1,4 +1,5 @@
-import { Grid, TextField, Typography, Checkbox, InputLabel } from '@mui/material';
+import { useState } from 'react';
+import { Grid, TextField, Typography, Checkbox, InputLabel, Alert } from '@mui/material';
 import LocationIcon from '@mui/icons-material/LocationOn';
 import EnvelopeIcon from '@mui/icons-material/Email';
 import { Link } from 'react-router-dom';
@@ -11,8 +12,84 @@ import {
   ContactFromContainerTitleGrid,
 } from '../../styles/contactus';
 import { Colors } from '../../theme/palette';
+import { useGeneral } from '../../context/general';
+
+const contactValues = {
+  user_email: '',
+  user_subject: 'New Message From Website Customer',
+  message: '',
+  from_name: '',
+};
 
 export default function ContactUs() {
+  const { value } = useGeneral();
+  const { sendUserContactEmail } = value;
+  const [error, setError] = useState('');
+  const [terms, setTerms] = useState(false);
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const [state, setState] = useState(contactValues);
+
+  const onInputChange2 = function onInputChange2(event) {
+    const { value, name } = event.target;
+    setState({ ...state, [name.toLowerCase()]: value });
+  };
+
+  const handleChange = (event) => {
+    setTerms(event.target.checked);
+  };
+
+  const sendContactEmail = async function sendContactEmail(e) {
+    e.preventDefault();
+    // console.log("About to enter sendUserContactEmail");
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    if (state.name === '') {
+      setError('Please enter a Name.');
+      return setLoading(false);
+    }
+
+    if (state.user_email === '') {
+      setError('Please enter an Email Address.');
+      return setLoading(false);
+    }
+
+    if (state.message === '' || state.message.length < 9) {
+      setError('Please enter a message.');
+      return setLoading(false);
+    }
+
+    if (!terms) {
+      setError('Please check the box to agree to our Privacy Policy.');
+      return setLoading(false);
+    }
+
+    await sendUserContactEmail(e.target).then(
+      (result) => {
+        // console.log(result);
+        if (result) {
+          // console.log("About to clear form");
+          setState(contactValues);
+          setTerms(false);
+          setSuccess('Thank you for contacting us.');
+          setLoading(false);
+          setTimeout(() => {
+            setSuccess();
+          }, 4000);
+        }
+      },
+      (error) => {
+        // console.log(error);
+        setError('Unable to make contact at this time.');
+        setLoading(false);
+      }
+    );
+    return null;
+  };
+
   return (
     <>
       <ContactFormContainer id="contactus">
@@ -65,21 +142,50 @@ export default function ContactUs() {
             <Grid container>
               <Grid item xs={0} md={1} />
               <Grid item xs={12} md={8}>
-                <form>
+                <form data-testid="contact-comp" id="contact-form-data" onSubmit={sendContactEmail}>
                   <Grid container>
                     <Grid item xs={12}>
-                      <TextField placeholder="NAME" fullWidth required style={{ marginBottom: 20 }} />
+                      <input
+                        placeholder="SUBJECT"
+                        name="user_subject"
+                        value={state.user_subject}
+                        style={{ marginBottom: 20 }}
+                        onChange={(e) => onInputChange2(e)}
+                        type="hidden"
+                      />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField placeholder="Email" fullWidth required style={{ marginBottom: 20 }} />
+                      <TextField
+                        placeholder="NAME"
+                        name="from_name"
+                        value={state.from_name}
+                        fullWidth
+                        required
+                        style={{ marginBottom: 20 }}
+                        onChange={(e) => onInputChange2(e)}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        placeholder="Email"
+                        name="user_email"
+                        value={state.user_email}
+                        fullWidth
+                        required
+                        style={{ marginBottom: 20 }}
+                        onChange={(e) => onInputChange2(e)}
+                      />
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
                         id="outlined-multiline-static"
+                        name="message"
+                        value={state.message}
                         style={{ marginBottom: 20 }}
                         multiline
                         rows={4}
                         placeholder="Message"
+                        onChange={(e) => onInputChange2(e)}
                         required
                         fullWidth
                       />
@@ -94,6 +200,8 @@ export default function ContactUs() {
                                 color: Colors.primary,
                               },
                             }}
+                            value={terms}
+                            onChange={handleChange}
                             required
                           />
                         </Grid>
@@ -107,7 +215,25 @@ export default function ContactUs() {
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                      <ContactFormButton type="submit" fullWidth>
+                      {error && (
+                        <>
+                          <Alert variant="filled" severity="error">
+                            {error}
+                          </Alert>
+                          <br />
+                        </>
+                      )}
+                      {success && (
+                        <>
+                          <Alert variant="filled" severity="success">
+                            {success}
+                          </Alert>
+                          <br />
+                        </>
+                      )}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ContactFormButton type="submit" disabled={loading} fullWidth>
                         SUBMIT
                       </ContactFormButton>
                     </Grid>
