@@ -19,6 +19,7 @@ import RefundPolicyPage from './pages/RefundPolicyPage';
 import ProfilePage from './pages/ProfilePage';
 import ViewPackagesPage from './pages/ViewPackagesPage';
 import AddPackage from './pages/AddPackage';
+import UploadInvoicePage from './pages/UploadInvoicePage';
 
 // ----------------------------------------------------------------------
 
@@ -62,6 +63,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'profile', element: <ProfilePage /> },
+        { path: 'uploadinvoice', element: <UploadInvoicePage /> },
         { path: 'packages', element: <ViewPackagesPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },

@@ -20,7 +20,12 @@ const navConfig = [
   //   title: 'view users',
   //   path: '/dashboard/user',
   //   icon: icon('ic_user'),
-  // },
+  // },uploadinvoice
+  {
+    title: 'upload invoice',
+    path: '/dashboard/uploadinvoice',
+    icon: icon('ic_user'),
+  },
   {
     title: 'profile',
     path: '/dashboard/profile',
