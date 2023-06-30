@@ -63,7 +63,7 @@ export default function LoginPage() {
     try {
       setError('');
       setLoading(true);
-      console.log('here');
+      // console.log('here');
       await gLogin(value).then(async (res1) => {
         if (res1 != null) {
           await fetchUserDetails(res1).then((res) => {
@@ -104,7 +104,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    console.log('role is', userRolef);
+    // console.log('role is', userRolef);
     if (userRolef !== undefined && userRolef !== '') {
       setLoading(false);
       setSuccess('Login Successful.');
@@ -116,7 +116,7 @@ export default function LoginPage() {
         //   // console.log(history.location.state.from)
         //   navigate(-1);
         // } else {
-        console.log('about to go dashboard', userRolef);
+        // console.log('about to go dashboard', userRolef);
         if (userRolef === 'Admin') {
           navigate('/admindashboard/app');
         } else {
