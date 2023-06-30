@@ -85,11 +85,19 @@ function generalReducer(state, action) {
     case 'logout_user':
       // console.log("dispatching logout action");
       // console.log(action);
+
       return {
         ...state,
         loggedIn: action.payload.loggedIn,
         currentUser: action.payload.currentUser,
+        clientInfo: action.payload.clientInfo,
+        mailboxNum: action.payload.mailboxNum,
         userRolef: '',
+        packages: action.payload.packages,
+        readyPack: action.payload.readyPack,
+        warehouse: action.payload.warehouse,
+        balance: action.payload.balance,
+        rangeOfPackages: action.payload.rangeOfPackages,
       };
     case 'fetch_packages':
       return {
@@ -220,11 +228,15 @@ function GeneralProvider({ children }) {
         // Handle Errors here.
         const errorCode = error.code;
         // console.log(error.code);
-        if (errorCode === 'auth/user-not-found' || 'auth/wrong-password' || 'auth/invalid-email') {
+        if (
+          errorCode === 'auth/user-not-found' ||
+          errorCode === 'auth/wrong-password' ||
+          errorCode === 'auth/invalid-email'
+        ) {
           return 'Email / Password Incorrect';
         }
 
-        if (errorCode === 'auth/network-request-failed' || 'auth/internal-error') {
+        if (errorCode === 'auth/network-request-failed' || errorCode === 'auth/internal-error') {
           return 'Unable to login at this time';
         }
 
@@ -338,8 +350,31 @@ function GeneralProvider({ children }) {
   };
 
   const logout = function logout(payload) {
+    let noval;
     // retuns a promise
+    const clientInfo = {
+      contactNumber: '',
+      email: '',
+      fullName: '',
+      verified: false,
+      verifiedemailsent: false,
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      postalCode: '',
+      stateOrparish: '',
+      dateCreated: '',
+      mailboxNum,
+    };
+
     payload.loggedIn = false;
+    payload.clientInfo = { ...clientInfo };
+    payload.mailboxNum = '';
+    payload.packages = noval;
+    payload.readyPack = noval;
+    payload.warehouse = 0;
+    payload.balance = 0;
+    payload.rangeOfPackages = noval;
     SignOut(auth)
       .then(() => {
         payload.currentUser = null;
@@ -754,23 +789,24 @@ function GeneralProvider({ children }) {
   };
 
   const checkBalance = function checkBalance(packages, status) {
-    let balace = 0.0;
+    let balance = 0.0;
 
     if (packages !== null && packages !== undefined) {
       packages.forEach((pac) => {
         // console.log(pac);
         const res = pac;
 
-        if (res.FinalCost !== null && res.FinalCost !== undefined) {
-          if (res.status === status) {
-            const add = res.FinalCost !== null && res.FinalCost !== undefined ? parseFloat(res.FinalCost) : 0;
-            balace += add;
+        if (res.Total !== null && res.Total !== undefined) {
+          if (res.ItemStatus === status) {
+            const add = res.Total !== null && res.Total !== undefined ? parseFloat(res.Total) : 0;
+            balance += add;
           }
         }
       });
     }
 
-    return balace;
+    console.log(balance);
+    return balance;
   };
 
   // Fetch packages

@@ -46,7 +46,7 @@ export default function DashboardTable() {
               title: item.Name,
               description: '',
               image: `/assets/images/products/package.png`,
-              postedAt: item.OrderDate,
+              postedAt: item.OrderDate !== null && item.OrderDate !== undefined ? item.OrderDate?.toDate() : new Date(),
             }))
           : []
       }

@@ -9,6 +9,7 @@ import DashboardTable from '../components/dashboardtable';
 // sections
 import { AppOrderTimeline } from '../sections/@dashboard/app';
 import CheckParish from '../components/checkparish';
+import OutstandingBalance from '../components/outstandingbalance';
 
 // ----------------------------------------------------------------------
 
@@ -137,7 +138,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} md={6} lg={4}>
             <Stack direction={'row'} justifyContent="flex-end" spacing={{ xs: 12, sm: 10 }}>
               <Typography variant="h4">Balance:</Typography>
-              <Typography variant="h4">$ 0.00</Typography>
+              <OutstandingBalance />
             </Stack>
           </Grid>
           <Grid item xs={12} md={6} lg={8}>
