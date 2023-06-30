@@ -1,4 +1,5 @@
 import { useContext, createContext, useReducer } from 'react';
+import Moment from 'moment';
 import {
   auth,
   googleAuthProvider,
@@ -123,6 +124,7 @@ function GeneralProvider({ children }) {
   const emailUserId = process.env.REACT_APP_emailUserId;
   const emailNewPackageTemplate = process.env.REACT_APP_emailNewPackageTemplate;
   const emailContactTemplate = process.env.REACT_APP_emailContactTemplate;
+  const emailNewInvoiceUploadTemplate = process.env.REACT_APP_emailNewInvoiceUploadTemplate;
   let currentUser;
   const loading = true;
   const loggedIn = false;
@@ -1456,6 +1458,80 @@ function GeneralProvider({ children }) {
     return fianlRes;
   };
 
+  const uploadInvoiceEmail = async function uploadInvoiceEmail(formVals, filetype, mailboxNum) {
+    // console.log("Wtf is in formVals");
+    // console.log(formVals);
+    const RequestParams = {
+      from_name: formVals.user_name,
+      user_email: formVals.user_email,
+      message: `New Invoice uploaded by ${formVals.user_name}.
+         Mailbox#: ${mailboxNum}`,
+      content_pdf: undefined,
+      content_svg: undefined,
+      content_jpeg: undefined,
+      content_png: undefined,
+      todays_date: Moment().format('YYYY-MM-DD hh:mm').toString(),
+    };
+
+    if (filetype.toLowerCase() === 'application/pdf') {
+      RequestParams.content_pdf = formVals.content;
+    } else if (filetype.toLowerCase() === 'image/png') {
+      RequestParams.content_png = formVals.content;
+    } else if (filetype.toLowerCase() === 'image/svg+xml') {
+      RequestParams.content_svg = formVals.content;
+    } else if (filetype.toLowerCase() === 'image/jpeg') {
+      RequestParams.content_jpeg = formVals.content;
+    }
+    // console.log("What is in this package b4 emails sent");
+    // console.log(RequestParams);
+
+    const fianlRes = await sendEmail(emailServiceId, emailNewInvoiceUploadTemplate, RequestParams, emailUserId)
+      .then((res) => {
+        if (res) {
+          return true;
+        }
+        return res;
+      })
+      .catch((err) => {
+        // console.log("Send email error");
+        // console.log(err);
+        return false;
+      });
+    return fianlRes;
+  };
+
+  const uploadInvoice = async function uploadInvoice(packageZip, file, UserInfo, mailboxNum) {
+    const fileType = packageZip.content.type;
+    const RequestParams = {
+      user_email: '',
+      user_name: '',
+      content: file,
+      tracking_number: packageZip.tracking_number,
+    };
+
+    if (UserInfo !== null && UserInfo !== undefined && UserInfo.fullName !== '' && UserInfo.email !== '') {
+      RequestParams.user_email = UserInfo.email;
+      RequestParams.user_name = UserInfo.fullName;
+      // console.log("Params going to sendNewPackageMethod");
+      // console.log(RequestParams)
+      const emailRes = await uploadInvoiceEmail(RequestParams, fileType, mailboxNum)
+        .then((emailSentRes) => {
+          if (emailSentRes) {
+            return true;
+          }
+          // console.log("Unable to send add package email at this time.")
+          return true;
+        })
+        .catch((err) => {
+          // console.log("Unable to send add package email at this time.")
+          // console.log(err);
+          return true;
+        });
+      return emailRes;
+    }
+    return false;
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -1487,6 +1563,7 @@ function GeneralProvider({ children }) {
     editPackageStaff,
     addPackageStaff,
     sendUserContactEmail,
+    uploadInvoice,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;

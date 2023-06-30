@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
-import { Alert, Stack, TextField } from '@mui/material';
+import { Alert, Stack, TextField, Typography } from '@mui/material';
+import Doc from '@mui/icons-material/FileUpload';
 
 const fileValues = { file: '', content: '', tracking_number: '' };
 
@@ -23,6 +24,7 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
         ) {
           await getBase64(state.content, async (result) => {
             data = result;
+            // console.log(data);
             try {
               setError('');
               setSuccess('');
@@ -35,6 +37,9 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
                     setFileDisplay('');
                     setState(fileValues);
                     setLoading(false);
+                    setTimeout(() => {
+                      setSuccess('');
+                    }, 4000);
                     // console.log(dateFeildDesktop.value);
                   } else if (res === false) {
                     setError('Unable to upload invoice at this time');
@@ -42,7 +47,7 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
                   }
                 })
                 .catch((err) => {
-                  // console.log(err);
+                  console.log(err);
                 });
             } catch {
               setError('Unable to upload invoice at this time.');
@@ -108,11 +113,11 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" value={state.file} onChange={(e) => onInputChange2(e)} type="file" required />
+        <TextField name="file" value={state.file} onChange={(e) => onInputChange2(e)} type="file" required />
         {fileDisplay && (
-          <Alert variant="filled" severity="success">
-            {fileDisplay}
-          </Alert>
+          <Stack direction={'row'} spacing={3}>
+            <Doc /> <Typography>{fileDisplay}</Typography>
+          </Stack>
         )}
         {error && (
           <Alert variant="filled" severity="error">
