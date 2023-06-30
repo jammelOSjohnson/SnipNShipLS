@@ -62,21 +62,11 @@ export default function CheckParish() {
     event.preventDefault();
     // prevents default form refresh
     // console.log("I am inside fuction");
-    if (client.email === '') {
-      return setError('Please enter your email');
-    }
-    if (client.fullname === '') {
-      return setError('Please enter your fullname');
-    }
-    if (client.contact === '') {
-      return setError('Please enter a contact number');
-    }
+
     if (client.parish === '' || client.parish === 'Select A Parish') {
       return setError('Please select a parish');
     }
-    if (client.addressLine1 === '') {
-      return setError('Please enter a address line 1.');
-    }
+
     try {
       setError('');
       setSuccess('');
