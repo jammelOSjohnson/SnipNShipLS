@@ -121,6 +121,13 @@ function generalReducer(state, action) {
         ...state,
         rangeOfPackages: action.payload.rangeOfPackages,
       };
+    case 'fetch_user_dashboard':
+      // console.log("dispatching fetch_user_dashboard action");
+      // console.log(action);
+      return {
+        ...state,
+        singleUser: action.payload.singleUser,
+      };
     default:
       return state;
   }
@@ -1693,6 +1700,69 @@ function GeneralProvider({ children }) {
     // await updateUserInfo(value.currentUser.uid, value, null);
   };
 
+  const getUserByMailboxNumberForStaff = async function getUserByMailboxNumber(MailBoxNumber) {
+    // console.log("querying mailboxes");
+    const MailBoxesRef = Doc(db, 'MailBoxes', MailBoxNumber);
+    const docSnap = await GetDoc(MailBoxesRef);
+
+    if (docSnap.exists()) {
+      // console.log("Document data:", docSnap.data());
+      const Uid = docSnap.data();
+      return Uid.Uid;
+    }
+    // doc.data() will be undefined in this case
+    // console.log("No such MailBoxNumber!");
+    return 'failed';
+  };
+
+  const findUserForDashboard = async function findUserForDashboard(payload, searchvalue) {
+    console.log('i made it');
+    const userArr = [];
+    const finalArr = [];
+
+    console.log(searchvalue);
+    if (searchvalue !== null && searchvalue !== undefined) {
+      const docRef = Doc(db, 'Users', searchvalue);
+      const docSnap = await GetDoc(docRef);
+      console.log('Logging users');
+      if (docSnap.exists()) {
+        console.log(docSnap.id);
+        console.log(docSnap.data());
+        const res = docSnap.data();
+        userArr.push(res);
+        // console.log(userArr);
+        for (let f = 0; f < userArr.length; ) {
+          const obj = {
+            ...userArr[f],
+          };
+          finalArr.push(obj);
+          f += 1;
+        }
+        // console.log("Fianl arrayyy is? ");
+        // console.log(finalArr);
+        payload.singleUser = finalArr;
+        dispatch({
+          type: 'fetch_user_dashboard',
+          payload,
+        });
+      } else {
+        // console.log("none was found.");
+        payload.singleUser = [];
+        dispatch({
+          type: 'fetch_user_dashboard',
+          payload,
+        });
+      }
+    } else {
+      // console.log("none was found2.");
+      payload.singleUser = [];
+      dispatch({
+        type: 'fetch_user_dashboard',
+        payload,
+      });
+    }
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -1726,6 +1796,7 @@ function GeneralProvider({ children }) {
     sendUserContactEmail,
     uploadInvoice,
     sendCostomerVerificationEmail,
+    findUserForDashboard,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;

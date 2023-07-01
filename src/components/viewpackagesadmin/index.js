@@ -9,17 +9,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {
-  Box,
-  Container,
-  IconButton,
-  TableFooter,
-  TablePagination,
-  Tooltip,
-  Typography,
-  Zoom,
-  useTheme,
-} from '@mui/material';
+import InfoIcon from '@mui/icons-material/InfoRounded';
+import PersonIcon from '@mui/icons-material/Person';
+import { Box, Container, IconButton, TableFooter, TablePagination, Tooltip, Zoom, useTheme } from '@mui/material';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -29,6 +21,7 @@ import Moment from 'moment';
 import { useGeneral } from '../../context/general';
 import { Colors } from '../../theme/palette';
 import EditPackage from '../editpackage';
+import ViewCustomer from '../viewcustomer';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -103,8 +96,8 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(TrackingNum, Name, Description, Mailbox, Status, OrderDate) {
-  return { TrackingNum, Name, Description, Mailbox, Status, OrderDate };
+function createData(InfoID, TrackingNum, Name, Description, Mailbox, Status, OrderDate) {
+  return { InfoID, TrackingNum, Name, Description, Mailbox, Status, OrderDate };
 }
 
 // createData('Frozen yoghurt', 159, 6.0, 24),
@@ -117,9 +110,12 @@ function createData(TrackingNum, Name, Description, Mailbox, Status, OrderDate) 
 export default function ViewPackagesAdmin() {
   const [rows, setRows] = React.useState([]);
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   const [tracking, setTracking] = React.useState('');
+  const [currentUserID, setCurrentUserID] = React.useState('');
+  const [previousUserID, setPreviousUserID] = React.useState('');
   const { value } = useGeneral();
-  const { rangeOfPackages, currentUser, editPackageStaff } = value;
+  const { rangeOfPackages, currentUser, editPackageStaff, findUserForDashboard } = value;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -136,6 +132,10 @@ export default function ViewPackagesAdmin() {
     setOpen(false);
   };
 
+  const handleClose2 = () => {
+    setOpen2(false);
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -147,6 +147,7 @@ export default function ViewPackagesAdmin() {
       rangeOfPackages.map((item) => {
         tempRows.push(
           createData(
+            item.UID,
             item.PackageDetails.TrackingNumber,
             item.clientName,
             item.PackageDetails.ItemName,
@@ -169,6 +170,9 @@ export default function ViewPackagesAdmin() {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
+                <StyledTableCell>
+                  <InfoIcon />
+                </StyledTableCell>
                 <StyledTableCell>Tracking #</StyledTableCell>
                 <StyledTableCell align="right">Name</StyledTableCell>
                 <StyledTableCell align="right">Description</StyledTableCell>
@@ -181,6 +185,20 @@ export default function ViewPackagesAdmin() {
               {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
                 (row) => (
                   <StyledTableRow key={row.TrackingNum}>
+                    <StyledTableCell component="th" scope="row">
+                      <PersonIcon
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setOpen2(true);
+                          setCurrentUserID(row.InfoID);
+                          console.log(currentUserID);
+                        }}
+                        color="primary"
+                        sx={{ '&:hover': { cursor: 'pointer' } }}
+                      >
+                        {row.TrackingNum}
+                      </PersonIcon>
+                    </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
                       <Tooltip TransitionComponent={Zoom} title="Click to Edit Package Details">
                         <a
@@ -249,6 +267,15 @@ export default function ViewPackagesAdmin() {
           tracking={tracking}
           pack={rangeOfPackages}
           editPackageStaff={editPackageStaff}
+          value={value}
+        />
+
+        <ViewCustomer
+          open2={open2}
+          handleClose2={handleClose2}
+          currentUserID={currentUserID}
+          previousUserID={previousUserID}
+          findUserForDashboard={findUserForDashboard}
           value={value}
         />
       </Container>
