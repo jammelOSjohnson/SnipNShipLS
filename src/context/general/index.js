@@ -133,6 +133,7 @@ function GeneralProvider({ children }) {
   const emailNewPackageTemplate = process.env.REACT_APP_emailNewPackageTemplate;
   const emailContactTemplate = process.env.REACT_APP_emailContactTemplate;
   const emailNewInvoiceUploadTemplate = process.env.REACT_APP_emailNewInvoiceUploadTemplate;
+  const welcomeEmailTemplate = process.env.REACT_APP_emailWelcomeTemplate;
   let currentUser;
   const loading = true;
   const loggedIn = false;
@@ -1568,6 +1569,130 @@ function GeneralProvider({ children }) {
     return false;
   };
 
+  // Send Emails
+  const sendCostomerVerificationEmail = async function sendCostomerVerificationEmail(userEmail, userName, value) {
+    // email enabled
+    if (value.clientInfo.verifiedemailsent !== true) {
+      // console.log("Username b4 send email is:" + userName);
+      if (
+        value.airFreightAdd !== null &&
+        value.airFreightAdd !== undefined &&
+        value.seaFreightAdd !== null &&
+        value.seaFreightAdd !== undefined
+      ) {
+        const RequestParams = {
+          username: userName !== null && userName !== undefined ? userName : '',
+          user_email: userEmail !== null && userEmail !== undefined ? userEmail : '',
+          message: value.mailboxNum,
+          air_line1:
+            value.airFreightAdd.addressLine1 !== null &&
+            value.airFreightAdd.addressLine1 !== undefined &&
+            value.clientInfo.stateOrparish === 'Kingston'
+              ? value.airFreightAdd.addressLine1
+              : value.seaFreightAdd.addressLine1 !== null &&
+                value.seaFreightAdd.addressLine1 !== undefined &&
+                value.clientInfo.stateOrparish === 'St. Catherine'
+              ? value.seaFreightAdd.addressLine1
+              : '',
+          air_line2:
+            value.airFreightAdd.addressLine2 !== null &&
+            value.airFreightAdd.addressLine2 !== undefined &&
+            value.clientInfo.stateOrparish === 'Kingston'
+              ? value.airFreightAdd.addressLine2
+              : value.seaFreightAdd.addressLine2 !== null &&
+                value.seaFreightAdd.addressLine2 !== undefined &&
+                value.clientInfo.stateOrparish === 'St. Catherine'
+              ? value.seaFreightAdd.addressLine2
+              : '',
+          air_city:
+            value.airFreightAdd.city !== null &&
+            value.airFreightAdd.city !== undefined &&
+            value.clientInfo.stateOrparish === 'Kingston'
+              ? value.airFreightAdd.city
+              : value.seaFreightAdd.city !== null &&
+                value.seaFreightAdd.city !== undefined &&
+                value.clientInfo.stateOrparish === 'St. Catherine'
+              ? value.seaFreightAdd.city
+              : '',
+          air_state:
+            value.airFreightAdd.state !== null &&
+            value.airFreightAdd.state !== undefined &&
+            value.clientInfo.stateOrparish === 'Kingston'
+              ? value.airFreightAdd.state
+              : value.seaFreightAdd.state !== null &&
+                value.seaFreightAdd.state !== undefined &&
+                value.clientInfo.stateOrparish === 'St. Catherine'
+              ? value.seaFreightAdd.state
+              : '',
+          air_zip:
+            value.airFreightAdd.zipCode !== null &&
+            value.airFreightAdd.zipCode !== undefined &&
+            value.clientInfo.stateOrparish === 'Kingston'
+              ? value.airFreightAdd.zipCode
+              : value.seaFreightAdd.zipCode !== null &&
+                value.seaFreightAdd.zipCode !== undefined &&
+                value.clientInfo.stateOrparish === 'St. Catherine'
+              ? value.seaFreightAdd.zipCode
+              : '',
+        };
+
+        // console.log("Request params username is: " + RequestParams.username);
+
+        await sendEmail(emailServiceId, welcomeEmailTemplate, RequestParams, emailUserId)
+          .then(async (res) => {
+            // console.log("Send Email Success " + res);
+            if (res) {
+              value.clientInfo.verifiedemailsent = true;
+              console.log('aBout to call update user info ');
+
+              await updateUserInfo(value.currentUser.uid, value, null);
+              // dispatch({type: "sent_verify_email", payload: value});
+            }
+          })
+          .catch((err) => {
+            // console.log("Send email error");
+            // console.log(err);
+          });
+      } else {
+        const RequestParams = {
+          username: userName !== null && userName !== undefined ? userName : '',
+          user_email: userEmail !== null && userEmail !== undefined ? userEmail : '',
+          message: value.mailboxNum,
+          air_line1: '',
+          air_line2: '',
+          air_city: '',
+          air_state: '',
+          air_zip: '',
+        };
+
+        // console.log("Request params username is: " + RequestParams.username);
+
+        await sendEmail(emailServiceId, welcomeEmailTemplate, RequestParams, emailUserId)
+          .then(async (res) => {
+            // console.log("Send Email Success " + res);
+            if (res) {
+              value.clientInfo.verifiedemailsent = true;
+              // console.log("aBout to call update user info ");
+
+              await updateUserInfo(value.currentUser.uid, value, null);
+              // dispatch({type: "sent_verify_email", payload: value});
+            }
+          })
+          .catch((err) => {
+            // console.log("Send email error");
+            // console.log(err);
+          });
+      }
+    }
+
+    return value;
+    // disable after email is reenabled
+    // value.clientInfo.verifiedemailsent = true;
+    // value.clientInfo.verified = false;
+    // console.log("aBout to call update user info ");
+    // await updateUserInfo(value.currentUser.uid, value, null);
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -1600,6 +1725,7 @@ function GeneralProvider({ children }) {
     addPackageStaff,
     sendUserContactEmail,
     uploadInvoice,
+    sendCostomerVerificationEmail,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;
