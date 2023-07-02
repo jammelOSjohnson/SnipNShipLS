@@ -14,7 +14,7 @@ export default function OutstandingBalance() {
       minimumFractionDigits: 2,
     };
     const dollarString = new Intl.NumberFormat('en-US', formattingOptions);
-
+    // console.log('about to set balance', balance);
     setFormatedBalance(dollarString.format(balance));
   }, [balance]);
 
