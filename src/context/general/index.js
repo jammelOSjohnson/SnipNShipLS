@@ -1660,35 +1660,6 @@ function GeneralProvider({ children }) {
             // console.log("Send email error");
             // console.log(err);
           });
-      } else {
-        const RequestParams = {
-          username: userName !== null && userName !== undefined ? userName : '',
-          user_email: userEmail !== null && userEmail !== undefined ? userEmail : '',
-          message: value.mailboxNum,
-          air_line1: '',
-          air_line2: '',
-          air_city: '',
-          air_state: '',
-          air_zip: '',
-        };
-
-        // console.log("Request params username is: " + RequestParams.username);
-
-        await sendEmail(emailServiceId, welcomeEmailTemplate, RequestParams, emailUserId)
-          .then(async (res) => {
-            // console.log("Send Email Success " + res);
-            if (res) {
-              value.clientInfo.verifiedemailsent = true;
-              // console.log("aBout to call update user info ");
-
-              await updateUserInfo(value.currentUser.uid, value, null);
-              // dispatch({type: "sent_verify_email", payload: value});
-            }
-          })
-          .catch((err) => {
-            // console.log("Send email error");
-            // console.log(err);
-          });
       }
     }
 

@@ -3,7 +3,7 @@ import { useGeneral } from '../../context/general';
 
 export default function WelcomeEmail() {
   const { value } = useGeneral();
-  const { clientInfo, sendCostomerVerificationEmail, mailboxNum } = value;
+  const { clientInfo, sendCostomerVerificationEmail, mailboxNum, airFreightAdd, seaFreightAdd } = value;
   const [verified, setVerified] = useState(
     clientInfo.verified === false ? 'Please check your email inbox, spam and junk to verify account' : null
   );
@@ -20,7 +20,11 @@ export default function WelcomeEmail() {
     if (
       value.clientInfo.verifiedemailsent !== true &&
       clientInfo.fullName != null &&
-      clientInfo.fullName !== undefined
+      clientInfo.fullName !== undefined &&
+      airFreightAdd !== null &&
+      airFreightAdd !== undefined &&
+      seaFreightAdd !== null &&
+      seaFreightAdd !== undefined
     ) {
       // console.log("About to send verification email.")
       if (mailboxNum !== null && mailboxNum !== undefined && mailboxNum !== '') {
@@ -31,6 +35,6 @@ export default function WelcomeEmail() {
   useEffect(() => {
     onload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mailboxNum]);
+  }, [mailboxNum, airFreightAdd, seaFreightAdd, clientInfo]);
   return <></>;
 }
