@@ -15,10 +15,11 @@ export default function ShippingAddress() {
   useEffect(() => {
     if (currentUser != null) {
       try {
-        // console.log('about to enter fetch adddress');
+        // console.log('about to enter fetch adddress', mailboxNum);
         if (mailboxNum === null || mailboxNum === undefined || mailboxNum === '') {
           fetchAddress(currentUser.uid, value);
         }
+        // console.log(airFreightAdd);
         if (airFreightAdd !== undefined && seaFreightAdd !== undefined) {
           setAddressData({ airFreightAdd, seaFreightAdd });
         }
@@ -28,7 +29,7 @@ export default function ShippingAddress() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [airFreightAdd, mailboxNum, fetchAddress]);
+  }, [airFreightAdd, currentUser, mailboxNum, fetchAddress]);
 
   if (
     value.clientInfo.fullName == null &&
