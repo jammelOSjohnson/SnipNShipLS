@@ -20,11 +20,11 @@ const NavItem = ({ item, navigate }) => {
 
   const handleLogout = (event) => {
     event.preventDefault();
-    console.log('here2');
+    // console.log('here2');
     try {
       logout(value);
       setTimeout(() => {
-        console.log('navigating');
+        // console.log('navigating');
         navigate('/login');
       }, 1000);
     } catch (err) {

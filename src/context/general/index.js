@@ -813,7 +813,7 @@ function GeneralProvider({ children }) {
       });
     }
 
-    console.log(balance);
+    // console.log(balance);
     return balance;
   };
 
