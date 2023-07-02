@@ -24,6 +24,7 @@ export default function DashboardTable() {
         // console.log('unable to fetch packs');
       }
     }
+    // console.log(packages);
 
     if (packages !== undefined) {
       const tempRows = [];
@@ -34,7 +35,7 @@ export default function DashboardTable() {
       });
       setRows(tempRows);
     }
-  }, [packages]);
+  }, [packages, currentUser]);
 
   return (
     <AppNewsUpdate
