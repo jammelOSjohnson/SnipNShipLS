@@ -9,6 +9,7 @@ import {
   Modal,
   Select,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -36,8 +37,8 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-  overflowY: 'scroll',
-  height: '55%',
+  // overflowY: 'scroll',
+  height: '63%',
   borderRadius: '5%',
 };
 
@@ -142,6 +143,14 @@ export default function CheckParish() {
                   <MenuItem value={'St. Catherine'}>St. Catherine (Spanish Town)</MenuItem>
                 </Select>
               </FormControl>
+              <TextField
+                name="contact"
+                labelId="Contact Number"
+                label="Contact Number"
+                value={client.contact}
+                onChange={handleChange}
+                required
+              />
             </Stack>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }} />
             {error && (
