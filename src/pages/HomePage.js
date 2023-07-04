@@ -12,6 +12,7 @@ import { auth } from '../firebase';
 export default function HomePage() {
   const navigate = useNavigate();
   const urlLocation = useLocation().pathname;
+  const prevUrl = useLocation();
   const { value } = useGeneral();
   const { fetchUserInfo } = value;
 
@@ -56,6 +57,26 @@ export default function HomePage() {
           // console.log("About to navigate to staff dashboard.");
           navigate('/admindashboard/app');
         }
+      }
+
+      console.log(prevUrl.state);
+      if (prevUrl.state !== null && prevUrl.state !== undefined) {
+        let signonStatus = false;
+        if (user !== null) {
+          signonStatus = user.uid !== null && user.uid !== undefined;
+
+          const payload = {
+            ...value,
+            currentUser: user,
+            loading: false,
+            loggedIn: signonStatus,
+          };
+          if (value.clientInfo.email === '') {
+            fetchUserDetails(payload);
+          }
+        }
+
+        navigate(prevUrl.state);
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
