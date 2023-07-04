@@ -40,6 +40,7 @@ Nav.propTypes = {
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const location = useLocation().pathname;
   const { value } = useGeneral();
   const { clientInfo, currentUser, userRolef } = value;
   // testing
@@ -52,8 +53,14 @@ export default function Nav({ openNav, onCloseNav }) {
       onCloseNav();
     }
 
+    // console.log(location.toLowerCase());
+
     if (currentUser === undefined) {
-      navigate('/Home');
+      if (location.toLowerCase() !== '/dashboard/uploadinvoice') {
+        navigate('/Home');
+      } else {
+        navigate('/login', { state: location });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, clientInfo]);

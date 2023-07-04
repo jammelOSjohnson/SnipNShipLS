@@ -392,7 +392,7 @@ function GeneralProvider({ children }) {
           payload,
         });
       })
-      .catch((error) => {
+      .catch(() => {
         // An error happened.
         // console.log(error);
       });
@@ -408,9 +408,9 @@ function GeneralProvider({ children }) {
         // console.log(res);
         return res;
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+      .catch(() => {
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
         // console.log(errorMessage);
         // ..
       });
@@ -1150,7 +1150,7 @@ function GeneralProvider({ children }) {
         }
         return false;
       })
-      .catch((err) => {
+      .catch(() => {
         // console.log("Send email error");
         // console.log(err);
         return false;
@@ -1233,7 +1233,7 @@ function GeneralProvider({ children }) {
       // console.log(packageTnum);
       const packagesNewRef = Doc(db, 'Packages', result1);
       const storeRes = await UpdateDoc(packagesNewRef, packageDetails)
-        .then(async (doc) => {
+        .then(async () => {
           // console.log("New Package Details  successfully written!");
           // console.log(doc);
           const finalResult = await fetchCustomerInfo(packageDetails.UID, payload)
@@ -1451,7 +1451,7 @@ function GeneralProvider({ children }) {
                         // console.log("Unable to send add package email at this time.")
                         return true;
                       })
-                      .catch((err) => {
+                      .catch(() => {
                         // console.log("Unable to send add package email at this time.")
                         // console.log(err);
                         return true;
@@ -1460,7 +1460,7 @@ function GeneralProvider({ children }) {
                   }
                   return true;
                 })
-                .catch((err) => {
+                .catch(() => {
                   // console.log("error fetching user info to send email")
                   // console.log(err);
                   return false;
@@ -1494,7 +1494,7 @@ function GeneralProvider({ children }) {
         }
         return false;
       })
-      .catch((err) => {
+      .catch(() => {
         // console.log("Send email error");
         // console.log(err);
         return false;
@@ -1508,8 +1508,10 @@ function GeneralProvider({ children }) {
     const RequestParams = {
       from_name: formVals.user_name,
       user_email: formVals.user_email,
-      message: `New Invoice uploaded by ${formVals.user_name}.
-         Mailbox#: ${mailboxNum}`,
+      message: `A new Invoice was Uploaded by: ${formVals.user_name}
+         Mailbox#: ${mailboxNum}
+         Merchant: ${formVals.merchant}
+         Amout Declared: $${formVals.amount}`,
       content_pdf: undefined,
       content_svg: undefined,
       content_jpeg: undefined,
@@ -1536,7 +1538,7 @@ function GeneralProvider({ children }) {
         }
         return res;
       })
-      .catch((err) => {
+      .catch(() => {
         // console.log("Send email error");
         // console.log(err);
         return false;
@@ -1551,7 +1553,11 @@ function GeneralProvider({ children }) {
       user_name: '',
       content: file,
       tracking_number: packageZip.tracking_number,
+      merchant: packageZip.merchant,
+      amount: packageZip.amount,
     };
+
+    // console.log(RequestParams);
 
     if (UserInfo !== null && UserInfo !== undefined && UserInfo.fullName !== '' && UserInfo.email !== '') {
       RequestParams.user_email = UserInfo.email;
@@ -1566,11 +1572,9 @@ function GeneralProvider({ children }) {
           // console.log("Unable to send add package email at this time.")
           return true;
         })
-        .catch((err) => {
-          // console.log("Unable to send add package email at this time.")
-          // console.log(err);
+        .catch(() => {
           return true;
-        });
+        }); // console.log("Unable to send add package email at this time.") // console.log(err);
       return emailRes;
     }
     return false;
@@ -1656,7 +1660,7 @@ function GeneralProvider({ children }) {
               // dispatch({type: "sent_verify_email", payload: value});
             }
           })
-          .catch((err) => {
+          .catch(() => {
             // console.log("Send email error");
             // console.log(err);
           });
@@ -1669,21 +1673,6 @@ function GeneralProvider({ children }) {
     // value.clientInfo.verified = false;
     // console.log("aBout to call update user info ");
     // await updateUserInfo(value.currentUser.uid, value, null);
-  };
-
-  const getUserByMailboxNumberForStaff = async function getUserByMailboxNumber(MailBoxNumber) {
-    // console.log("querying mailboxes");
-    const MailBoxesRef = Doc(db, 'MailBoxes', MailBoxNumber);
-    const docSnap = await GetDoc(MailBoxesRef);
-
-    if (docSnap.exists()) {
-      // console.log("Document data:", docSnap.data());
-      const Uid = docSnap.data();
-      return Uid.Uid;
-    }
-    // doc.data() will be undefined in this case
-    // console.log("No such MailBoxNumber!");
-    return 'failed';
   };
 
   const findUserForDashboard = async function findUserForDashboard(payload, searchvalue) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Container, Typography, Divider, Stack, Button, Alert } from '@mui/material';
@@ -14,6 +14,9 @@ import { LoginForm } from '../sections/auth/login';
 import ForgotPassword from '../sections/auth/login/ForgotPassword';
 // context
 import { useGeneral } from '../context/general';
+
+// firebase
+import { auth } from '../firebase';
 
 // ----------------------------------------------------------------------
 
@@ -55,6 +58,7 @@ export default function LoginPage() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleGoogleSubmit = async function handleGoogleSubmit(event) {
     event.preventDefault();
@@ -65,21 +69,7 @@ export default function LoginPage() {
       setLoading(true);
       // console.log('here');
       await gLogin(value).then(async (res1) => {
-        if (res1 != null) {
-          await fetchUserDetails(res1).then((res) => {
-            if (res) {
-              // console.log("About to close signup modal.");
-              setLoading(false);
-              setSuccess('Signed up Successfully.');
-              // setLoggedIn(true);
-              // console.log("About to navigate to dashboard.");
-              // history.push("/Dashboard");
-            } else {
-              setError('Unable to signup at this time');
-              setLoading(false);
-            }
-          });
-        } else {
+        if (res1 === null) {
           setError('Unable to signup at this time.');
           setLoading(false);
         }
@@ -111,21 +101,57 @@ export default function LoginPage() {
       setTimeout(() => {
         setSuccess('');
 
-        // if (1 === 2) {
-        //   // console.log("about to go to from address");
-        //   // console.log(history.location.state.from)
-        //   navigate(-1);
-        // } else {
+        if (location.state !== null && location.state !== undefined) {
+          // console.log("about to go to from address");
+          console.log(location.state);
+          return navigate(location.state);
+        }
+        // console.log(location.state);
         // console.log('about to go dashboard', userRolef);
         if (userRolef === 'Admin') {
-          navigate('/admindashboard/app');
-        } else {
-          navigate('/dashboard/app');
+          return navigate('/admindashboard/app');
         }
-        // }
+
+        return navigate('/dashboard/app');
       }, 1500);
     }
-  }, [userRolef, navigate]);
+
+    auth.onAuthStateChanged(async (user) => {
+      // console.log(location.state);
+      if (location.state !== null && location.state !== undefined) {
+        let signonStatus = false;
+        if (user !== null) {
+          signonStatus = user.uid !== null && user.uid !== undefined;
+
+          const payload = {
+            ...value,
+            currentUser: user,
+            loading: false,
+            loggedIn: signonStatus,
+          };
+          if (value.clientInfo.email === '') {
+            await fetchUserDetails(payload).then((res) => {
+              if (res) {
+                // console.log("About to close signup modal.");
+                setLoading(false);
+                setSuccess('Signed up Successfully.');
+                // setLoggedIn(true);
+                // console.log("About to navigate to dashboard.");
+                // history.push("/Dashboard");
+              } else {
+                setError('Unable to signup at this time');
+                setLoading(false);
+              }
+            });
+          }
+        }
+
+        // navigate(location.state);
+      }
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+  }, [userRolef, navigate, auth]);
 
   return (
     <>

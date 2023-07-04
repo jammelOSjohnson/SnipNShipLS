@@ -3,7 +3,7 @@ import { LoadingButton } from '@mui/lab';
 import { Alert, Stack, TextField, Typography } from '@mui/material';
 import Doc from '@mui/icons-material/FileUpload';
 
-const fileValues = { file: '', content: '', tracking_number: '' };
+const fileValues = { file: '', content: '', tracking_number: '', merchant: '', amount: '' };
 
 export default function UploadInvoiceForm({ value, error, setError, setLoading, loadingBtn, success, setSuccess }) {
   const { uploadInvoice, clientInfo, mailboxNum } = value;
@@ -22,6 +22,14 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
           state.content.type === 'image/svg+xml' ||
           state.content.type === 'image/jpeg'
         ) {
+          if (state.merchant.length < 3) {
+            return setError('Please enter the merchants name. Eg. Amazon');
+          }
+
+          if (state.amount.length < 3) {
+            return setError('Please enter the invoice total. Eg. 75');
+          }
+
           await getBase64(state.content, async (result) => {
             data = result;
             // console.log(data);
@@ -55,15 +63,15 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
             }
           });
         } else {
-          setError('Please upload a valid invoice. Only Pdf, Png, Jpg/Jpeg and Svg files are allowed.');
+          return setError('Please upload a valid invoice. Only Pdf, Png, Jpg/Jpeg and Svg files are allowed.');
         }
       } else {
-        setError('Please upload a valid invoice. Only Pdf, Png, Jpg/Jpeg and Svg files are allowed.');
+        return setError('Please upload a valid invoice. Only Pdf, Png, Jpg/Jpeg and Svg files are allowed.');
       }
     } else {
-      setError('Please upload a valid invoice. Only Pdf, Png, Jpg/Jpeg and Svg files are allowed.');
+      return setError('Please upload a valid invoice. Only Pdf, Png, Jpg/Jpeg and Svg files are allowed.');
     }
-    setLoading(false);
+    return setLoading(false);
   };
 
   const getBase64 = async function getBase64(file, cb) {
@@ -71,10 +79,10 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
       if (file !== '') {
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = function () {
+        reader.onload = () => {
           cb(reader.result);
         };
-        reader.onerror = function (error) {
+        reader.onerror = () => {
           // console.log('Error: ', error);
         };
       } else {
@@ -119,6 +127,22 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
             <Doc /> <Typography>{fileDisplay}</Typography>
           </Stack>
         )}
+        <TextField
+          label="Merchant Name"
+          name="merchant"
+          value={state.merchant}
+          onChange={(e) => onInputChange2(e)}
+          type="text"
+          required
+        />
+        <TextField
+          label="Invoice Total"
+          name="amount"
+          value={state.amount}
+          onChange={(e) => onInputChange2(e)}
+          type="text"
+          required
+        />
         {error && (
           <Alert variant="filled" severity="error">
             {error}

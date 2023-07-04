@@ -126,7 +126,7 @@ export default function ContactUs() {
                       </Grid>
                       <Grid item xs={6}>
                         <Typography variant="body2">
-                          <a href="mailto:temporaryemail@companyname.com">temporaryemail@companyname.com</a>
+                          <a href="mailto:snipnship@gmail.com">snipnship@gmail.com</a>
                         </Typography>
                       </Grid>
                     </Grid>
