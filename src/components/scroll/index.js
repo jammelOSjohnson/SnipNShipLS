@@ -8,14 +8,15 @@ const IconButtonStyled = styled(IconButton)(() => ({
   zIndex: 2,
   position: 'fixed',
   bottom: '5vh',
-  backgroundColor: Colors.warning,
+  backgroundColor: '#80C4DE',
   color: Colors.white,
   '&:hover, &Mui-focusVisible': {
     transitions: '0.3s',
     color: '#397BA6',
-    backgroundColor: Colors.warning,
+    backgroundColor: '#80C4DE',
   },
   right: '5%',
+  border: 'none',
 }));
 const Scroll = ({ showBelow }) => {
   const isTrue = true;

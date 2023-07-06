@@ -23,7 +23,12 @@ export const FooterTitle = styled(Typography)(() => ({
 }));
 
 export const LinkStyled = styled(Link)(() => ({
-  flex: '1 1 auto',
+  paddingTop: '8px',
+  paddingBottom: '8px',
+  paddingLeft: '16px',
+  paddingRight: '16px',
+  background: 'none !important',
+  display: 'flex',
   '&:hover': {
     cursor: 'pointer',
   },

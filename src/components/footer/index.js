@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TikTokIcon from '../tiktokicon';
 import { Colors } from '../../theme/palette';
-import { FooterContainer, FooterTitle } from '../../styles/footer';
+import { FooterContainer, FooterTitle, LinkStyled } from '../../styles/footer';
 
 export default function Footer() {
   const navigate = useNavigate();
+  const isTrue = true;
   const handleSocial = function handleSocial(social) {
     switch (social) {
       case 'facebook':
@@ -62,20 +63,15 @@ export default function Footer() {
           <Grid item md={6} lg={2}>
             <FooterTitle variant="body1">Information</FooterTitle>
             <List>
-              <ListItemButton onClick={() => navigate('/home')}>
-                <ListItemText>
-                  <Typography lineHeight={2} variant="capton2">
-                    About Us
-                  </Typography>
-                </ListItemText>
-              </ListItemButton>
-              <ListItemButton onClick={() => navigate('/home')}>
+              {/* <ListItemButton onClick={() => navigate('/home')}> */}
+              <LinkStyled to="rates" spy={isTrue} smooth={isTrue} offset={0} duration={500}>
                 <ListItemText>
                   <Typography lineHeight={2} variant="capton2">
                     Our Rates
                   </Typography>
                 </ListItemText>
-              </ListItemButton>
+              </LinkStyled>
+              {/* </ListItemButton> */}
               <ListItemButton onClick={() => navigate('/privacy')}>
                 <ListItemText>
                   <Typography lineHeight={2} variant="capton2">
@@ -109,19 +105,20 @@ export default function Footer() {
                   </Typography>
                 </ListItemText>
               </ListItemButton>
-              <ListItemButton onClick={() => navigate('/myaccount')}>
+              {/* <ListItemButton onClick={() => navigate('/myaccount')}>
                 <ListItemText>
                   <Typography lineHeight={2} variant="capton2">
                     My Account
                   </Typography>
                 </ListItemText>
-              </ListItemButton>
+              </ListItemButton> */}
             </List>
           </Grid>
           <Grid item xs={1} lg={2} />
           <Grid container>
             <Grid item xs={1} md={2} />
             <Grid item xs={10} md={8} textAlign="center">
+              <br />
               <Typography lineHeight={2} variant="capton2">
                 Copyright ©2023, Snip & Ship Logistics Services. All Rights Reserved.
               </Typography>
