@@ -28,46 +28,29 @@ export default function LoginForm({ value, setError, setLoading, loadingBtn, han
       setLoading(true);
       if (client.email === '') {
         setError('Please enter email.');
-        setLoading(false);
-      } else if (client.password === '') {
-        setError('Please enter password.');
-        setLoading(false);
-      } else {
-        await login(client.email, client.password, value).then(async (res1) => {
-          // if (
-          //   res1 !== 'Username / Password Incorrect' &&
-          //   res1 !== 'Unable to login at this time' &&
-          //   res1.currentUser !== undefined
-          // ) {
-          // await fetchUserDetails(res1).then((res) => {
-          //   if (res) {
-          //     // setLoggedIn(true);
-          //     // console.log(userRolef);
-          //     // if(userRolef === "Customer"){
-          //     //     console.log("About to navigate to dashboard.");
-          //     //     history.push("/Dashboard");
-          //     // }else if(userRolef === "Staff"){
-          //     //     console.log("About to navigate to staff dashboard.");
-          //     //     history.push("/StaffDashboard");
-          //     // }
-          //   } else {
-          //     setLoading(false);
-          //     setError('Unable to login at this time');
-          //   }
-          // });
-          if (
-            res1 === 'Username / Password Incorrect' &&
-            res1 === 'Unable to login at this time' &&
-            res1.currentUser === undefined
-          ) {
-            setLoading(false);
-            setError(res1);
-          }
-        });
+        return setLoading(false);
       }
+
+      if (client.password === '') {
+        setError('Please enter password.');
+        return setLoading(false);
+      }
+      return await login(client.email, client.password, value).then(async (res1) => {
+        // console.log(res1);
+        if (
+          res1 === 'Email / Password Incorrect' ||
+          res1 === 'Unable to login at this time' ||
+          res1.currentUser === undefined
+        ) {
+          setLoading(false);
+          return setError(res1 !== undefined ? res1 : 'Unable to login at this time');
+        }
+        setLoading(false);
+        return setError('Unable to login at this time');
+      });
     } catch {
       setLoading(false);
-      setError('Failed to login');
+      return setError('Failed to login');
     }
   };
 
