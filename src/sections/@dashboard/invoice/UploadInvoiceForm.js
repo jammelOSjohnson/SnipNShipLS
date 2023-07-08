@@ -22,6 +22,10 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
           state.content.type === 'image/svg+xml' ||
           state.content.type === 'image/jpeg'
         ) {
+          if (state.tracking_number.length < 3) {
+            return setError('Please enter the tracking number.');
+          }
+
           if (state.merchant.length < 3) {
             return setError('Please enter the merchants name. Eg. Amazon');
           }
@@ -127,6 +131,14 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
             <Doc /> <Typography>{fileDisplay}</Typography>
           </Stack>
         )}
+        <TextField
+          label="Tracking Number"
+          name="tracking_number"
+          value={state.tracking_number}
+          onChange={(e) => onInputChange2(e)}
+          type="text"
+          required
+        />
         <TextField
           label="Merchant Name"
           name="merchant"

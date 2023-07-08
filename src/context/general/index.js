@@ -1509,6 +1509,7 @@ function GeneralProvider({ children }) {
       from_name: formVals.user_name,
       user_email: formVals.user_email,
       message: `A new Invoice was Uploaded by: ${formVals.user_name}
+         Tracking Number: ${formVals.tracking_number}
          Mailbox#: ${mailboxNum}
          Merchant: ${formVals.merchant}
          Amout Declared: $${formVals.amount}`,
