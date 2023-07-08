@@ -191,7 +191,7 @@ export default function ContactUs() {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Grid container justifyContent="center" alignItems="center" spacing={2}>
+                      <Grid container justifyContent="center" alignItems="center">
                         <Grid item xs={1}>
                           <Checkbox
                             sx={{
@@ -204,9 +204,9 @@ export default function ContactUs() {
                             onChange={handleChange}
                             required
                           />
-                          &nbsp;
                         </Grid>
-                        <Grid item xs={11}>
+                        &nbsp;&nbsp;&nbsp;
+                        <Grid item xs={10}>
                           <InputLabel>
                             <Link to="/Privacy" style={{ textDecoration: 'none', color: Colors.primary }}>
                               You agree to our Privacy Policy
