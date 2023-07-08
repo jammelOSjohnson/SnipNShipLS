@@ -17,6 +17,7 @@ import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
 import navadminConfig from './adminconfig';
+import { Colors } from '../../../theme/palette';
 
 // ----------------------------------------------------------------------
 
@@ -82,7 +83,7 @@ export default function Nav({ openNav, onCloseNav }) {
             <Avatar src={account.photoURL} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+              <Typography variant="subtitle2" sx={{ color: Colors.white }}>
                 {clientInfo.fullName}
               </Typography>
 

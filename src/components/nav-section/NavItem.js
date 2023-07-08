@@ -7,6 +7,7 @@ import { useGeneral } from '../../context/general';
 
 //
 import { StyledNavItem, StyledNavItemIcon } from './styles';
+import { Colors } from '../../theme/palette';
 // ----------------------------------------------------------------------
 
 // NavItem.propTypes = {
@@ -41,16 +42,16 @@ const NavItem = ({ item, navigate }) => {
           to={path}
           sx={{
             '&.active': {
-              color: 'text.primary',
+              color: Colors.white,
               bgcolor: 'action.selected',
               fontWeight: 'fontWeightBold',
             },
           }}
           onClick={(e) => handleLogout(e)}
         >
-          <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
+          <StyledNavItemIcon sx={{ color: Colors.white }}>{icon && icon}</StyledNavItemIcon>
 
-          <ListItemText disableTypography primary={title} />
+          <ListItemText sx={{ color: Colors.white }} disableTypography primary={title} />
 
           {info && info}
         </StyledNavItem>
@@ -60,15 +61,15 @@ const NavItem = ({ item, navigate }) => {
           to={path}
           sx={{
             '&.active': {
-              color: 'text.primary',
+              color: Colors.white,
               bgcolor: 'action.selected',
               fontWeight: 'fontWeightBold',
             },
           }}
         >
-          <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
+          <StyledNavItemIcon sx={{ color: Colors.white }}>{icon && icon}</StyledNavItemIcon>
 
-          <ListItemText disableTypography primary={title} />
+          <ListItemText sx={{ color: Colors.white }} disableTypography primary={title} />
 
           {info && info}
         </StyledNavItem>

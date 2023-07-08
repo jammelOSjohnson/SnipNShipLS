@@ -19,7 +19,7 @@ export default function AppDrawer() {
 
   useEffect(() => {
     const closeStickyIcon = document.getElementById('c-out');
-    console.log(closeStickyIcon);
+    // console.log(closeStickyIcon);
     if (drawerOpen && window.scrollY > 40 && closeStickyIcon !== null) {
       closeStickyIcon.classList.add('sticky2');
     }
