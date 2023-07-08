@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Divider, Drawer, List, ListItemButton, ListItemText } from '@mui/material';
 import { styled } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,14 +17,27 @@ export default function AppDrawer() {
   const navigate = useNavigate();
   const urlLocation = useLocation().pathname;
 
+  useEffect(() => {
+    const closeStickyIcon = document.getElementById('c-out');
+    console.log(closeStickyIcon);
+    if (drawerOpen && window.scrollY > 40 && closeStickyIcon !== null) {
+      closeStickyIcon.classList.add('sticky2');
+    }
+
+    if (!drawerOpen && window.scrollY < 40 && closeStickyIcon !== null) {
+      closeStickyIcon.classList.remove('sticky2');
+    }
+  }, [drawerOpen]);
+
   return (
     <>
       {drawerOpen && (
-        <DrawerCloseButton onClick={() => setDrawerOpen(false)}>
+        <DrawerCloseButton id="c-out" onClick={() => setDrawerOpen(false)}>
           <CloseIcon
             sx={{
               fontSize: '2.5em',
               color: Colors.white,
+              zIndex: 9000,
             }}
           />
         </DrawerCloseButton>
@@ -175,6 +189,12 @@ export default function AppDrawer() {
               background:linear-gradient(to left, ${Colors.warning} 100%, ${Colors.warning} 100%) bottom;
             background-repeat: no-repeat;
             background-size:100% 2px;
+            }
+
+            .sticky2 {
+              position: fixed;
+              padding-bottom: 0;
+              margin-left: 0;
             }
           `}
       </style>

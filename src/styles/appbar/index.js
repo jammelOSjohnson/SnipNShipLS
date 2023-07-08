@@ -49,13 +49,6 @@ export const AppbarSearchIcon = styled(IconButton)(() => ({
 export const AppbarLogo = styled('img')(({ src, theme }) => ({
   src: `url(${src})`,
   width: '50px',
-  [theme.breakpoints.down('md')]: {
-    width: '30px',
-  },
-
-  [theme.breakpoints.down('sm')]: {
-    width: '30px',
-  },
 }));
 
 // List
@@ -90,7 +83,7 @@ export const DrawerCloseButton = styled(IconButton)(() => ({
   position: 'absolute',
   top: 10,
   left: '250px',
-  zIndex: 1999,
+  zIndex: 9001,
 }));
 
 export const LinkStyled = styled(Link)(() => ({
