@@ -191,7 +191,7 @@ export default function ContactUs() {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Grid container justifyContent="center" alignItems="center">
+                      <Grid container justifyContent="center" alignItems="center" spacing={2}>
                         <Grid item xs={1}>
                           <Checkbox
                             sx={{
@@ -204,6 +204,7 @@ export default function ContactUs() {
                             onChange={handleChange}
                             required
                           />
+                          &nbsp;
                         </Grid>
                         <Grid item xs={11}>
                           <InputLabel>
