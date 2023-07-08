@@ -59,7 +59,7 @@ export default function HomePage() {
         }
       }
 
-      console.log(prevUrl.state);
+      // console.log(prevUrl.state);
       if (prevUrl.state !== null && prevUrl.state !== undefined) {
         let signonStatus = false;
         if (user !== null) {
