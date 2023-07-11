@@ -38,6 +38,13 @@ Nav.propTypes = {
   onCloseNav: PropTypes.func,
 };
 
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  color: Colors.primary,
+  [theme.breakpoints.down('md')]: {
+    color: Colors.white,
+  },
+}));
+
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -83,9 +90,11 @@ export default function Nav({ openNav, onCloseNav }) {
             <Avatar src={account.photoURL} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: Colors.white }}>
-                {clientInfo.fullName}
-              </Typography>
+              <StyledTypography variant="subtitle2">
+                {clientInfo.fullName !== null && clientInfo.fullName !== undefined && clientInfo.fullName !== ''
+                  ? clientInfo.fullName[0].toUpperCase() + clientInfo.fullName.slice(1)
+                  : 'Name'}
+              </StyledTypography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}

@@ -6,7 +6,7 @@ import { ListItemText } from '@mui/material';
 import { useGeneral } from '../../context/general';
 
 //
-import { StyledNavItem, StyledNavItemIcon } from './styles';
+import { StyledListItemText, StyledNavItem, StyledNavItemIcon } from './styles';
 import { Colors } from '../../theme/palette';
 // ----------------------------------------------------------------------
 
@@ -37,39 +37,18 @@ const NavItem = ({ item, navigate }) => {
   return (
     <>
       {title === 'logout' ? (
-        <StyledNavItem
-          component={RouterLink}
-          to={path}
-          sx={{
-            '&.active': {
-              color: Colors.white,
-              bgcolor: 'action.selected',
-              fontWeight: 'fontWeightBold',
-            },
-          }}
-          onClick={(e) => handleLogout(e)}
-        >
-          <StyledNavItemIcon sx={{ color: Colors.white }}>{icon && icon}</StyledNavItemIcon>
+        <StyledNavItem component={RouterLink} to={path} onClick={(e) => handleLogout(e)}>
+          <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
 
-          <ListItemText sx={{ color: Colors.white }} disableTypography primary={title} />
+          <StyledListItemText disableTypography primary={title} />
 
           {info && info}
         </StyledNavItem>
       ) : (
-        <StyledNavItem
-          component={RouterLink}
-          to={path}
-          sx={{
-            '&.active': {
-              color: Colors.white,
-              bgcolor: 'action.selected',
-              fontWeight: 'fontWeightBold',
-            },
-          }}
-        >
-          <StyledNavItemIcon sx={{ color: Colors.white }}>{icon && icon}</StyledNavItemIcon>
+        <StyledNavItem component={RouterLink} to={path}>
+          <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
 
-          <ListItemText sx={{ color: Colors.white }} disableTypography primary={title} />
+          <StyledListItemText disableTypography primary={title} />
 
           {info && info}
         </StyledNavItem>
