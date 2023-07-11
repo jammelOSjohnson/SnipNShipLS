@@ -43,7 +43,7 @@ export default function AppbarDesktop() {
     <AppbarContainer id="w-out">
       <AppbarHeader>
         {/* My Bags */}
-        <AppbarLogo src="/assets/images/Logos/ShipNShipLS.png" />
+        <AppbarLogo src="/assets/images/Logos/ShipNShipLS2.png" />
       </AppbarHeader>
       {urlLocation === '/refund' || urlLocation === '/privacy' || urlLocation === '/terms' ? (
         <MyList type="row">

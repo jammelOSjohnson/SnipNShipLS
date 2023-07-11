@@ -25,7 +25,7 @@ export default function AppbarMobile() {
       </AppbarMenuIcon>
       <AppbarHeader textAlign={'center'} variant="h4">
         {/* My Bags */}
-        <AppbarLogo src="/assets/images/Logos/ShipNShipLS.png" />
+        <AppbarLogo src="/assets/images/Logos/ShipNShipLS2.png" />
       </AppbarHeader>
       <AppbarSearchIcon onClick={() => setShowSearchBox(true)}>
         <SearchIcon />

@@ -48,7 +48,7 @@ export const AppbarSearchIcon = styled(IconButton)(() => ({
 
 export const AppbarLogo = styled('img')(({ src, theme }) => ({
   src: `url(${src})`,
-  width: '50px',
+  width: '70px',
 }));
 
 // List
@@ -59,6 +59,8 @@ export const MyList = styled(List)(({ type }) => ({
   alignItems: 'center',
   backgroundColor: Colors.primary,
   paddingLeft: '5%',
+  paddingTop: '15px',
+  paddingBottom: '15px',
   borderRadius: '95px 0 0 95px',
   color: Colors.white,
 }));

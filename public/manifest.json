@@ -3,12 +3,12 @@
   "name": "Snip and Ship Logistics Services",
   "icons": [
     {
-      "src": "/favicon.ico",
+      "src": "/ShipNShipLS2.ico",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/images/Logos/ShipNShipLS.png",
+      "src": "/assets/images/Logos/ShipNShipLS2.png",
       "sizes": "512x512",
       "type": "image/png"
     }
