@@ -68,15 +68,21 @@ export default function LoginPage() {
       setError('');
       setLoading(true);
       // console.log('here');
-      await gLogin(value).then(async (res1) => {
+      return await gLogin(value).then(async (res1) => {
         if (res1 === null) {
-          setError('Unable to signup at this time.');
           setLoading(false);
+          return setError('Unable to signup at this time.');
         }
+        if (location.state === null || location.state === undefined) {
+          fetchUserDetails(res1);
+        }
+
+        // setLoading(false);
+        return null;
       });
     } catch {
-      setError('Failed to signup');
       setLoading(false);
+      return setError('Failed to signup');
     }
   };
 
@@ -222,6 +228,7 @@ export default function LoginPage() {
             <LoginForm
               value={value}
               setError={setError}
+              setSuccess={setSuccess}
               setLoading={setLoading}
               loadingBtn={loadingBtn}
               handleOpen={handleOpen}

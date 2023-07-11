@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -10,10 +11,11 @@ const loginData = {
   email: '',
   password: '',
 };
-export default function LoginForm({ value, setError, setLoading, loadingBtn, handleOpen }) {
+export default function LoginForm({ value, setError, setLoading, loadingBtn, handleOpen, setSuccess }) {
   const { login, fetchUserInfo } = value;
   const [client, setClient] = useState(loginData);
   const [showPassword, setShowPassword] = useState(false);
+  const location = useLocation();
 
   const handleChange = (event) => {
     setClient({ ...client, [event.target.name]: event.target.value });
@@ -36,7 +38,7 @@ export default function LoginForm({ value, setError, setLoading, loadingBtn, han
         return setLoading(false);
       }
       return await login(client.email, client.password, value).then(async (res1) => {
-        // console.log(res1);
+        console.log(res1);
         if (
           res1 === 'Email / Password Incorrect' ||
           res1 === 'Unable to login at this time' ||
@@ -45,8 +47,12 @@ export default function LoginForm({ value, setError, setLoading, loadingBtn, han
           setLoading(false);
           return setError(res1 !== undefined ? res1 : 'Unable to login at this time');
         }
+        if (location.state === null || location.state === undefined) {
+          fetchUserDetails(res1);
+        }
+
         setLoading(false);
-        return setError('Unable to login at this time');
+        return setSuccess('Logged in successfully');
       });
     } catch {
       setLoading(false);
