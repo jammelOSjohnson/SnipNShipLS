@@ -73,6 +73,47 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
       setFail('');
       setMessage('');
       setLoading(true);
+
+      if (state.order_date.length < 3) {
+        setLoading(false);
+        return setFail('Please select date received');
+      }
+
+      if (state.status === 'Select A Status') {
+        setLoading(false);
+        return setFail('Please select status');
+      }
+
+      if (state.tracking_number === '') {
+        setLoading(false);
+        return setFail('Please enter a tracking number');
+      }
+
+      if (state.courier === 'Select A Courier') {
+        setLoading(false);
+        return setFail('Please select a courier');
+      }
+
+      if (state.item_name === '') {
+        setLoading(false);
+        return setFail('Please enter the name of the item');
+      }
+
+      if (state.mailbox_number === '') {
+        setLoading(false);
+        return setFail('Please enter a mailbox number');
+      }
+
+      if (state.merchant === '') {
+        setLoading(false);
+        return setFail('Please enter a marchant name');
+      }
+
+      if (state.fcost === '') {
+        setLoading(false);
+        return setFail('Please enter total cost');
+      }
+
       await editPackageStaff(state, tracking, value, packIndex).then((res) => {
         if (res === true) {
           console.log('here');
@@ -96,6 +137,7 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
       setFail('Failed to update package');
     }
     setLoading(false);
+    return null;
   };
 
   const handleChange = function handleChange(event) {

@@ -31,7 +31,7 @@ export default function AddPackageForm({
 
   const handleChange = function handleChange(event) {
     const { checked, value, name } = event.target;
-    if (name === 'tracking_number' || name === 'house_Num') {
+    if (name === 'tracking_number' || name === 'house_Num' || name === 'mailbox_number') {
       let trackcheck = value.trimStart();
       trackcheck = value.trimEnd();
       console.log('trimed', trackcheck);
@@ -58,7 +58,43 @@ export default function AddPackageForm({
     // prevents default form refresh
     // console.log("I am inside fuction");
     if (state.order_date.length < 3) {
+      setLoading(false);
       return setError('Please select date received');
+    }
+
+    if (state.status === 'Select A Status') {
+      setLoading(false);
+      return setError('Please select status');
+    }
+
+    if (state.tracking_number === '') {
+      setLoading(false);
+      return setError('Please enter a tracking number');
+    }
+
+    if (state.courier === 'Select A Courier') {
+      setLoading(false);
+      return setError('Please select a courier');
+    }
+
+    if (state.item_name === '') {
+      setLoading(false);
+      return setError('Please enter the name of the item');
+    }
+
+    if (state.mailbox_number === '') {
+      setLoading(false);
+      return setError('Please enter a mailbox number');
+    }
+
+    if (state.merchant === '') {
+      setLoading(false);
+      return setError('Please enter a marchant name');
+    }
+
+    if (state.fcost === '') {
+      setLoading(false);
+      return setError('Please enter total cost');
     }
 
     try {
