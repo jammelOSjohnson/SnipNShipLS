@@ -6,7 +6,7 @@ import Doc from '@mui/icons-material/FileUpload';
 const fileValues = { file: '', content: '', tracking_number: '', merchant: '', amount: '' };
 
 export default function UploadInvoiceForm({ value, error, setError, setLoading, loadingBtn, success, setSuccess }) {
-  const { uploadInvoice, clientInfo, mailboxNum } = value;
+  const { uploadInvoice, clientInfo, mailboxNum, currentUser, fetchAddress } = value;
   const [state, setState] = useState(fileValues);
   const [fileDisplay, setFileDisplay] = useState('');
 
@@ -30,7 +30,7 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
             return setError('Please enter the merchants name. Eg. Amazon');
           }
 
-          if (state.amount.length < 3) {
+          if (state.amount === '') {
             return setError('Please enter the invoice total. Eg. 75');
           }
 
@@ -41,6 +41,7 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
               setError('');
               setSuccess('');
               setLoading(true);
+              // console.log(mailboxNum);
               await uploadInvoice(state, data, clientInfo, mailboxNum)
                 .then((res) => {
                   if (res === true) {
@@ -117,10 +118,18 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
   };
 
   useEffect(() => {
+    if (mailboxNum === null || mailboxNum === undefined || mailboxNum === '') {
+      if (currentUser !== undefined && currentUser !== null) {
+        // console.log(currentUser);
+        if (currentUser.uid !== null && currentUser.uid !== undefined) {
+          fetchAddress(currentUser.uid, value);
+        }
+      }
+    }
     if (state.content !== '' && state.content.name !== fileDisplay) {
       setFileDisplay(state.content.name);
     }
-  }, [state.content, fileDisplay]);
+  }, [state.content, fileDisplay, mailboxNum, currentUser]);
 
   return (
     <>
@@ -171,7 +180,7 @@ export default function UploadInvoiceForm({ value, error, setError, setLoading, 
           type="submit"
           variant="contained"
           onClick={(e) => handleSubmit(e)}
-          disabled={loadingBtn}
+          disabled={mailboxNum === null || mailboxNum === undefined || mailboxNum === '' ? true : loadingBtn}
         >
           UPLOAD INVOICE
         </LoadingButton>
