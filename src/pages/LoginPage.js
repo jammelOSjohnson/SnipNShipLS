@@ -109,7 +109,7 @@ export default function LoginPage() {
 
         if (location.state !== null && location.state !== undefined) {
           // console.log("about to go to from address");
-          console.log(location.state);
+          // console.log(location.state);
           return navigate(location.state);
         }
         // console.log(location.state);
