@@ -38,7 +38,7 @@ export default function LoginForm({ value, setError, setLoading, loadingBtn, han
         return setLoading(false);
       }
       return await login(client.email, client.password, value).then(async (res1) => {
-        console.log(res1);
+        // console.log(res1);
         if (
           res1 === 'Email / Password Incorrect' ||
           res1 === 'Unable to login at this time' ||
