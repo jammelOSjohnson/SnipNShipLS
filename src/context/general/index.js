@@ -12,6 +12,7 @@ import {
   twitterAuthProvider,
   db,
   AddDoc,
+  DeleteDoc,
   GetDocs,
   OnSnapshot,
   Where,
@@ -172,8 +173,7 @@ function GeneralProvider({ children }) {
   const readyPack = undefined;
 
   // sign up user
-  const signup = (currentstate, payload) => {
-    // retuns a promise
+  const signup = function signup(currentstate, payload) {
     return CreateUserWithEmailAndPassword(auth, currentstate.email, currentstate.password)
       .then(async (result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -1481,6 +1481,31 @@ function GeneralProvider({ children }) {
     }
   };
 
+  // DELETE PACKAGE
+  const deletePackage = async function deletePackage(trackingNumb) {
+    try {
+      let packDockId = '';
+      // console.log("Track numb is: " + tracking_numb);
+      const q = Query(Collection(db, 'Packages'), Where('PackageDetails.TrackingNumber', '==', trackingNumb));
+
+      const querySnapshot = await GetDocs(q);
+      querySnapshot.forEach((doc) => {
+        // console.log(doc.data());
+        packDockId = doc.id;
+        // console.log("Single package id is:" + doc.id);
+      });
+      if (packDockId.length > 3) {
+        await DeleteDoc(Doc(db, 'Packages', packDockId));
+        return true;
+      }
+      // console.log("no doc id");
+      return false;
+    } catch (error) {
+      // console.error("Error removing document: ", error);
+      return false;
+    }
+  };
+
   const sendUserContactEmail = async function sendUserContactEmail(formVals) {
     // var RequestParams = {
     //   user_name: userName !== null ? userName : "",
@@ -1505,6 +1530,7 @@ function GeneralProvider({ children }) {
   const uploadInvoiceEmail = async function uploadInvoiceEmail(formVals, filetype, mailboxNum) {
     // console.log("Wtf is in formVals");
     // console.log(formVals);
+    // console.log(mailboxNum);
     const RequestParams = {
       from_name: formVals.user_name,
       user_email: formVals.user_email,
@@ -1565,6 +1591,8 @@ function GeneralProvider({ children }) {
       RequestParams.user_name = UserInfo.fullName;
       // console.log("Params going to sendNewPackageMethod");
       // console.log(RequestParams)
+      // console.log(mailboxNum);
+      // return true;
       const emailRes = await uploadInvoiceEmail(RequestParams, fileType, mailboxNum)
         .then((emailSentRes) => {
           if (emailSentRes) {
@@ -1681,14 +1709,14 @@ function GeneralProvider({ children }) {
     const userArr = [];
     const finalArr = [];
 
-    console.log(searchvalue);
+    // console.log(searchvalue);
     if (searchvalue !== null && searchvalue !== undefined) {
       const docRef = Doc(db, 'Users', searchvalue);
       const docSnap = await GetDoc(docRef);
-      console.log('Logging users');
+      // console.log('Logging users');
       if (docSnap.exists()) {
-        console.log(docSnap.id);
-        console.log(docSnap.data());
+        // console.log(docSnap.id);
+        // console.log(docSnap.data());
         const res = docSnap.data();
         userArr.push(res);
         // console.log(userArr);
@@ -1753,6 +1781,7 @@ function GeneralProvider({ children }) {
     fetchAddress,
     findPackagesByDateRange,
     editPackageStaff,
+    deletePackage,
     addPackageStaff,
     sendUserContactEmail,
     uploadInvoice,

@@ -145,7 +145,7 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
     if (name === 'tracking_number' || name === 'house_Num') {
       let trackcheck = value.trimStart();
       trackcheck = value.trimEnd();
-      console.log('trimed', trackcheck);
+      // console.log('trimed', trackcheck);
       setState({ ...state, [name]: trackcheck });
     } else {
       setState({ ...state, [name.toLowerCase()]: value });

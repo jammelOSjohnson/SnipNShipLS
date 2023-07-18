@@ -11,7 +11,18 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import InfoIcon from '@mui/icons-material/InfoRounded';
 import PersonIcon from '@mui/icons-material/Person';
-import { Box, Container, IconButton, TableFooter, TablePagination, Tooltip, Zoom, useTheme } from '@mui/material';
+import CloseIcon from '@mui/icons-material/CloseRounded';
+import {
+  Box,
+  Container,
+  IconButton,
+  Stack,
+  TableFooter,
+  TablePagination,
+  Tooltip,
+  Zoom,
+  useTheme,
+} from '@mui/material';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -22,6 +33,8 @@ import { useGeneral } from '../../context/general';
 import { Colors } from '../../theme/palette';
 import EditPackage from '../editpackage';
 import ViewCustomer from '../viewcustomer';
+import SearchBar from '../searchbar/SearchBar';
+import DeletePackage from '../deletepackage';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -109,13 +122,15 @@ function createData(InfoID, TrackingNum, Name, Description, Mailbox, Status, Ord
 
 export default function ViewPackagesAdmin() {
   const [rows, setRows] = React.useState([]);
+  const [searched, setSearched] = React.useState();
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [open3, setOpen3] = React.useState(false);
   const [tracking, setTracking] = React.useState('');
   const [currentUserID, setCurrentUserID] = React.useState('');
   const [previousUserID, setPreviousUserID] = React.useState('');
   const { value } = useGeneral();
-  const { rangeOfPackages, currentUser, editPackageStaff, findUserForDashboard } = value;
+  const { rangeOfPackages, currentUser, editPackageStaff, deletePackage, findUserForDashboard } = value;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -136,6 +151,10 @@ export default function ViewPackagesAdmin() {
     setOpen2(false);
   };
 
+  const handleClose3 = () => {
+    setOpen3(false);
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -143,29 +162,73 @@ export default function ViewPackagesAdmin() {
 
   React.useEffect(() => {
     if (rangeOfPackages !== undefined) {
-      const tempRows = [];
-      rangeOfPackages.map((item) => {
-        tempRows.push(
-          createData(
-            item.UID,
-            item.PackageDetails.TrackingNumber,
-            item.clientName,
-            item.PackageDetails.ItemName,
-            item.PackageDetails.MBoxNumber,
-            item.PackageDetails.ItemStatus,
-            Moment(item.PackageDetails.OrderDate.toDate()).format('YYYY-MM-DD')
-          )
-        );
-        return null;
-      });
-      setRows(tempRows);
+      if (searched === '' || searched === undefined || searched === null) {
+        const tempRows = [];
+        rangeOfPackages.map((item) => {
+          tempRows.push(
+            createData(
+              item.UID,
+              item.PackageDetails.TrackingNumber,
+              item.clientName,
+              item.PackageDetails.ItemName,
+              item.PackageDetails.MBoxNumber,
+              item.PackageDetails.ItemStatus,
+              Moment(item.PackageDetails.OrderDate.toDate()).format('YYYY-MM-DD')
+            )
+          );
+          return null;
+        });
+        setRows(tempRows);
+      }
     }
   }, [rangeOfPackages, currentUser, rows.length, value]);
 
+  const requestSearch = (searchedVal) => {
+    setSearched(searchedVal.target.value);
+    const filteredRows = rangeOfPackages.filter((row) => {
+      // console.log(row);
+      return row.clientName.toLowerCase().includes(searchedVal.target.value.toLowerCase())
+        ? row.clientName.toLowerCase().includes(searchedVal.target.value.toLowerCase())
+        : row.PackageDetails.TrackingNumber.includes(searchedVal.target.value)
+        ? row.PackageDetails.TrackingNumber.includes(searchedVal.target.value)
+        : row.PackageDetails.ItemName.toLowerCase().includes(searchedVal.target.value.toLowerCase())
+        ? row.PackageDetails.ItemName.toLowerCase().includes(searchedVal.target.value.toLowerCase())
+        : [];
+    });
+    const tempRows = [];
+    console.log(filteredRows);
+    filteredRows.map((item) => {
+      tempRows.push(
+        createData(
+          item.UID,
+          item.PackageDetails.TrackingNumber,
+          item.clientName,
+          item.PackageDetails.ItemName,
+          item.PackageDetails.MBoxNumber,
+          item.PackageDetails.ItemStatus,
+          Moment(item.PackageDetails.OrderDate.toDate()).format('YYYY-MM-DD')
+        )
+      );
+      return null;
+    });
+    console.log(tempRows);
+    setRows(tempRows);
+  };
+
+  const cancelSearch = () => {
+    setSearched('');
+    requestSearch(searched);
+  };
   // console.log(tracking);
   return (
     <>
       <Container>
+        {/* <SearchBar
+          value={searched}
+          onChange={(searchVal) => requestSearch(searchVal)}
+          onCancelSearch={() => cancelSearch()}
+        /> */}
+        {/* <SearchBar searched={searched} requestSearch={requestSearch} placeholder="Enter search value" /> */}
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
@@ -186,18 +249,34 @@ export default function ViewPackagesAdmin() {
                 (row) => (
                   <StyledTableRow key={row.TrackingNum}>
                     <StyledTableCell component="th" scope="row">
-                      <PersonIcon
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setOpen2(true);
-                          setCurrentUserID(row.InfoID);
-                          console.log(currentUserID);
-                        }}
-                        color="primary"
-                        sx={{ '&:hover': { cursor: 'pointer' } }}
-                      >
-                        {row.TrackingNum}
-                      </PersonIcon>
+                      <Stack direction="row">
+                        <Tooltip TransitionComponent={Zoom} title="Click to view customer info">
+                          <PersonIcon
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setOpen2(true);
+                              setCurrentUserID(row.InfoID);
+                              // console.log(currentUserID);
+                            }}
+                            color="primary"
+                            sx={{ '&:hover': { cursor: 'pointer' } }}
+                          >
+                            {row.TrackingNum}
+                          </PersonIcon>
+                        </Tooltip>
+                        <Tooltip TransitionComponent={Zoom} title="Click to open delete package window">
+                          <CloseIcon
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setOpen3(true);
+                              setTracking(row.TrackingNum);
+                              // console.log(currentUserID);
+                            }}
+                            color="error"
+                            sx={{ '&:hover': { cursor: 'pointer' } }}
+                          />
+                        </Tooltip>
+                      </Stack>
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
                       <Tooltip TransitionComponent={Zoom} title="Click to Edit Package Details">
@@ -261,6 +340,7 @@ export default function ViewPackagesAdmin() {
             </TableFooter>
           </Table>
         </TableContainer>
+
         <EditPackage
           open={open}
           handleClose={handleClose}
@@ -268,6 +348,13 @@ export default function ViewPackagesAdmin() {
           pack={rangeOfPackages}
           editPackageStaff={editPackageStaff}
           value={value}
+        />
+        <DeletePackage
+          open3={open3}
+          handleClose3={handleClose3}
+          tracking={tracking}
+          pack={rangeOfPackages}
+          deletePackage={deletePackage}
         />
 
         <ViewCustomer
