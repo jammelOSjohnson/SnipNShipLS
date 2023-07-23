@@ -32,6 +32,7 @@ export default function DashboardAdminPage() {
   useEffect(() => {
     if (!loggedIn && (userRolef !== 'Admin' || userRolef !== 'Staff')) {
       // console.log("Dashboard LoggedIn Value" + loggedIn);
+      // console.log('going home');
       navigate('/Home');
     }
 
@@ -39,6 +40,7 @@ export default function DashboardAdminPage() {
     const end = Moment().clone().endOf('month').format('YYYY-MM-DD hh:mm').toString();
 
     try {
+      // console.log('fetching packages');
       findPackagesByDateRange(start, end, value);
     } catch (err) {
       console.log(err);
@@ -70,7 +72,7 @@ export default function DashboardAdminPage() {
       setLoading(true);
       const start = startDate;
       const end = endDate;
-      console.log('about to call findPackagesByDateRange');
+      console.log('about to call find Packages By Date Range');
       findPackagesByDateRange(start, end, value);
     } catch {
       setError('Failed to fetch packages.');

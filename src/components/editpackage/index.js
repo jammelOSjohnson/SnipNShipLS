@@ -17,6 +17,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 import { useEffect, useState } from 'react';
 import Moment from 'moment';
+import { timeStamp } from '../../firebase';
 
 const style = {
   position: 'absolute',
@@ -114,9 +115,11 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
         return setFail('Please enter total cost');
       }
 
+      // console.log(state);
+
       await editPackageStaff(state, tracking, value, packIndex).then((res) => {
         if (res === true) {
-          console.log('here');
+          // console.log('here');
           setMessage('Package updated successfully.');
           setTimeout(() => {
             setMessage('');
@@ -132,7 +135,7 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
         }
       });
     } catch (err) {
-      console.log('here', err);
+      // console.log('here', err);
       setLoading(false);
       setFail('Failed to update package');
     }
@@ -142,11 +145,17 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
 
   const handleChange = function handleChange(event) {
     const { checked, value, name } = event.target;
+    // if (name === 'order_date') {
+    //   console.log(value);
+    // }
+
     if (name === 'tracking_number' || name === 'house_Num') {
       let trackcheck = value.trimStart();
       trackcheck = value.trimEnd();
       // console.log('trimed', trackcheck);
       setState({ ...state, [name]: trackcheck });
+    } else if (name === 'order_date') {
+      setState({ ...state, [name.toLowerCase()]: timeStamp.fromDate(new Date(value)) });
     } else {
       setState({ ...state, [name.toLowerCase()]: value });
     }
@@ -190,6 +199,7 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
             // console.log(date);
             const conVDate = Moment(date);
             // console.log(conVDate);
+            // console.log(packFound[0].PackageDetails.OrderDate);
             const fdate = conVDate;
             setState({
               ...state,

@@ -1080,13 +1080,13 @@ function GeneralProvider({ children }) {
               type: 'find_packages_by_daterange',
               payload: payloadf,
             });
-            return payloadf;
+            // return payloadf;
           }
           // console.log("Package with Tracking number does not exist.")
-          return false;
+          // return false;
         }
         // console.log("Package with Tracking number does not exist.")
-        return false;
+        // return false;
       });
     } catch (err) {
       console.log(err);
@@ -1159,11 +1159,11 @@ function GeneralProvider({ children }) {
   };
 
   const editPackageStaff = async function editPackageStaff(packageZip, packageTnum, payloadf, packIndex) {
-    console.log('package zip is:');
-    console.log(packageZip);
-    console.log('package tracking num is');
-    console.log(packageTnum);
-    const tstamp = timeStamp.fromDate(new Date(packageZip.order_date));
+    // console.log('package zip is:');
+    // console.log(packageZip);
+    // console.log('package tracking num is');
+    // console.log(packageTnum);
+    const tstamp = packageZip.order_date;
     const packageDetails = {
       PackageDetails: {
         Cost: packageZip.cost,
@@ -1210,14 +1210,14 @@ function GeneralProvider({ children }) {
     querySnapshot.forEach((doc) => {
       result1 = doc.id;
       currentPInfo = doc.data();
-      console.log(`Single package id is: ${doc.id}`);
+      // console.log(`Single package id is: ${doc.id}`);
     });
 
     if (result1 === undefined) {
       result1 = false;
     }
-    console.log('User by mailbox returned');
-    console.log(resUid);
+    // console.log('User by mailbox returned');
+    // console.log(resUid);
 
     // console.log("package id is");
     // console.log(checkIfPackageExists);
@@ -1247,8 +1247,8 @@ function GeneralProvider({ children }) {
               ) {
                 RequestParams.user_email = cusInfoResult.clientInfo.email;
                 RequestParams.user_name = cusInfoResult.clientInfo.fullName; // console.log("Params going to sendNewPackageMethod");
-                console.log(RequestParams);
-                console.log(packageDetails.PackageDetails);
+                // console.log(RequestParams);
+                // console.log(packageDetails.PackageDetails);
                 if (
                   packageDetails.PackageDetails.ItemStatus === 'Ready For Pickup' ||
                   packageDetails.PackageDetails.ItemStatus === 'Arrived At Warehouse'
@@ -1268,10 +1268,10 @@ function GeneralProvider({ children }) {
                           payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
                           // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
 
-                          dispatch({
-                            type: 'find_packages_by_daterange',
-                            payload: payloadf,
-                          });
+                          // dispatch({
+                          //   type: 'find_packages_by_daterange',
+                          //   payload: payloadf,
+                          // });
                         }
                         return true;
                       }
@@ -1288,10 +1288,10 @@ function GeneralProvider({ children }) {
                         payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
                         // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
 
-                        dispatch({
-                          type: 'find_packages_by_daterange',
-                          payload: payloadf,
-                        });
+                        // dispatch({
+                        //   type: 'find_packages_by_daterange',
+                        //   payload: payloadf,
+                        // });
                       }
                       // console.log("Unable to send add package email at this time.")
                       return true;
@@ -1306,11 +1306,11 @@ function GeneralProvider({ children }) {
                         packIndex !== null
                       ) {
                         payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
-                        dispatch({
-                          type: 'find_packages_by_daterange',
-                          payload: payloadf,
-                        });
-                        console.log(payloadf.rangeOfPackages[packIndex]);
+                        // dispatch({
+                        //   type: 'find_packages_by_daterange',
+                        //   payload: payloadf,
+                        // });
+                        // console.log(payloadf.rangeOfPackages[packIndex]);
                       }
                       return true;
                     });
@@ -1324,10 +1324,10 @@ function GeneralProvider({ children }) {
                   payloadf.rangeOfPackages[packIndex].PackageDetails.status = packageZip.status;
                   // console.log(payloadf.rangeOfPackages[packIndex].PackageDetails.status);
 
-                  dispatch({
-                    type: 'find_packages_by_daterange',
-                    payload: payloadf,
-                  });
+                  // dispatch({
+                  //   type: 'find_packages_by_daterange',
+                  //   payload: payloadf,
+                  // });
                 }
 
                 return true;

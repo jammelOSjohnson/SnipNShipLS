@@ -161,10 +161,14 @@ export default function ViewPackagesAdmin() {
   };
 
   React.useEffect(() => {
+    // console.log('page load');
     if (rangeOfPackages !== undefined) {
       if (searched === '' || searched === undefined || searched === null) {
         const tempRows = [];
         rangeOfPackages.map((item) => {
+          if (item.PackageDetails.TrackingNumber === 'DONOTDELETE_TESTTRACKING') {
+            // console.log(Moment(item.PackageDetails.OrderDate.toDate()).format('YYYY-MM-DD'));
+          }
           tempRows.push(
             createData(
               item.UID,
@@ -178,6 +182,7 @@ export default function ViewPackagesAdmin() {
           );
           return null;
         });
+        // console.log(tempRows);
         setRows(tempRows);
       }
     }
