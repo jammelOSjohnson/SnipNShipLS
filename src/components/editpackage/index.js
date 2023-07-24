@@ -135,7 +135,7 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
         }
       });
     } catch (err) {
-      // console.log('here', err);
+      console.log('here', err);
       setLoading(false);
       setFail('Failed to update package');
     }

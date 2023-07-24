@@ -1163,7 +1163,13 @@ function GeneralProvider({ children }) {
     // console.log(packageZip);
     // console.log('package tracking num is');
     // console.log(packageTnum);
-    const tstamp = packageZip.order_date;
+
+    const tstamp = timeStamp.fromDate(packageZip.order_date.toDate());
+    // console.log(typeof packageZip.order_date);
+
+    // console.log(packageZip.order_date);
+
+    // const tstamp = packageZip.order_date;
     const packageDetails = {
       PackageDetails: {
         Cost: packageZip.cost,
