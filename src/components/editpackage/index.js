@@ -276,7 +276,9 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
   ];
 
   const options = [
+    { value: 'In Transit', label: 'In Transit' },
     { value: 'Arrived At Warehouse', label: 'Arrived At Warehouse' },
+    { value: 'In Jamaica', label: 'In Jamaica' },
     { value: 'Ready For Pickup', label: 'Ready For Pickup' },
     { value: 'Delivered', label: 'Delivered' },
   ];

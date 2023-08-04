@@ -1257,7 +1257,9 @@ function GeneralProvider({ children }) {
                 // console.log(packageDetails.PackageDetails);
                 if (
                   packageDetails.PackageDetails.ItemStatus === 'Ready For Pickup' ||
-                  packageDetails.PackageDetails.ItemStatus === 'Arrived At Warehouse'
+                  packageDetails.PackageDetails.ItemStatus === 'Arrived At Warehouse' ||
+                  packageDetails.PackageDetails.ItemStatus === 'In Transit' ||
+                  packageDetails.PackageDetails.ItemStatus === 'In Jamaica'
                 ) {
                   const emailRes = await sendNewPackageEmail(RequestParams)
                     .then((emailSentRes) => {
