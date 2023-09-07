@@ -1760,6 +1760,20 @@ function GeneralProvider({ children }) {
     }
   };
 
+  const fetchShippingRates = async function fetchShippingRates(payload) {
+    const getRatesRef = Doc(db, 'Rates', 'StandardRates');
+    const docSnap = await GetDoc(getRatesRef);
+
+    if (docSnap.exists()) {
+      const ratespack = docSnap.data().rows;
+      console.log(ratespack);
+      ratespack.map((item) => {
+        console.log(`${item} hmm`);
+        return null;
+      });
+    }
+  };
+
   const [value, dispatch] = useReducer(generalReducer, {
     currentUser,
     loggedIn,
@@ -1795,6 +1809,7 @@ function GeneralProvider({ children }) {
     uploadInvoice,
     sendCostomerVerificationEmail,
     findUserForDashboard,
+    fetchShippingRates,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Grid,
@@ -15,12 +15,17 @@ import {
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { RatesContainer, RatesTab } from '../../styles/rates';
 import { Colors } from '../../theme/palette';
+// context
+import { useGeneral } from '../../context/general';
 
 export default function Rates() {
-  const [value, setValue] = useState('1');
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const [value, setValue] = useState('1');
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
+
+  const { value } = useGeneral();
+  const { fetchShippingRates } = value;
 
   function createData(pound, cost) {
     return { pound, cost };
@@ -28,15 +33,15 @@ export default function Rates() {
 
   const rows = [
     createData('1 lb', '$650 JMD'),
-    createData('2 lb', '$1,000 JMD'),
-    createData('3 lb', '$1,500 JMD'),
-    createData('4 lb', '$1,900 JMD'),
-    createData('5 lb', '$2,300 JMD'),
-    createData('6 lb', '$2,700 JMD'),
-    createData('7 lb', '$3,000 JMD'),
-    createData('8 lb', '$3,300 JMD'),
-    createData('9 lb', '$3,500 JMD'),
-    createData('10 lb', '$4,000 JMD'),
+    createData('2 lb', '$950 JMD'),
+    createData('3 lb', '$1,150 JMD'),
+    createData('4 lb', '$1,450 JMD'),
+    createData('5 lb', '$1,750 JMD'),
+    createData('6 lb', '$2,400 JMD'),
+    createData('7 lb', '$2,600 JMD'),
+    createData('8 lb', '$2,800 JMD'),
+    createData('9 lb', '$3,000 JMD'),
+    createData('10 lb', '$3,500 JMD'),
   ];
 
   const rows2 = [
@@ -51,6 +56,14 @@ export default function Rates() {
     createData('9 lb', '$2,750 JMD'),
     createData('10 lb', '$3,050 JMD'),
   ];
+
+  // useEffect(() => {
+  //   try {
+  //     fetchShippingRates();
+  //   } catch (err) {
+  //     // console.log(err)
+  //   }
+  // }, []);
 
   return (
     <>
