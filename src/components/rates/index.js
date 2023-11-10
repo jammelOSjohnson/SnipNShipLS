@@ -25,7 +25,7 @@ export default function Rates() {
   // };
 
   const { value } = useGeneral();
-  const { fetchShippingRates } = value;
+  const { fetchShippingRates, ratesArr } = value;
 
   function createData(pound, cost) {
     return { pound, cost };
@@ -57,13 +57,16 @@ export default function Rates() {
     createData('10 lb', '$3,050 JMD'),
   ];
 
-  // useEffect(() => {
-  //   try {
-  //     fetchShippingRates();
-  //   } catch (err) {
-  //     // console.log(err)
-  //   }
-  // }, []);
+  useEffect(() => {
+    try {
+      // console.log('triggered');
+      if (ratesArr === undefined) {
+        fetchShippingRates(value);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [ratesArr]);
 
   return (
     <>
@@ -90,14 +93,32 @@ export default function Rates() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.pound} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  {ratesArr !== undefined ? (
+                    ratesArr.map((rate, index) =>
+                      index !== 0 ? (
+                        <TableRow key={rate.Pound} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                          <TableCell component="th" scope="row" sx={{ color: Colors.white }}>
+                            {rate.Pound}
+                          </TableCell>
+                          <TableCell sx={{ color: Colors.white }}>{rate.Cost}</TableCell>
+                        </TableRow>
+                      ) : (
+                        <></>
+                      )
+                    )
+                  ) : (
+                    <></>
+                  )}
+                  {ratesArr !== undefined ? (
+                    <TableRow key={ratesArr[0].Pound} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell component="th" scope="row" sx={{ color: Colors.white }}>
-                        {row.pound}
+                        {ratesArr[0].Pound}
                       </TableCell>
-                      <TableCell sx={{ color: Colors.white }}>{row.cost}</TableCell>
+                      <TableCell sx={{ color: Colors.white }}>{ratesArr[0].Cost}</TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    <></>
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
