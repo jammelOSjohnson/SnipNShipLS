@@ -129,6 +129,16 @@ function generalReducer(state, action) {
         ...state,
         singleUser: action.payload.singleUser,
       };
+    case 'fetchRates':
+      return {
+        ...state,
+        ratesArr: action.payload.ratesArr,
+      };
+    case 'fetchPopup':
+      return {
+        ...state,
+        popupSetting: action.payload.popupSetting,
+      };
     default:
       return state;
   }
@@ -147,6 +157,7 @@ function GeneralProvider({ children }) {
   const loggedIn = false;
   let airFreightAdd;
   let seaFreightAdd;
+  let ratesArr;
 
   const mailboxNum = '';
   let packages;
@@ -171,6 +182,8 @@ function GeneralProvider({ children }) {
   const balance = 0;
   const warehouse = 0;
   const readyPack = undefined;
+
+  let popupSetting;
 
   // sign up user
   const signup = function signup(currentstate, payload) {
@@ -871,7 +884,7 @@ function GeneralProvider({ children }) {
       packArr.push(res);
     });
 
-    if (packArr !== []) {
+    if (packArr !== null && packArr !== undefined) {
       if (packArr.length > 0) {
         payload.mailboxNum = packArr[0];
       } else {
@@ -1069,7 +1082,7 @@ function GeneralProvider({ children }) {
         // console.log("Array contents");
         // console.log(fpackArr);
 
-        if (fpackArr !== []) {
+        if (fpackArr !== null && fpackArr !== undefined) {
           if (fpackArr.length > 0) {
             // console.log("Package with Tracking number exist.")
             payloadf.rangeOfPackages = [];
@@ -1411,7 +1424,7 @@ function GeneralProvider({ children }) {
       // console.log("Array contents");
       // console.log(packArr);
 
-      if (packArr !== [] && packArr.length > 0) {
+      if (packArr !== null && packArr !== undefined && packArr.length > 0) {
         // console.log("Package with Tracking number exist.")
         return `Tracking number exist. ${packageZip.tracking_number}`;
       }
@@ -1761,16 +1774,35 @@ function GeneralProvider({ children }) {
   };
 
   const fetchShippingRates = async function fetchShippingRates(payload) {
-    const getRatesRef = Doc(db, 'Rates', 'StandardRates');
-    const docSnap = await GetDoc(getRatesRef);
+    const q = Query(Collection(db, 'Rates'));
+    const ratesPack = [];
+    const querySnapshot = await GetDocs(q);
 
-    if (docSnap.exists()) {
-      const ratespack = docSnap.data().rows;
-      console.log(ratespack);
-      ratespack.map((item) => {
-        console.log(`${item} hmm`);
-        return null;
-      });
+    querySnapshot.forEach((doc) => {
+      ratesPack.push(doc.data());
+      // console.log("Single package id is:" + doc.id);
+    });
+
+    // console.log(ratesPack);
+    if (ratesPack.length > 0) {
+      payload.ratesArr = ratesPack;
+      dispatch({ type: 'fetchRates', payload });
+    }
+
+    // console.log(ratesArr);
+  };
+
+  const fetchPopupSettings = async function fetchPopupSettings(payload) {
+    const popupRef = Doc(db, 'PopUp', 'settings');
+    const popupSnap = await GetDoc(popupRef);
+    if (popupSnap.exists()) {
+      const res = popupSnap.data();
+      // console.log('Popupsettings Exists is?');
+      // console.log(res);
+      payload.popupSetting = res.display;
+    }
+    if (payload.popupSetting !== undefined) {
+      dispatch({ type: 'fetchPopup', payload });
     }
   };
 
@@ -1789,6 +1821,8 @@ function GeneralProvider({ children }) {
     balance,
     readyPack,
     warehouse,
+    ratesArr,
+    popupSetting,
     fetchUserInfo,
     fetchUserInfoForSignUp,
     signup,
@@ -1810,6 +1844,7 @@ function GeneralProvider({ children }) {
     sendCostomerVerificationEmail,
     findUserForDashboard,
     fetchShippingRates,
+    fetchPopupSettings,
   });
 
   return <GeneralContext.Provider value={{ value }}>{children}</GeneralContext.Provider>;

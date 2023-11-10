@@ -3,6 +3,7 @@ import Moment from 'moment';
 import { AppNewsUpdate } from '../../sections/@dashboard/app';
 // Context
 import { useGeneral } from '../../context/general';
+import Popup from '../popup';
 
 function createData(TrackingNum, Name, Description, Status, OrderDate) {
   return { TrackingNum, Name, Description, Status, OrderDate };
@@ -38,19 +39,23 @@ export default function DashboardTable() {
   }, [packages, currentUser]);
 
   return (
-    <AppNewsUpdate
-      title="New Package(s)"
-      list={
-        rows !== []
-          ? rows.slice(0, 5).map((item) => ({
-              id: item.TrackingNum,
-              title: item.Name,
-              description: '',
-              image: `/assets/images/products/package.png`,
-              postedAt: item.OrderDate !== null && item.OrderDate !== undefined ? item.OrderDate?.toDate() : new Date(),
-            }))
-          : []
-      }
-    />
+    <>
+      <AppNewsUpdate
+        title="New Package(s)"
+        list={
+          rows.length > 0
+            ? rows.slice(0, 5).map((item) => ({
+                id: item.TrackingNum,
+                title: item.Name,
+                description: '',
+                image: `/assets/images/products/package.png`,
+                postedAt:
+                  item.OrderDate !== null && item.OrderDate !== undefined ? item.OrderDate?.toDate() : new Date(),
+              }))
+            : []
+        }
+      />
+      <Popup />
+    </>
   );
 }

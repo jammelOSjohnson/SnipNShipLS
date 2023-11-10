@@ -5,6 +5,7 @@ import Banner from '../components/banner';
 import ContactUs from '../components/contactus';
 import Services from '../components/services';
 import Rates from '../components/rates';
+import Popup from '../components/popup';
 import { useGeneral } from '../context/general';
 // firebase
 import { auth } from '../firebase';
@@ -92,6 +93,7 @@ export default function HomePage() {
       <Services />
       <ContactUs />
       <Rates />
+      <Popup />
     </>
   );
 }

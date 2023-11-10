@@ -56,15 +56,16 @@ export default function ShippingAddress() {
           <Typography />
           <Typography variant="p">
             <b>Your Name: </b>
-            {`${Firstname?.toUpperCase()} - ${mailboxNum}`}
+            {/* {`${Firstname?.toUpperCase()} - ${mailboxNum}`} */}
+            {`${Firstname?.toUpperCase()}`}
           </Typography>
           <Typography variant="p">
             <b>Address Line 1: </b>
-            {airFreightAdd.addressLine1}
+            {`${airFreightAdd.addressLine1}`}
           </Typography>
           <Typography variant="p">
             <b>Address Line 2: </b>
-            {airFreightAdd.addressLine2}
+            {`${airFreightAdd.addressLine2} - ${mailboxNum}`}
           </Typography>
           <Typography variant="p">
             <b>City: </b>
@@ -91,15 +92,17 @@ export default function ShippingAddress() {
           <Typography />
           <Typography variant="p">
             <b>Your Name: </b>
-            {`${Firstname?.toUpperCase()} - ${mailboxNum}`}
+            {/* {`${Firstname?.toUpperCase()} - ${mailboxNum}`} */}
+            {`${Firstname?.toUpperCase()}`}
           </Typography>
           <Typography variant="p">
             <b>Address Line 1: </b>
-            {seaFreightAdd.addressLine1}
+            {`${seaFreightAdd.addressLine1}`}
           </Typography>
           <Typography variant="p">
             <b>Address Line 2: </b>
-            {seaFreightAdd.addressLine2}
+            {/* {seaFreightAdd.addressLine2} */}
+            {`${seaFreightAdd.addressLine2} - ${mailboxNum}`}
           </Typography>
           <Typography variant="p">
             <b>City: </b>
