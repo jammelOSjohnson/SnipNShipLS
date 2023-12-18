@@ -65,7 +65,7 @@ export default function ShippingAddress() {
           </Typography>
           <Typography variant="p">
             <b>Address Line 2: </b>
-            {`${airFreightAdd.addressLine2} - ${mailboxNum}`}
+            {`${airFreightAdd.addressLine2}-${mailboxNum}`}
           </Typography>
           <Typography variant="p">
             <b>City: </b>
@@ -102,7 +102,7 @@ export default function ShippingAddress() {
           <Typography variant="p">
             <b>Address Line 2: </b>
             {/* {seaFreightAdd.addressLine2} */}
-            {`${seaFreightAdd.addressLine2} - ${mailboxNum}`}
+            {`${seaFreightAdd.addressLine2}-${mailboxNum}`}
           </Typography>
           <Typography variant="p">
             <b>City: </b>
