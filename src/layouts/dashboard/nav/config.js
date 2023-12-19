@@ -26,6 +26,11 @@ const navConfig = [
     path: '/dashboard/uploadinvoice',
     icon: icon('ic_user'),
   },
+  // {
+  //   title: 'calculator',
+  //   path: '/dashboard/calculator',
+  //   icon: icon('ic_calculator'),
+  // },
   {
     title: 'profile',
     path: '/dashboard/profile',

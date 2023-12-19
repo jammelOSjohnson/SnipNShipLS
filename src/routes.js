@@ -20,6 +20,7 @@ import ProfilePage from './pages/ProfilePage';
 import ViewPackagesPage from './pages/ViewPackagesPage';
 import AddPackage from './pages/AddPackage';
 import UploadInvoicePage from './pages/UploadInvoicePage';
+import CalculatorPage from './pages/CalculatorPage';
 
 // ----------------------------------------------------------------------
 
@@ -64,6 +65,7 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'profile', element: <ProfilePage /> },
         { path: 'uploadinvoice', element: <UploadInvoicePage /> },
+        { path: 'calculator', element: <CalculatorPage /> },
         { path: 'packages', element: <ViewPackagesPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },

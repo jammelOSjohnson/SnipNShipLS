@@ -27,6 +27,11 @@ const navadminConfig = [
     icon: icon('ic_user'),
   },
   {
+    title: 'calculator',
+    path: '/dashboard/calculator',
+    icon: icon('ic_calculator'),
+  },
+  {
     title: 'logout',
     path: '/',
     icon: icon('ic_logout'),
