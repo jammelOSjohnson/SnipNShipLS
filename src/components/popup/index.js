@@ -24,7 +24,7 @@ export default function Popup() {
       if (popupSetting === undefined) {
         fetchPopupSettings(value);
       } else {
-        console.log(popupSetting);
+        // console.log(popupSetting);
         setOpen(popupSetting);
       }
     } catch (err) {
