@@ -1775,17 +1775,28 @@ function GeneralProvider({ children }) {
 
   const fetchShippingRates = async function fetchShippingRates(payload) {
     const q = Query(Collection(db, 'Rates'));
+    const q2 = Query(Collection(db, 'Additional_Rates'));
     const ratesPack = [];
+    const ratesPack2 = [];
     const querySnapshot = await GetDocs(q);
+    const querySnapshot2 = await GetDocs(q2);
 
     querySnapshot.forEach((doc) => {
       ratesPack.push(doc.data());
       // console.log("Single package id is:" + doc.id);
     });
 
+    querySnapshot2.forEach((doc) => {
+      ratesPack2.push(doc.data());
+      // console.log("Single package id is:" + doc.id);
+    });
+
     // console.log(ratesPack);
     if (ratesPack.length > 0) {
       payload.ratesArr = ratesPack;
+      if (ratesPack2.length > 0) {
+        payload.addRatesArr = ratesPack2;
+      }
       dispatch({ type: 'fetchRates', payload });
     }
 
