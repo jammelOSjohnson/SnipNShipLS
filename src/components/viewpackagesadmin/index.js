@@ -1,60 +1,54 @@
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import InfoIcon from '@mui/icons-material/InfoRounded';
+// import { styled } from '@mui/material/styles';
+// import Table from '@mui/material/Table';
+// import TableBody from '@mui/material/TableBody';
+// import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+// import TableContainer from '@mui/material/TableContainer';
+// import TableHead from '@mui/material/TableHead';
+// import TableRow from '@mui/material/TableRow';
+// import Paper from '@mui/material/Paper';
+// import InfoIcon from '@mui/icons-material/InfoRounded';
 import PersonIcon from '@mui/icons-material/Person';
 import CloseIcon from '@mui/icons-material/CloseRounded';
-import {
-  Box,
-  Container,
-  IconButton,
-  Stack,
-  TableFooter,
-  TablePagination,
-  Tooltip,
-  Zoom,
-  useTheme,
-} from '@mui/material';
+import { Box, Container, IconButton, Stack, Tooltip, Zoom, useTheme } from '@mui/material';
+// TableFooter,
+// TablePagination,
+
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import Moment from 'moment';
+import MUIDataTable from 'mui-datatables';
 // context
 import { useGeneral } from '../../context/general';
 import { Colors } from '../../theme/palette';
 import EditPackage from '../editpackage';
 import ViewCustomer from '../viewcustomer';
-import SearchBar from '../searchbar/SearchBar';
+// import SearchBar from '../searchbar/SearchBar';
 import DeletePackage from '../deletepackage';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: Colors.primary,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: Colors.primary,
+//     color: theme.palette.common.white,
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//   },
+// }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
+// const StyledTableRow = styled(TableRow)(({ theme }) => ({
+//   '&:nth-of-type(odd)': {
+//     backgroundColor: theme.palette.action.hover,
+//   },
+//   // hide last border
+//   '&:last-child td, &:last-child th': {
+//     border: 0,
+//   },
+// }));
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -121,7 +115,91 @@ function createData(InfoID, TrackingNum, Name, Description, Mailbox, Status, Ord
 //   createData('Anotherbread', 356, 16.0, 49),
 
 export default function ViewPackagesAdmin() {
-  const [rows, setRows] = React.useState([]);
+  const [datatable, setDatatable] = React.useState({
+    columns: [
+      {
+        label: 'Kit',
+        name: 'InfoID',
+        options: {
+          filter: false,
+          sort: true,
+        },
+      },
+      {
+        label: 'Tracking #',
+        name: 'TrackingNum',
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (val) => {
+            const parentStyle = {};
+            const cellStyle = {
+              wordWrap: 'break-word',
+            };
+            return (
+              <div style={{ position: 'relative', height: '20px' }}>
+                <div style={parentStyle}>
+                  <div style={cellStyle}>{val}</div>
+                </div>
+              </div>
+            );
+          },
+        },
+      },
+      {
+        label: 'Name',
+        name: 'Name',
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        label: 'Description',
+        name: 'Description',
+        options: {
+          customBodyRender: (val) => {
+            const parentStyle = {};
+            const cellStyle = {
+              wordWrap: 'break-word',
+            };
+            return (
+              <div style={{ position: 'relative', height: '20px' }}>
+                <div style={parentStyle}>
+                  <div style={cellStyle}>{val}</div>
+                </div>
+              </div>
+            );
+          },
+        },
+      },
+      {
+        label: 'Mailbox',
+        name: 'Mailbox',
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        label: 'Status',
+        name: 'Status',
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        label: 'OrderDate',
+        name: 'OrderDate',
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+    ],
+    rows: [],
+  });
   const [searched, setSearched] = React.useState();
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
@@ -137,7 +215,7 @@ export default function ViewPackagesAdmin() {
   const location = useLocation().pathname;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - datatable.rows.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -160,6 +238,14 @@ export default function ViewPackagesAdmin() {
     setPage(0);
   };
 
+  const options = {
+    filterType: 'dropdown',
+    search: true,
+    selectableRows: 'none',
+    download: false,
+    print: false,
+  };
+
   React.useEffect(() => {
     // console.log('page load');
     if (rangeOfPackages !== undefined) {
@@ -169,9 +255,40 @@ export default function ViewPackagesAdmin() {
           if (item.PackageDetails.TrackingNumber === 'DONOTDELETE_TESTTRACKING') {
             // console.log(Moment(item.PackageDetails.OrderDate.toDate()).format('YYYY-MM-DD'));
           }
+          const firstCol = (
+            <Stack direction="row" key={item.PackageDetails.TrackingNumber}>
+              <Tooltip TransitionComponent={Zoom} title="Click to view customer info">
+                <PersonIcon
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setOpen2(true);
+                    setCurrentUserID(item.UID);
+                    // console.log(currentUserID);
+                  }}
+                  color="primary"
+                  sx={{ '&:hover': { cursor: 'pointer' } }}
+                >
+                  {item.PackageDetails.TrackingNumber}
+                </PersonIcon>
+              </Tooltip>
+              <Tooltip TransitionComponent={Zoom} title="Click to open delete package window">
+                <CloseIcon
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setOpen3(true);
+                    setTracking(item.PackageDetails.TrackingNumber);
+                    // console.log(currentUserID);
+                  }}
+                  color="error"
+                  sx={{ '&:hover': { cursor: 'pointer' } }}
+                />
+              </Tooltip>
+            </Stack>
+          );
+
           tempRows.push(
             createData(
-              item.UID,
+              firstCol,
               item.PackageDetails.TrackingNumber,
               item.clientName,
               item.PackageDetails.ItemName,
@@ -183,10 +300,10 @@ export default function ViewPackagesAdmin() {
           return null;
         });
         // console.log(tempRows);
-        setRows(tempRows);
+        setDatatable({ ...datatable, rows: tempRows });
       }
     }
-  }, [rangeOfPackages, currentUser, rows.length, value]);
+  }, [rangeOfPackages, currentUser, datatable.rows.length, value]);
 
   const requestSearch = (searchedVal) => {
     setSearched(searchedVal.target.value);
@@ -203,9 +320,40 @@ export default function ViewPackagesAdmin() {
     const tempRows = [];
     console.log(filteredRows);
     filteredRows.map((item) => {
+      const firstCol = (
+        <Stack direction="row" key={item.PackageDetails.TrackingNumber}>
+          <Tooltip TransitionComponent={Zoom} title="Click to view customer info">
+            <PersonIcon
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen2(true);
+                setCurrentUserID(item.UID);
+                // console.log(currentUserID);
+              }}
+              color="primary"
+              sx={{ '&:hover': { cursor: 'pointer' } }}
+            >
+              {item.PackageDetails.TrackingNumber}
+            </PersonIcon>
+          </Tooltip>
+          <Tooltip TransitionComponent={Zoom} title="Click to open delete package window">
+            <CloseIcon
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen3(true);
+                setTracking(item.PackageDetails.TrackingNumber);
+                // console.log(currentUserID);
+              }}
+              color="error"
+              sx={{ '&:hover': { cursor: 'pointer' } }}
+            />
+          </Tooltip>
+        </Stack>
+      );
+
       tempRows.push(
         createData(
-          item.UID,
+          firstCol,
           item.PackageDetails.TrackingNumber,
           item.clientName,
           item.PackageDetails.ItemName,
@@ -217,7 +365,7 @@ export default function ViewPackagesAdmin() {
       return null;
     });
     console.log(tempRows);
-    setRows(tempRows);
+    setDatatable({ ...datatable, rows: tempRows });
   };
 
   const cancelSearch = () => {
@@ -234,7 +382,9 @@ export default function ViewPackagesAdmin() {
           onCancelSearch={() => cancelSearch()}
         /> */}
         {/* <SearchBar searched={searched} requestSearch={requestSearch} placeholder="Enter search value" /> */}
-        <TableContainer component={Paper}>
+        <MUIDataTable title={'Packages'} data={datatable.rows} columns={datatable.columns} options={options} />
+
+        {/* <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -250,72 +400,73 @@ export default function ViewPackagesAdmin() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
-                (row) => (
-                  <StyledTableRow key={row.TrackingNum}>
-                    <StyledTableCell component="th" scope="row">
-                      <Stack direction="row">
-                        <Tooltip TransitionComponent={Zoom} title="Click to view customer info">
-                          <PersonIcon
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setOpen2(true);
-                              setCurrentUserID(row.InfoID);
-                              // console.log(currentUserID);
-                            }}
-                            color="primary"
-                            sx={{ '&:hover': { cursor: 'pointer' } }}
-                          >
-                            {row.TrackingNum}
-                          </PersonIcon>
-                        </Tooltip>
-                        <Tooltip TransitionComponent={Zoom} title="Click to open delete package window">
-                          <CloseIcon
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setOpen3(true);
-                              setTracking(row.TrackingNum);
-                              // console.log(currentUserID);
-                            }}
-                            color="error"
-                            sx={{ '&:hover': { cursor: 'pointer' } }}
-                          />
-                        </Tooltip>
-                      </Stack>
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      <Tooltip TransitionComponent={Zoom} title="Click to Edit Package Details">
-                        <a
-                          href={location}
+              {(rowsPerPage > 0
+                ? datatable.rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : datatable.rows
+              ).map((row) => (
+                <StyledTableRow key={row.TrackingNum}>
+                  <StyledTableCell component="th" scope="row">
+                    <Stack direction="row">
+                      <Tooltip TransitionComponent={Zoom} title="Click to view customer info">
+                        <PersonIcon
                           onClick={(e) => {
                             e.preventDefault();
-                            setOpen(true);
-                            setTracking(row.TrackingNum);
-                            // console.log(tracking);
+                            setOpen2(true);
+                            setCurrentUserID(row.InfoID);
+                            // console.log(currentUserID);
                           }}
+                          color="primary"
+                          sx={{ '&:hover': { cursor: 'pointer' } }}
                         >
                           {row.TrackingNum}
-                        </a>
+                        </PersonIcon>
                       </Tooltip>
-                    </StyledTableCell>
-                    <StyledTableCell style={{ width: 160 }} align="right">
-                      {row.Name}
-                    </StyledTableCell>
-                    <StyledTableCell style={{ width: 160 }} align="right">
-                      {row.Description}
-                    </StyledTableCell>
-                    <StyledTableCell style={{ width: 160 }} align="right">
-                      {row.Mailbox}
-                    </StyledTableCell>
-                    <StyledTableCell style={{ width: 160 }} align="right">
-                      {row.Status}
-                    </StyledTableCell>
-                    <StyledTableCell style={{ width: 160 }} align="right">
-                      {row.OrderDate}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )
-              )}
+                      <Tooltip TransitionComponent={Zoom} title="Click to open delete package window">
+                        <CloseIcon
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpen3(true);
+                            setTracking(row.TrackingNum);
+                            // console.log(currentUserID);
+                          }}
+                          color="error"
+                          sx={{ '&:hover': { cursor: 'pointer' } }}
+                        />
+                      </Tooltip>
+                    </Stack>
+                  </StyledTableCell>
+                  <StyledTableCell component="th" scope="row">
+                    <Tooltip TransitionComponent={Zoom} title="Click to Edit Package Details">
+                      <a
+                        href={location}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setOpen(true);
+                          setTracking(row.TrackingNum);
+                          // console.log(tracking);
+                        }}
+                      >
+                        {row.TrackingNum}
+                      </a>
+                    </Tooltip>
+                  </StyledTableCell>
+                  <StyledTableCell style={{ width: 160 }} align="right">
+                    {row.Name}
+                  </StyledTableCell>
+                  <StyledTableCell style={{ width: 160 }} align="right">
+                    {row.Description}
+                  </StyledTableCell>
+                  <StyledTableCell style={{ width: 160 }} align="right">
+                    {row.Mailbox}
+                  </StyledTableCell>
+                  <StyledTableCell style={{ width: 160 }} align="right">
+                    {row.Status}
+                  </StyledTableCell>
+                  <StyledTableCell style={{ width: 160 }} align="right">
+                    {row.OrderDate}
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
 
               {emptyRows > 0 && (
                 <TableRow style={{ height: 53 * emptyRows }}>
@@ -328,7 +479,7 @@ export default function ViewPackagesAdmin() {
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                   colSpan={3}
-                  count={rows.length}
+                  count={datatable.rows.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   SelectProps={{
@@ -344,7 +495,7 @@ export default function ViewPackagesAdmin() {
               </TableRow>
             </TableFooter>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
 
         <EditPackage
           open={open}
@@ -371,6 +522,23 @@ export default function ViewPackagesAdmin() {
           value={value}
         />
       </Container>
+      <style>
+        {`
+            table {
+              table-layout: fixed;
+              width: 100%;
+              overflow: hidden;
+            }
+
+            th{
+              background-color: ${Colors.primary} !important;
+            }
+
+            th > span > button > div > div{
+              color: #FFF !important;
+            }
+          `}
+      </style>
     </>
   );
 }
