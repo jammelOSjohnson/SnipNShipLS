@@ -42,6 +42,7 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
       // Calculate
       let GCT = '0.00';
       const usdtojmdrate = 155.61;
+      const dutyThreshold = 100.0;
       let Duty = '0.00';
       let Delivery = '500.00';
       let Processing = '0.00';
@@ -71,7 +72,7 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
         Processing = (parseFloat(Processing) + parseFloat(Rate)).toFixed(2);
         const price = parseFloat(state.price) * usdtojmdrate;
         // Check if above 50$
-        if (parseFloat(state.price) > 50.0) {
+        if (parseFloat(state.price) > dutyThreshold) {
           Duty = (parseFloat(Duty) + 0).toFixed(2);
           Duty = (parseFloat(Duty) * usdtojmdrate).toFixed(2);
           CAF = '2500.00';
@@ -113,7 +114,7 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
 
         const price = parseFloat(state.price) * usdtojmdrate;
         // Check if above 50$
-        if (parseFloat(state.price) > 50.0) {
+        if (parseFloat(state.price) > dutyThreshold) {
           Duty = (parseFloat(state.price) * 0.02).toFixed(2);
           Duty = (parseFloat(Duty) * usdtojmdrate).toFixed(2);
           CAF = '2500.00';
@@ -145,7 +146,7 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
         Processing = (parseFloat(Processing) + Rate).toFixed(2);
         const price = parseFloat(state.price) * usdtojmdrate;
         // Check if above 50$
-        if (parseFloat(state.price) > 50.0) {
+        if (parseFloat(state.price) > dutyThreshold) {
           Duty = (parseFloat(state.price) * 0.2).toFixed(2);
           Duty = (parseFloat(Duty) * usdtojmdrate).toFixed(2);
           CAF = '2500.00';
@@ -179,7 +180,7 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
         Processing = (parseFloat(Processing) + Rate).toFixed(2);
         const price = parseFloat(state.price) * usdtojmdrate;
         // Check if above 50$
-        if (parseFloat(state.price) > 50.0) {
+        if (parseFloat(state.price) > dutyThreshold) {
           Duty = (parseFloat(state.price) * 0.05).toFixed(2);
           Duty = (parseFloat(Duty) * usdtojmdrate).toFixed(2);
           CAF = '2500.00';
@@ -210,7 +211,7 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
         Processing = (parseFloat(Processing) + Rate).toFixed(2);
         const price = parseFloat(state.price) * usdtojmdrate;
         // Check if above 50$
-        if (parseFloat(state.price) > 50.0) {
+        if (parseFloat(state.price) > dutyThreshold) {
           Duty = (parseFloat(state.price) * 0.07).toFixed(2);
           Duty = (parseFloat(Duty) * usdtojmdrate).toFixed(2);
           CAF = '2500.00';
@@ -241,7 +242,7 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
         Processing = (parseFloat(Processing) + Rate).toFixed(2);
         const price = parseFloat(state.price) * usdtojmdrate;
         // Check if above 50$
-        if (parseFloat(state.price) > 50.0) {
+        if (parseFloat(state.price) > dutyThreshold) {
           Duty = (parseFloat(state.price) * 0.2).toFixed(2);
           Duty = (parseFloat(Duty) * usdtojmdrate).toFixed(2);
           CAF = '2500.00';
