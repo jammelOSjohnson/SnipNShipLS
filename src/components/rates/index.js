@@ -64,7 +64,7 @@ export default function Rates() {
         fetchShippingRates(value);
       }
     } catch (err) {
-      console.log(err);
+      // console.log('error: ', err);
     }
   }, [ratesArr]);
 
@@ -89,7 +89,9 @@ export default function Rates() {
                 <TableHead>
                   <TableRow>
                     <TableCell sx={{ fontWeight: 900, color: Colors.primary, fontSize: '1.5em' }}>Weight</TableCell>
-                    <TableCell sx={{ fontWeight: 900, color: Colors.primary, fontSize: '1.5em' }}>Cost</TableCell>
+                    <TableCell sx={{ fontWeight: 900, color: Colors.primary, fontSize: '1.5em', textAlign: 'right' }}>
+                      Cost
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -100,7 +102,7 @@ export default function Rates() {
                           <TableCell component="th" scope="row" sx={{ color: Colors.white }}>
                             {rate.Pound}
                           </TableCell>
-                          <TableCell sx={{ color: Colors.white }}>{rate.Cost}</TableCell>
+                          <TableCell sx={{ color: Colors.white, textAlign: 'right' }}>{rate.Cost}</TableCell>
                         </TableRow>
                       ) : (
                         <></>
@@ -114,7 +116,7 @@ export default function Rates() {
                       <TableCell component="th" scope="row" sx={{ color: Colors.white }}>
                         {ratesArr[0].Pound}
                       </TableCell>
-                      <TableCell sx={{ color: Colors.white }}>{ratesArr[0].Cost}</TableCell>
+                      <TableCell sx={{ color: Colors.white, textAlign: 'right' }}>{ratesArr[0].Cost}</TableCell>
                     </TableRow>
                   ) : (
                     <></>
@@ -122,6 +124,11 @@ export default function Rates() {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Typography style={{ color: 'yellow', paddingTop: '2%', textAlign: 'center', fontWeight: 'bolder' }}>
+              11 lbs to 20 lbs $400 for each additional LB*
+              <br />
+              21 lbs to 50lbs $350 for each additional LB*
+            </Typography>
             {/* <RatesTab>
               <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

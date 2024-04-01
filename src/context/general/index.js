@@ -1791,7 +1791,8 @@ function GeneralProvider({ children }) {
       // console.log("Single package id is:" + doc.id);
     });
 
-    // console.log(ratesPack);
+    // console.log('1', ratesPack);
+    // console.log('2', ratesPack2);
     if (ratesPack.length > 0) {
       payload.ratesArr = ratesPack;
       if (ratesPack2.length > 0) {
@@ -1799,8 +1800,6 @@ function GeneralProvider({ children }) {
       }
       dispatch({ type: 'fetchRates', payload });
     }
-
-    // console.log(ratesArr);
   };
 
   const fetchPopupSettings = async function fetchPopupSettings(payload) {
