@@ -1,20 +1,28 @@
 import * as React from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import { styled } from '@mui/material/styles';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-// import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Paper from '@mui/material/Paper';
-// import InfoIcon from '@mui/icons-material/InfoRounded';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import InfoIcon from '@mui/icons-material/InfoRounded';
 import PersonIcon from '@mui/icons-material/Person';
 import CloseIcon from '@mui/icons-material/CloseRounded';
-import { Box, Container, IconButton, Stack, Tooltip, Zoom, useTheme } from '@mui/material';
-// TableFooter,
-// TablePagination,
+import {
+  Box,
+  Container,
+  IconButton,
+  Stack,
+  Tooltip,
+  Zoom,
+  useTheme,
+  TableFooter,
+  TablePagination,
+} from '@mui/material';
 
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -30,25 +38,25 @@ import ViewCustomer from '../viewcustomer';
 // import SearchBar from '../searchbar/SearchBar';
 import DeletePackage from '../deletepackage';
 
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     backgroundColor: Colors.primary,
-//     color: theme.palette.common.white,
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//   },
-// }));
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: Colors.primary,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   '&:nth-of-type(odd)': {
-//     backgroundColor: theme.palette.action.hover,
-//   },
-//   // hide last border
-//   '&:last-child td, &:last-child th': {
-//     border: 0,
-//   },
-// }));
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -259,11 +267,13 @@ export default function ViewPackagesAdmin() {
             <Stack direction="row" key={item.PackageDetails.TrackingNumber}>
               <Tooltip TransitionComponent={Zoom} title="Click to view customer info">
                 <PersonIcon
+                  id={item.UID}
                   onClick={(e) => {
                     e.preventDefault();
+                    console.log(e);
                     setOpen2(true);
                     setCurrentUserID(item.UID);
-                    // console.log(currentUserID);
+                    console.log(currentUserID);
                   }}
                   color="primary"
                   sx={{ '&:hover': { cursor: 'pointer' } }}
@@ -382,9 +392,9 @@ export default function ViewPackagesAdmin() {
           onCancelSearch={() => cancelSearch()}
         /> */}
         {/* <SearchBar searched={searched} requestSearch={requestSearch} placeholder="Enter search value" /> */}
-        <MUIDataTable title={'Packages'} data={datatable.rows} columns={datatable.columns} options={options} />
+        {/* <MUIDataTable title={'Packages'} data={datatable.rows} columns={datatable.columns} options={options} /> */}
 
-        {/* <TableContainer component={Paper}>
+        <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -406,34 +416,7 @@ export default function ViewPackagesAdmin() {
               ).map((row) => (
                 <StyledTableRow key={row.TrackingNum}>
                   <StyledTableCell component="th" scope="row">
-                    <Stack direction="row">
-                      <Tooltip TransitionComponent={Zoom} title="Click to view customer info">
-                        <PersonIcon
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setOpen2(true);
-                            setCurrentUserID(row.InfoID);
-                            // console.log(currentUserID);
-                          }}
-                          color="primary"
-                          sx={{ '&:hover': { cursor: 'pointer' } }}
-                        >
-                          {row.TrackingNum}
-                        </PersonIcon>
-                      </Tooltip>
-                      <Tooltip TransitionComponent={Zoom} title="Click to open delete package window">
-                        <CloseIcon
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setOpen3(true);
-                            setTracking(row.TrackingNum);
-                            // console.log(currentUserID);
-                          }}
-                          color="error"
-                          sx={{ '&:hover': { cursor: 'pointer' } }}
-                        />
-                      </Tooltip>
-                    </Stack>
+                    {row.InfoID}
                   </StyledTableCell>
                   <StyledTableCell component="th" scope="row">
                     <Tooltip TransitionComponent={Zoom} title="Click to Edit Package Details">
@@ -495,7 +478,7 @@ export default function ViewPackagesAdmin() {
               </TableRow>
             </TableFooter>
           </Table>
-        </TableContainer> */}
+        </TableContainer>
 
         <EditPackage
           open={open}
@@ -522,7 +505,7 @@ export default function ViewPackagesAdmin() {
           value={value}
         />
       </Container>
-      <style>
+      {/* <style>
         {`
             table {
               table-layout: fixed;
@@ -538,7 +521,7 @@ export default function ViewPackagesAdmin() {
               color: #FFF !important;
             }
           `}
-      </style>
+      </style> */}
     </>
   );
 }
