@@ -35,8 +35,8 @@ export default function CalculatorForm({ value, error, setError, setLoading, loa
         return setError('Please enter a price greater than 0');
       }
 
-      if (state.weight[0] === '0' || state.weight === '' || state.weight === ' ' || parseInt(state.weight, 10) > 50) {
-        return setError('Please enter a weight greater than 0 and less than 51');
+      if (state.weight[0] === '0' || state.weight === '' || state.weight === ' ' || parseInt(state.weight, 10) > 100) {
+        return setError('Please enter a weight greater than 0 and less than 101');
       }
 
       // Calculate
