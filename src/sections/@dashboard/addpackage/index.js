@@ -33,8 +33,8 @@ export default function AddPackageForm({
     const { checked, value, name } = event.target;
     if (name === 'tracking_number' || name === 'house_Num' || name === 'mailbox_number') {
       let trackcheck = value.trimStart();
-      trackcheck = value.trimEnd();
-      // console.log('trimed', trackcheck);
+      trackcheck = trackcheck.trimEnd();
+      console.log('trimed', trackcheck);
       setState({ ...state, [name]: trackcheck });
     } else {
       setState({ ...state, [name.toLowerCase()]: value });
