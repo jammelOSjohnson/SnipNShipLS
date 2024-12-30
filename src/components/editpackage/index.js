@@ -57,6 +57,7 @@ const packageValues = {
   fcost: '',
   fullName: '',
   house_Num: '',
+  clientParish: '',
 };
 
 export default function EditPackage({ open, handleClose, tracking, pack, editPackageStaff, value }) {
@@ -247,6 +248,10 @@ export default function EditPackage({ open, handleClose, tracking, pack, editPac
                   : 0,
               fullName:
                 packFound[0].clientName != null && packFound[0].clientName !== undefined ? packFound[0].clientName : '',
+              clientParish:
+                packFound[0].clientParish != null && packFound[0].clientParish !== undefined
+                  ? packFound[0].clientParish
+                  : '',
             });
           }
         }

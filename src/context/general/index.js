@@ -122,6 +122,13 @@ function generalReducer(state, action) {
         ...state,
         rangeOfPackages: action.payload.rangeOfPackages,
       };
+    case 'FIND_AUDITED_PACKAGES_BY_DATERANGE':
+      // console.log("dispatching single package by tracking number result");
+      // console.log(action);
+      return {
+        ...state,
+        rangeauditedOfPackages: action.payload.rangeauditedOfPackages,
+      };
     case 'fetch_user_dashboard':
       // console.log("dispatching fetch_user_dashboard action");
       // console.log(action);
@@ -179,6 +186,7 @@ function GeneralProvider({ children }) {
   const userRolef = '';
   const clientRole = '';
   let rangeOfPackages;
+  let rangeauditedOfPackages;
   const balance = 0;
   const warehouse = 0;
   const readyPack = undefined;
@@ -1057,26 +1065,39 @@ function GeneralProvider({ children }) {
   };
 
   // FindPackages Within date range
-  const findPackagesByDateRange = async function findPackagesByDateRange(start, end, payloadf) {
-    // console.log(start);
-    // console.log(end);
-    const tstartstamp = timeStamp.fromDate(new Date(start));
-    const tendstamp = timeStamp.fromDate(new Date(end));
+  const findPackagesByDateRange = async function findPackagesByDateRange(start, end, payloadf, screen, parish) {
+    const newSDate = new Date(start);
+    newSDate.setHours(0, 0, 0, 0);
+    const newEDate = new Date(end);
+    newEDate.setHours(23, 59, 59, 999);
+    // console.log(newSDate);
+    // console.log(newEDate);
+    const tstartstamp = timeStamp.fromDate(new Date(newSDate));
+    const tendstamp = timeStamp.fromDate(new Date(newEDate));
 
     try {
-      const q = Query(
-        Collection(db, 'Packages'),
-        Where('PackageDetails.OrderDate', '>=', tstartstamp),
-        Where('PackageDetails.OrderDate', '<=', tendstamp)
-      );
+      const q =
+        screen === null
+          ? Query(
+              Collection(db, 'Packages'),
+              Where('PackageDetails.OrderDate', '>=', tstartstamp),
+              Where('PackageDetails.OrderDate', '<=', tendstamp)
+            )
+          : Query(
+              Collection(db, 'Packages'),
+              Where('PackageDetails.ModifiedDate', '>=', tstartstamp),
+              Where('PackageDetails.ModifiedDate', '<=', tendstamp),
+              Where('PackageInfo.ItemStatus', '==', 'Delivered'),
+              Where('clientParish', '==', parish)
+            );
       OnSnapshot(q, (querySnapshot) => {
         const fpackArr = [];
         querySnapshot.forEach((doc) => {
           // console.log("data found");
           // console.log(doc.data());
-          const res = doc.data();
+          const packDocData = doc.data();
 
-          fpackArr.push({ ...res });
+          fpackArr.push({ ...packDocData });
           // console.log("Single package id is:" + doc.id);
         });
         // console.log("Array contents");
@@ -1085,12 +1106,18 @@ function GeneralProvider({ children }) {
         if (fpackArr !== null && fpackArr !== undefined) {
           if (fpackArr.length > 0) {
             // console.log("Package with Tracking number exist.")
-            payloadf.rangeOfPackages = [];
-            payloadf.rangeOfPackages = fpackArr;
+
+            if (screen === null) {
+              payloadf.rangeOfPackages = [];
+              payloadf.rangeOfPackages = fpackArr;
+            } else {
+              payloadf.rangeauditedOfPackages = [];
+              payloadf.rangeauditedOfPackages = fpackArr;
+            }
             // console.log(fpackArr);
             // console.log("dispatching data");
             dispatch({
-              type: 'find_packages_by_daterange',
+              type: screen === null ? 'find_packages_by_daterange' : 'FIND_AUDITED_PACKAGES_BY_DATERANGE',
               payload: payloadf,
             });
             // return payloadf;
@@ -1103,6 +1130,13 @@ function GeneralProvider({ children }) {
       });
     } catch (err) {
       console.log(err);
+      if (screen !== null) {
+        payloadf.rangeauditedOfPackages = [];
+        dispatch({
+          type: 'FIND_AUDITED_PACKAGES_BY_DATERANGE',
+          payload: payloadf,
+        });
+      }
     }
   };
 
@@ -1178,27 +1212,13 @@ function GeneralProvider({ children }) {
     // console.log(packageTnum);
 
     const tstamp = timeStamp.fromDate(packageZip.order_date.toDate());
+    const modifiedDate = timeStamp.fromDate(new Date());
     // console.log(typeof packageZip.order_date);
 
     // console.log(packageZip.order_date);
 
     // const tstamp = packageZip.order_date;
-    const packageDetails = {
-      PackageDetails: {
-        Cost: packageZip.cost,
-        Courier: packageZip.courier,
-        ItemName: packageZip.item_name,
-        ItemStatus: packageZip.status,
-        MBoxNumber: packageZip.mailbox_number,
-        MerchantName: packageZip.merchant,
-        OrderDate: tstamp,
-        Total: packageZip.fcost,
-        TrackingNumber: packageZip.tracking_number,
-        Weight: packageZip.weight,
-      },
-      UID: '',
-      clientName: packageZip.fullName,
-    };
+
     const payload = {
       clientInfo: {
         email: '',
@@ -1218,6 +1238,55 @@ function GeneralProvider({ children }) {
     const resUid = await getUserByMailboxNumber(packageZip.mailbox_number).then((res) => {
       return res;
     });
+
+    let Firstname = '';
+    // console.log("checking for the users full name");
+    if (
+      payloadf.clientInfo.fullName == null ||
+      payloadf.clientInfo.fullName === undefined ||
+      payloadf.clientInfo.fullName === ''
+    ) {
+      Firstname = '';
+    } else {
+      // console.log("User has name");
+      Firstname = payloadf.clientInfo.fullName;
+    }
+
+    const packageDetails = {
+      PackageDetails:
+        packageZip.status === 'Delivered'
+          ? {
+              Cost: packageZip.cost,
+              Courier: packageZip.courier,
+              ItemName: packageZip.item_name,
+              ItemStatus: packageZip.status,
+              MBoxNumber: packageZip.mailbox_number,
+              MerchantName: packageZip.merchant,
+              OrderDate: tstamp,
+              Total: packageZip.fcost,
+              TrackingNumber: packageZip.tracking_number,
+              Weight: packageZip.weight,
+              Staff: Firstname,
+              ModifiedDate: modifiedDate,
+            }
+          : {
+              Cost: packageZip.cost,
+              Courier: packageZip.courier,
+              ItemName: packageZip.item_name,
+              ItemStatus: packageZip.status,
+              MBoxNumber: packageZip.mailbox_number,
+              MerchantName: packageZip.merchant,
+              OrderDate: tstamp,
+              Total: packageZip.fcost,
+              TrackingNumber: packageZip.tracking_number,
+              Weight: packageZip.weight,
+              Staff: Firstname,
+            },
+      UID: '',
+      clientName: packageZip.fullName,
+      clientParish:
+        packageZip.clientParish !== null && packageZip.clientParish !== undefined ? packageZip.clientParish : '',
+    };
 
     let currentPInfo;
     const q = Query(Collection(db, 'Packages'), Where('PackageDetails.TrackingNumber', '==', packageTnum));
@@ -1390,6 +1459,7 @@ function GeneralProvider({ children }) {
       },
       UID: '',
       clientName: '',
+      clientParish: '',
     };
     const payload = {
       clientInfo: {
@@ -1446,6 +1516,8 @@ function GeneralProvider({ children }) {
           if (docSnap.exists()) {
             const userpack = docSnap.data();
             packageDetails.clientName = userpack.fullName;
+            packageDetails.clientParish =
+              userpack.stateOrparish !== null && userpack.stateOrparish !== undefined ? userpack.stateOrparish : '';
             try {
               // console.log("New Package Details  successfully written!");
               // Store Package details
@@ -1827,6 +1899,7 @@ function GeneralProvider({ children }) {
     clientRole,
     mailboxNum,
     rangeOfPackages,
+    rangeauditedOfPackages,
     userRolef,
     balance,
     readyPack,
