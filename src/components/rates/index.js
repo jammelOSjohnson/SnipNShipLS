@@ -87,7 +87,7 @@ export default function Rates() {
             <TableContainer component={Paper} sx={{ backgroundColor: 'transparent' }}>
               <Table sx={{ minWidth: 320 }} aria-label="airfreight table">
                 <TableHead>
-                  <TableRow>
+                  <TableRow key="Head">
                     <TableCell sx={{ fontWeight: 900, color: Colors.primary, fontSize: '1.5em' }}>Weight</TableCell>
                     <TableCell sx={{ fontWeight: 900, color: Colors.primary, fontSize: '1.5em', textAlign: 'right' }}>
                       Cost
