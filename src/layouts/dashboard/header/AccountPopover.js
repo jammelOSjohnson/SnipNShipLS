@@ -126,7 +126,17 @@ export default function AccountPopover() {
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) =>
             option.label === 'Home' ? (
-              <MenuItem key={option.label} onClick={(e) => handleNav(e, '/dashboard/app')}>
+              <MenuItem
+                key={option.label}
+                onClick={(e) =>
+                  handleNav(
+                    e,
+                    (value?.loggedIn && value?.userRolef === 'Admin') || (value.loggedIn && value.userRolef === 'Staff')
+                      ? '/admindashboard/app'
+                      : '/dashboard/app'
+                  )
+                }
+              >
                 {option.label}
               </MenuItem>
             ) : option.label === 'Profile' ? (
