@@ -22,9 +22,9 @@ export default function DashboardAdminPage() {
   const { userRolef, loggedIn, findPackagesByDateRange } = value;
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState(
-    Moment().clone().startOf('month').subtract(3, 'months').format('YYYY-MM-DD hh:mm').toString()
+    Moment().clone().startOf('month').subtract(3, 'months').format('YYYY-MM-DDTHH:mm').toString()
   );
-  const [endDate, setEndDate] = useState(Moment().clone().endOf('month').format('YYYY-MM-DD hh:mm').toString());
+  const [endDate, setEndDate] = useState(Moment().clone().endOf('day').format('YYYY-MM-DDTHH:mm').toString());
   const [loadingBtn, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -36,12 +36,12 @@ export default function DashboardAdminPage() {
       navigate('/Home');
     }
 
-    const start = Moment().clone().startOf('month').subtract(3, 'months').format('YYYY-MM-DD hh:mm').toString();
-    const end = Moment().clone().endOf('month').format('YYYY-MM-DD hh:mm').toString();
+    const start = Moment().clone().startOf('month').subtract(3, 'months').format('YYYY-MM-DDTHH:mm').toString();
+    const end = Moment().clone().endOf('day').format('YYYY-MM-DDTHH:mm').toString();
 
     try {
       // console.log('fetching packages');
-      findPackagesByDateRange(start, end, value);
+      findPackagesByDateRange(start, end, value, null, null);
     } catch (err) {
       console.log(err);
     }
@@ -73,7 +73,7 @@ export default function DashboardAdminPage() {
       const start = startDate;
       const end = endDate;
       console.log('about to call find Packages By Date Range');
-      findPackagesByDateRange(start, end, value);
+      findPackagesByDateRange(start, end, value, null, null);
     } catch {
       setError('Failed to fetch packages.');
     }
