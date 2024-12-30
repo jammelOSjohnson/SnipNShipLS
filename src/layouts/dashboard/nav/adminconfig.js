@@ -14,7 +14,12 @@ const navadminConfig = [
   {
     title: 'add package',
     path: '/admindashboard/addpackage',
-    icon: icon('ic_user'),
+    icon: icon('ic_box'),
+  },
+  {
+    title: 'audit package',
+    path: '/admindashboard/auditpackage',
+    icon: icon('ic_box'),
   },
   // {
   //   title: 'view users',

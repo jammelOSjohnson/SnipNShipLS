@@ -11,6 +11,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import DashboardAdminPage from './pages/DashboardAdminPage';
+import PackageAuditPage from './pages/PackageAuditPage';
 import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
 import TermsAndConditonsPage from './pages/TermsAndConditonsPage';
@@ -80,6 +81,7 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'profile', element: <ProfilePage /> },
         { path: 'addpackage', element: <AddPackage /> },
+        { path: 'auditpackage', element: <PackageAuditPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
